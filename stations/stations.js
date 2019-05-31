@@ -1,4 +1,4 @@
-[
+var stations = [
   {
     "number": "1",
     "name": "Радио России",
@@ -206,7 +206,7 @@
   {
     "number": "35",
     "name": "[SKY.FM] Mellow Smooth Jazz",
-    "url": "http://pub8.radiotunes.com/radiotunes_mellowjazz_aacplus?type\u003d.flv",
+    "url": "http://pub8.radiotunes.com/radiotunes_mellowjazz_aacplus?type=.flv",
     "logo": "/img/0035.jpg"
   },
   {
@@ -296,7 +296,7 @@
   {
     "number": "50",
     "name": "ТАКСИ FM",
-    "url": "http://stream2.n340.com/13_taxi_24?type\u003d.flv",
+    "url": "http://stream2.n340.com/13_taxi_24?type=.flv",
     "logo": "/img/0050.jpg"
   },
   {
@@ -709,7 +709,7 @@
   },
   {
     "number": "119",
-    "name": "[SKY.FM] Best of the 80\u0027s",
+    "name": "[SKY.FM] Best of the 80's",
     "url": "http://pub1.diforfree.org:8000/radiotunes_the80s_hi",
     "logo": "/img/0119.jpg"
   },
@@ -721,7 +721,7 @@
   },
   {
     "number": "121",
-    "name": "[SKY.FM] 80\u0027s Rock Hits",
+    "name": "[SKY.FM] 80's Rock Hits",
     "url": "http://pub1.diforfree.org:8000/radiotunes_80srock_hi",
     "logo": "/img/0121.jpg"
   },
@@ -763,7 +763,7 @@
   },
   {
     "number": "128",
-    "name": "[SKY.FM] Smooth Jazz 24\u00277",
+    "name": "[SKY.FM] Smooth Jazz 24'7",
     "url": "http://pub1.diforfree.org:8000/radiotunes_smoothjazz247_hi",
     "logo": "/img/0128.jpg"
   },
@@ -811,7 +811,7 @@
   },
   {
     "number": "136",
-    "name": "[SKY.FM] Hit 70\u0027s",
+    "name": "[SKY.FM] Hit 70's",
     "url": "http://pub1.diforfree.org:8000/radiotunes_hit70s_hi",
     "logo": "/img/0136.jpg"
   },
@@ -1129,7 +1129,7 @@
   },
   {
     "number": "189",
-    "name": "[DI.FM] Drum \u0027n Bass",
+    "name": "[DI.FM] Drum 'n Bass",
     "url": "http://pub1.diforfree.org:8000/di_drumandbass_hi",
     "logo": "/img/0189.jpg"
   },
@@ -1321,7 +1321,7 @@
   },
   {
     "number": "221",
-    "name": "[101.RU] Pumping House \u0026 Rave",
+    "name": "[101.RU] Pumping House & Rave",
     "url": "http://ic2.101.ru:8000/c14_17",
     "logo": "/img/0221.jpg"
   },
@@ -1381,7 +1381,7 @@
   },
   {
     "number": "231",
-    "name": "[101.RU] Psy \u0026 Goa Trance",
+    "name": "[101.RU] Psy & Goa Trance",
     "url": "http://ic2.101.ru:8000/c16_22",
     "logo": "/img/0231.jpg"
   },
@@ -1405,13 +1405,13 @@
   },
   {
     "number": "235",
-    "name": "[101.RU] Drum \u0026 Bass",
+    "name": "[101.RU] Drum & Bass",
     "url": "http://ic2.101.ru:8000/c12_3",
     "logo": "/img/0235.jpg"
   },
   {
     "number": "236",
-    "name": "[101.RU] Dark Side Of D\u0026B",
+    "name": "[101.RU] Dark Side Of D&B",
     "url": "http://ic2.101.ru:8000/c17_23",
     "logo": "/img/0236.jpg"
   },
@@ -1459,7 +1459,7 @@
   },
   {
     "number": "244",
-    "name": "[101.RU] 90\u0027s Gold",
+    "name": "[101.RU] 90's Gold",
     "url": "http://ic2.101.ru:8000/c6_2",
     "logo": "/img/0244.jpg"
   },
@@ -1483,7 +1483,7 @@
   },
   {
     "number": "248",
-    "name": "[101.RU] Cats \u0026 Dogs",
+    "name": "[101.RU] Cats & Dogs",
     "url": "http://ic2.101.ru:8000/c17_4",
     "logo": "/img/0248.jpg"
   },
@@ -1597,7 +1597,7 @@
   },
   {
     "number": "267",
-    "name": "[101.RU] 90\u0027s Pop",
+    "name": "[101.RU] 90's Pop",
     "url": "http://ic2.101.ru:8000/c15_10",
     "logo": "/img/0267.jpg"
   },
@@ -1669,7 +1669,7 @@
   },
   {
     "number": "279",
-    "name": "[101.RU] Rock\u0027n\u0027Roll",
+    "name": "[101.RU] Rock'n'Roll",
     "url": "http://ic2.101.ru:8000/c5_4",
     "logo": "/img/0279.jpg"
   },
@@ -1723,7 +1723,7 @@
   },
   {
     "number": "288",
-    "name": "[101.RU] Funk \u0026 Soul",
+    "name": "[101.RU] Funk & Soul",
     "url": "http://ic2.101.ru:8000/c9_4",
     "logo": "/img/0288.jpg"
   },
@@ -1741,13 +1741,13 @@
   },
   {
     "number": "291",
-    "name": "[101.RU] R\u0027n\u0027B",
+    "name": "[101.RU] R'n'B",
     "url": "http://ic2.101.ru:8000/c4_3",
     "logo": "/img/0291.jpg"
   },
   {
     "number": "292",
-    "name": "[101.RU] Gangsta \u0026 Hip-Hop",
+    "name": "[101.RU] Gangsta & Hip-Hop",
     "url": "http://ic2.101.ru:8000/c14_11",
     "logo": "/img/0292.jpg"
   },
@@ -1915,7 +1915,7 @@
   },
   {
     "number": "320",
-    "name": "[101.RU] Гребенщиков \u0026 Аквариум",
+    "name": "[101.RU] Гребенщиков & Аквариум",
     "url": "http://ic2.101.ru:8000/c16_15",
     "logo": "/img/0320.jpg"
   },
@@ -2138,7 +2138,7 @@
   {
     "number": "357",
     "name": "Arab music",
-    "url": "http://198.105.220.12:4166/Live?type\u003d.mp3/;stream.mp3",
+    "url": "http://198.105.220.12:4166/Live?type=.mp3/;stream.mp3",
     "logo": "/img/0357.jpg"
   },
   {
@@ -2275,7 +2275,7 @@
   },
   {
     "number": "380",
-    "name": "[SKY.FM] 90\u0027s Hits",
+    "name": "[SKY.FM] 90's Hits",
     "url": "http://pub1.diforfree.org:8000/radiotunes_hit90s_hi",
     "logo": "/img/0380.jpg"
   },
@@ -2348,7 +2348,7 @@
   {
     "number": "392",
     "name": "Айчына SHOUTcast",
-    "url": "http://radiostream.akado.ru/playlist/radio.m3u?station\u003daichyna\u0026stream\u003d128",
+    "url": "http://radiostream.akado.ru/playlist/radio.m3u?station=aichyna&stream=128",
     "logo": "/img/0392.jpg"
   },
   {
@@ -2366,7 +2366,7 @@
   {
     "number": "395",
     "name": "Радио Студио 102.4 FM [SPB]",
-    "url": "http://radiostream.akado.ru/playlist/radio.m3u?station\u003dradiostudio\u0026stream\u003d96",
+    "url": "http://radiostream.akado.ru/playlist/radio.m3u?station=radiostudio&stream=96",
     "logo": "/img/0395.jpg"
   },
   {
@@ -2378,7 +2378,7 @@
   {
     "number": "397",
     "name": "ХИТрое радио",
-    "url": "http://radiostream.akado.ru/playlist/radio.m3u?station\u003dhitroe\u0026stream\u003d96",
+    "url": "http://radiostream.akado.ru/playlist/radio.m3u?station=hitroe&stream=96",
     "logo": "/img/0397.jpg"
   },
   {
@@ -2395,7 +2395,7 @@
   },
   {
     "number": "400",
-    "name": "[SKY.FM] 80\u0027s Dance",
+    "name": "[SKY.FM] 80's Dance",
     "url": "http://pub1.radiotunes.com:80/radiotunes_80sdance_hi",
     "logo": "/img/0400.jpg"
   },
@@ -2414,7 +2414,7 @@
   {
     "number": "403",
     "name": "Радио Сибирь",
-    "url": "http://radiostream.akado.ru/playlist/radio.m3u?station\u003dradiosibir\u0026stream\u003d112",
+    "url": "http://radiostream.akado.ru/playlist/radio.m3u?station=radiosibir&stream=112",
     "logo": "/img/0403.jpg"
   },
   {
@@ -2462,7 +2462,7 @@
   {
     "number": "411",
     "name": "PSYRadio.FM",
-    "url": "http://radiostream.akado.ru/playlist/radio.m3u?station\u003dpsyradiofm\u0026stream\u003d128",
+    "url": "http://radiostream.akado.ru/playlist/radio.m3u?station=psyradiofm&stream=128",
     "logo": "/img/0411.jpg"
   },
   {
@@ -2474,7 +2474,7 @@
   {
     "number": "413",
     "name": "UK Bass Radio",
-    "url": "http://radiostream.akado.ru/playlist/radio.m3u?station\u003dukbassradio\u0026stream\u003d128",
+    "url": "http://radiostream.akado.ru/playlist/radio.m3u?station=ukbassradio&stream=128",
     "logo": "/img/0413.jpg"
   },
   {
@@ -2486,7 +2486,7 @@
   {
     "number": "415",
     "name": "MOH Radio",
-    "url": "http://radiostream.akado.ru/playlist/radio.m3u?station\u003dmohradio\u0026stream\u003d96",
+    "url": "http://radiostream.akado.ru/playlist/radio.m3u?station=mohradio&stream=96",
     "logo": "/img/0415.jpg"
   },
   {
@@ -2642,7 +2642,7 @@
   {
     "number": "441",
     "name": "ChroniX Grit",
-    "url": "http://radiostream.akado.ru/playlist/radio.m3u?station\u003dchronixgrit\u0026stream\u003d128",
+    "url": "http://radiostream.akado.ru/playlist/radio.m3u?station=chronixgrit&stream=128",
     "logo": "/img/0441.jpg"
   },
   {
@@ -2737,7 +2737,7 @@
   },
   {
     "number": "457",
-    "name": "[SKY.FM] 90\u0027s RnB",
+    "name": "[SKY.FM] 90's RnB",
     "url": "http://pub1.radiotunes.com:80/radiotunes_90srnb_hi",
     "logo": "/img/0457.jpg"
   },
@@ -3110,7 +3110,7 @@
   {
     "number": "519",
     "name": "SKY Радио, Эстония",
-    "url": "http://streamer.akaver.com/streamgen.php?stream\u003dskyradio\u0026format\u003dmp3\u0026quality\u003dhi",
+    "url": "http://streamer.akaver.com/streamgen.php?stream=skyradio&format=mp3&quality=hi",
     "logo": "/img/0519.jpg"
   },
   {
@@ -3283,7 +3283,7 @@
   },
   {
     "number": "548",
-    "name": "[SKY.FM] 60\u0027s Rock",
+    "name": "[SKY.FM] 60's Rock",
     "url": "http://pub1.radiotunes.com:80/radiotunes_60srock_hi",
     "logo": "/img/0548.jpg"
   },
@@ -3398,7 +3398,7 @@
   {
     "number": "567",
     "name": "Radio Alex-M",
-    "url": "http://radiostream.akado.ru/playlist/radio.m3u?station\u003dmusic-alex-m\u0026stream\u003d128",
+    "url": "http://radiostream.akado.ru/playlist/radio.m3u?station=music-alex-m&stream=128",
     "logo": "/img/0567.jpg"
   },
   {
@@ -3775,7 +3775,7 @@
   },
   {
     "number": "630",
-    "name": "Maximum \u002790",
+    "name": "Maximum '90",
     "url": "http://st15.fmtuner.ru/;",
     "logo": "/img/0630.jpg"
   },
@@ -3835,7 +3835,7 @@
   },
   {
     "number": "640",
-    "name": "DFM DJ\u0027s",
+    "name": "DFM DJ's",
     "url": "http://st02.fmtuner.ru/;",
     "logo": "/img/0640.jpg"
   },
@@ -3871,7 +3871,7 @@
   },
   {
     "number": "646",
-    "name": "PUMP\u0027N\u0027KLUBB",
+    "name": "PUMP'N'KLUBB",
     "url": "http://online.radiorecord.ru:8102/pump_128",
     "logo": "/img/0646.jpg"
   },
@@ -3955,7 +3955,7 @@
   },
   {
     "number": "660",
-    "name": "Jazz-Rock \u0026 Fusion",
+    "name": "Jazz-Rock & Fusion",
     "url": "http://music.myradio.com.ua:8000/JazzRockFusion128.mp3",
     "logo": "/img/0660.jpg"
   },
@@ -4154,7 +4154,7 @@
   {
     "number": "693",
     "name": "M-Видео",
-    "url": "http://radiostream.akado.ru/playlist/radio.m3u?station\u003dmvideofm\u0026stream\u003d128",
+    "url": "http://radiostream.akado.ru/playlist/radio.m3u?station=mvideofm&stream=128",
     "logo": "/img/0693.jpg"
   },
   {
