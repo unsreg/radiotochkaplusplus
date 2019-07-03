@@ -1,26 +1,53 @@
-function init() {    
-    let mainContainer = document.getElementById('container_main');
-    stations.forEach(station => {
-        let stationElement = document.createElement("div");
+const btnSmblStart = "▶";
+const btnSmblStop = "⏹";
+const btnSmblPause = "⏸";
+const btnSmblPrev = "⏮";
+const btnSmblNext = "⏭";
 
-        let stationNumber = document.createElement("div");
-        stationNumber.innerHTML = station.number;
-        stationElement.appendChild(stationNumber);
+var allStations;
+if (stations) {
+    allStations = stations;
+} else {
+    allStations = [];
+}
 
-        let stationName = document.createElement("div");
-        stationName.innerHTML = station.name;
-        stationElement.appendChild(stationName);
+const currentRadioState = {
+    "currentRadioStation": null
+};
 
-        let stationUrl = document.createElement("a");
-        stationUrl.title = station.url;
-        stationUrl.innerText = station.url;
-        stationUrl.href = station.url;
-        stationElement.appendChild(stationUrl);
+function init() {
+    let stationContainer = document.getElementById('station_container');
+    let bootstrapElements = '<div class="row">';
+    allStations.forEach(station => {
+        let bootstrapElement = '' +
+                '<div class="col station" style="text-align: center;">' +
+                '<img class="card-img-top" style="width: 82px;" src="img/stations/' + station.logo + ' ' + '"alt="' + station.name + '">' +
+                '<div class="span3">' +
+                '<h5 class="card-title">' + station.name + '</h5>' +
+                '<p class="card-text">' + station.number + '</p>' +
+                '<button type="button" class="btn btn-dark" style="font-family: initial;" onclick="play(' + station.number + ');">' + btnSmblStart + '</button>' +
+                '</div>' +
+                '</div>';
+        bootstrapElements += bootstrapElement;
+    });
+    bootstrapElements += '</div>';
+    stationContainer.innerHTML += bootstrapElements;
+}
 
-        let stationLogo = document.createElement("img");
-        stationLogo.src = "stations" + station.logo;
-        stationElement.appendChild(stationLogo);
+function play(stationNumber) {
+    try {
+        let station = allStations.find(station => {
+            return station.number === stationNumber.toString();
+        });
+        if (currentRadioState.currentRadioStation === null) {
+            currentRadioState.currentRadioStation = station;
+        } else {
 
-        mainContainer.appendChild(stationElement);
-    });    
+        }
+        let audioPlayer = document.getElementById("audio_player");
+        audioPlayer.src = currentRadioState.currentRadioStation.url;
+        audioPlayer.play();
+    } catch (exception) {
+        alert("Failed to start stream\n" + exception);
+    }
 }

@@ -1,28 +1,38 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">    
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <head>
+        <title>RadioTochka++</title>
 
-    <title>radiotochka++</title>
-    <meta name="description" content="Radio tochka plus plus">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="Radio tochka plus plus">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <!--bootstrap-->
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <!--bootstrap-->
+        <link rel="stylesheet" href="css/main.css">
 
-    <link rel="stylesheet" href="css/main.css">   
-  </head>
-  <body onload="init();">
-    <div id="container_main"></div>
+        <script src="js/underscore-min.js"></script>
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    
-    <script src="stations/stations.js"></script>
-    <script src="js/main.js"></script>
-  </body>
+        <script src="js/stations.js"></script>
+    </head>
+    <body onload="init();">
+        <div id="container">
+            <div id="audio_player_container" style="display: none;">
+                <div id="audio_player_status">
+                    <div id="current_station_name">Current station</div>
+                </div>
+                <audio id="audio_player"></audio>
+            </div>
+            <div id="station_container"></div>
+        </div>
+
+        <!--bootstrap-->
+        <script src="js/jquery-3.3.1.slim.min.js"></script>
+        <script src="js/popper.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <!--bootstrap-->
+
+        <script src="js/main.js"></script>
+    </body>
 </html>
