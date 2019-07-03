@@ -1,4 +1,5 @@
 const btnSmblStart = "▶";
+const btnSmblStartPause = "⏯";
 const btnSmblStop = "⏹";
 const btnSmblPause = "⏸";
 const btnSmblPrev = "⏮";
