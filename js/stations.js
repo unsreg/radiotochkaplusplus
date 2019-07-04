@@ -308,13 +308,6 @@ var stations = [
         "logo": "0108.jpg"
     },
     {
-        "id": "137",
-        "tags": [],
-        "name": "SKAspot Radio",
-        "url": "http://streaming.radionomy.com/SKAspotRadio",
-        "logo": "0137.jpg"
-    },
-    {
         "id": "212",
         "tags": [],
         "name": "YUM FM",
@@ -490,137 +483,11 @@ var stations = [
         "logo": "0306.jpg"
     },
     {
-        "id": "359",
-        "tags": ["ru"],
-        "name": "[101.RU] Армения",
-        "url": "http://ic2.101.ru:8000/c10_1",
-        "logo": "0359.jpg"
-    },
-    {
-        "id": "360",
-        "tags": ["ru"],
-        "name": "[101.RU] Кавказ Hits",
-        "url": "http://ic2.101.ru:8000/c7_10",
-        "logo": "0360.jpg"
-    },
-    {
-        "id": "361",
-        "tags": ["ru"],
-        "name": "[101.RU] Цыганская Музыка",
-        "url": "http://ic2.101.ru:8000/c15_17",
-        "logo": "0361.jpg"
-    },
-    {
-        "id": "362",
-        "tags": ["ru"],
-        "name": "[101.RU] Японская Музыка",
-        "url": "http://ic2.101.ru:8000/c16_12",
-        "logo": "0362.jpg"
-    },
-    {
-        "id": "363",
-        "tags": ["ru"],
-        "name": "[101.RU] Этника",
-        "url": "http://ic2.101.ru:8000/c9_3",
-        "logo": "0363.jpg"
-    },
-    {
-        "id": "364",
-        "tags": ["ru"],
-        "name": "[101.RU] Русские Народные",
-        "url": "http://ic2.101.ru:8000/c15_19",
-        "logo": "0364.jpg"
-    },
-    {
-        "id": "365",
-        "tags": ["ru"],
-        "name": "[101.RU] Духовная Музыка",
-        "url": "http://ic2.101.ru:8000/c16_14",
-        "logo": "0365.jpg"
-    },
-    {
-        "id": "366",
-        "tags": ["ru"],
-        "name": "[101.RU] Опера",
-        "url": "http://ic2.101.ru:8000/c15_4",
-        "logo": "0366.jpg"
-    },
-    {
-        "id": "367",
-        "tags": ["ru"],
-        "name": "[101.RU] Pop Classical Music",
-        "url": "http://ic2.101.ru:8000/c16_4",
-        "logo": "0367.jpg"
-    },
-    {
-        "id": "368",
-        "tags": ["ru"],
-        "name": "[101.RU] Spivakov Classic",
-        "url": "http://ic2.101.ru:8000/c7_1",
-        "logo": "0368.jpg"
-    },
-    {
-        "id": "369",
-        "tags": ["ru"],
-        "name": "Радио Новая Жизнь",
-        "url": "http://radio.totalwebservices.net:8022/;stream.nsv",
-        "logo": "0369.jpg"
-    },
-    {
-        "id": "370",
-        "tags": ["en"],
-        "name": "ChroniX Aggression",
-        "url": "http://www.chronixradio.com/stations/chronixaggression/listen/listen_htmlview.asx",
-        "logo": "0370.jpg"
-    },
-    {
-        "id": "371",
-        "tags": [],
-        "name": "DeSi-RaDio",
-        "url": "http://204.45.41.148:80/;",
-        "logo": "0371.jpg"
-    },
-    {
-        "id": "372",
-        "tags": [],
-        "name": "[SKY.FM] OldSchool Funk and Soul",
-        "url": "http://pub1.diforfree.org:8000/radiotunes_oldschoolfunknsoul_hi",
-        "logo": "0372.jpg"
-    },
-    {
-        "id": "373",
-        "tags": [],
-        "name": "[DI.FM] Jungle",
-        "url": "http://pub1.diforfree.org:8000di_jungle_hi",
-        "logo": "0373.jpg"
-    },
-    {
         "id": "374",
         "tags": ["ru"],
         "name": "MIX FM, Рига",
         "url": "http://91.90.255.111:80/MixFM",
         "logo": "0374.jpg"
-    },
-    {
-        "id": "375",
-        "tags": [],
-        "name": "[DI.FM] Nightcore",
-        "url": "http://pub1.diforfree.org:8000di_nightcore_hi",
-        "logo": "0375.jpg"
-    },
-    {
-        "id": "376",
-        "tags": ["ru"],
-        "name": "Радио Вулкан",
-        "url": "http://radio-tochka.com:6365/;",
-        "logo": "0376.jpg"
-    },
-    {
-        "id": "377",
-        "tags": ["ru"],
-        "name": "Радио 21",
-        "url": "http://radio-21.org.ru/playlist.m3u ",
-        "logo": "0377.jpg"
     },
     {
         "id": "378",
@@ -637,88 +504,11 @@ var stations = [
         "logo": "0388.jpg"
     },
     {
-        "id": "389",
-        "tags": [],
-        "name": "[SOMA.FM] cliqhop idm",
-        "url": "http://sfstream1.somafm.com:8062/;",
-        "logo": "0389.jpg"
-    },
-    {
-        "id": "390",
-        "tags": ["rock"],
-        "name": "[SOMA.FM] indie pop rocks",
-        "url": "http://sfstream1.somafm.com:8090/;",
-        "logo": "0390.jpg"
-    },
-    {
-        "id": "391",
-        "tags": [],
-        "name": "[SOMA.FM] Secret Agent",
-        "url": "http://sfstream1.somafm.com:8002/;",
-        "logo": "0391.jpg"
-    },
-    {
-        "id": "392",
-        "tags": [],
-        "name": "Айчына SHOUTcast",
-        "url": "http://radiostream.akado.ru/playlist/radio.m3u?station=aichyna&stream=128",
-        "logo": "0392.jpg"
-    },
-    {
-        "id": "393",
-        "tags": ["ru"],
-        "name": "Балканская музыка",
-        "url": "http://80.237.210.23:8000/;",
-        "logo": "0393.jpg"
-    },
-    {
         "id": "394",
         "tags": ["ru"],
         "name": "Радио Натали",
         "url": "http://setmedia.ru:8000/high4",
         "logo": "0394.jpg"
-    },
-    {
-        "id": "395",
-        "tags": ["ru"],
-        "name": "Радио Студио 102.4 FM [SPB]",
-        "url": "http://radiostream.akado.ru/playlist/radio.m3u?station=radiostudio&stream=96",
-        "logo": "0395.jpg"
-    },
-    {
-        "id": "396",
-        "tags": ["ru"],
-        "name": "Радио ЮНИТОН, Новосибирск",
-        "url": "http://online.r-uniton.ru:8000/;",
-        "logo": "0396.jpg"
-    },
-    {
-        "id": "397",
-        "tags": ["ru"],
-        "name": "ХИТрое радио",
-        "url": "http://radiostream.akado.ru/playlist/radio.m3u?station=hitroe&stream=96",
-        "logo": "0397.jpg"
-    },
-    {
-        "id": "398",
-        "tags": [],
-        "name": "Big Beat radio",
-        "url": "http://us.bigbeatradio.com:8100/hi-fi.mp3",
-        "logo": "0398.jpg"
-    },
-    {
-        "id": "399",
-        "tags": [],
-        "name": "[DI.FM] Nu Disco",
-        "url": "http://pub1.diforfree.org:8000di_nudisco_hi",
-        "logo": "0399.jpg"
-    },
-    {
-        "id": "400",
-        "tags": [],
-        "name": "[SKY.FM] 80's Dance",
-        "url": "http://pub1.radiotunes.com:80/radiotunes_80sdance_hi",
-        "logo": "0400.jpg"
     },
     {
         "id": "401",
@@ -770,41 +560,6 @@ var stations = [
         "logo": "0410.jpg"
     },
     {
-        "id": "411",
-        "tags": [],
-        "name": "PSYRadio.FM",
-        "url": "http://radiostream.akado.ru/playlist/radio.m3u?station=psyradiofm&stream=128",
-        "logo": "0411.jpg"
-    },
-    {
-        "id": "412",
-        "tags": [],
-        "name": "Bass Drive Radio",
-        "url": "http://shouthost.com.80-1.streams.bassdrive.com/;stream.mp3",
-        "logo": "0412.jpg"
-    },
-    {
-        "id": "413",
-        "tags": [],
-        "name": "UK Bass Radio",
-        "url": "http://radiostream.akado.ru/playlist/radio.m3u?station=ukbassradio&stream=128",
-        "logo": "0413.jpg"
-    },
-    {
-        "id": "414",
-        "tags": [],
-        "name": "Technobase FM",
-        "url": "http://listen.TechnoBase.FM/dsl.asx",
-        "logo": "0414.jpg"
-    },
-    {
-        "id": "415",
-        "tags": [],
-        "name": "MOH Radio",
-        "url": "http://radiostream.akado.ru/playlist/radio.m3u?station=mohradio&stream=96",
-        "logo": "0415.jpg"
-    },
-    {
         "id": "416",
         "tags": [],
         "name": "Аюрведа Радио",
@@ -812,60 +567,11 @@ var stations = [
         "logo": "0416.jpg"
     },
     {
-        "id": "417",
-        "tags": [],
-        "name": "[DI.FM] Bassline",
-        "url": "http://pub1.diforfree.org:8000di_bassline_hi",
-        "logo": "0417.jpg"
-    },
-    {
-        "id": "418",
-        "tags": [],
-        "name": "Радио ВДВ",
-        "url": "http://vdvradio.hostingradio.ru:8001/vdvradio128.mp3",
-        "logo": "0418.jpg"
-    },
-    {
         "id": "419",
         "tags": [],
         "name": "Radio Italo4you",
         "url": "http://s6.radiohost.pl:8080/;",
         "logo": "0419.jpg"
-    },
-    {
-        "id": "420",
-        "tags": [],
-        "name": "XRadio",
-        "url": "http://xradio.su:8000/low.mp3",
-        "logo": "0420.jpg"
-    },
-    {
-        "id": "421",
-        "tags": [],
-        "name": "Harmony radio, Бельгия",
-        "url": "http://91.121.49.52:8000/harmonyradio.mp3",
-        "logo": "0421.jpg"
-    },
-    {
-        "id": "422",
-        "tags": [],
-        "name": "[101.RU] Alternative",
-        "url": "http://ic2.101.ru:8000/c18_9",
-        "logo": "0422.jpg"
-    },
-    {
-        "id": "423",
-        "tags": [],
-        "name": "Радио Гора Electro",
-        "url": "http://listen.radiogora.ru:10020/;stream/1",
-        "logo": "0423.jpg"
-    },
-    {
-        "id": "424",
-        "tags": [],
-        "name": "Радио День",
-        "url": "http://air.radioday.fm/128",
-        "logo": "0424.jpg"
     },
     {
         "id": "425",
@@ -882,32 +588,11 @@ var stations = [
         "logo": "0427.jpg"
     },
     {
-        "id": "428",
-        "tags": [],
-        "name": "Радио UMAX",
-        "url": "http://on5.radioumaxfm.com:8000/radioumax",
-        "logo": "0428.jpg"
-    },
-    {
         "id": "429",
         "tags": [],
         "name": "Хорошее ФМ",
         "url": "http://radio.horoshee.fm:8000/mp3",
         "logo": "0429.jpg"
-    },
-    {
-        "id": "430",
-        "tags": [],
-        "name": "Verdure Station",
-        "url": "http://95.211.217.163:8881/stream/192/",
-        "logo": "0430.jpg"
-    },
-    {
-        "id": "431",
-        "tags": [],
-        "name": "Казак ФМ, Краснодар",
-        "url": "http://193.242.149.55:8000/",
-        "logo": "0431.jpg"
     },
     {
         "id": "432",
@@ -938,32 +623,11 @@ var stations = [
         "logo": "0436.jpg"
     },
     {
-        "id": "441",
-        "tags": [],
-        "name": "ChroniX Grit",
-        "url": "http://radiostream.akado.ru/playlist/radio.m3u?station=chronixgrit&stream=128",
-        "logo": "0441.jpg"
-    },
-    {
-        "id": "442",
-        "tags": [],
-        "name": "Радио Gameplay 8 bit",
-        "url": "http://live26.kiwi.kz:8000/radiogameplay",
-        "logo": "0442.jpg"
-    },
-    {
         "id": "443",
         "tags": [],
         "name": "Гоп ФМ",
         "url": "http://online.radiorecord.ru:8102/gop_128",
         "logo": "0443.jpg"
-    },
-    {
-        "id": "444",
-        "tags": [],
-        "name": "Ah.FM",
-        "url": "http://www.ah.fm/192k.m3u",
-        "logo": "0444.jpg"
     },
     {
         "id": "445",
@@ -974,21 +638,14 @@ var stations = [
     },
     {
         "id": "446",
-        "tags": [],
+        "tags": ["trance"],
         "name": "Amsterdam Trance Radio",
         "url": "http://sc-atr.1.fm:7700/;",
         "logo": "0446.jpg"
     },
     {
-        "id": "447",
-        "tags": [],
-        "name": "[DI.FM] Hard Techno",
-        "url": "http://pub1.diforfree.org:8000/di_hardtechno_hi",
-        "logo": "0447.jpg"
-    },
-    {
         "id": "448",
-        "tags": [],
+        "tags": ["drum"],
         "name": "Drums.ro Радио",
         "url": "http://radio.drums.ro:8000/;",
         "logo": "0448.jpg"
@@ -1001,62 +658,6 @@ var stations = [
         "logo": "0449.jpg"
     },
     {
-        "id": "450",
-        "tags": [],
-        "name": "[SKY.FM] Cafe de Paris",
-        "url": "http://pub1.diforfree.org:8000/radiotunes_cafedeparis_hi",
-        "logo": "0450.jpg"
-    },
-    {
-        "id": "451",
-        "tags": [],
-        "name": "[SKY.FM] Mellow Jazz",
-        "url": "http://pub1.diforfree.org:8000/radiotunes_mellowjazz_hi",
-        "logo": "0451.jpg"
-    },
-    {
-        "id": "452",
-        "tags": [],
-        "name": "NU",
-        "url": "http://radio.promodeejay.net:8000/nu",
-        "logo": "0452.jpg"
-    },
-    {
-        "id": "453",
-        "tags": [],
-        "name": "[SKY.FM] Best of the 60s",
-        "url": "http://pub1.diforfree.org:8000/radiotunes_hit60s_hi",
-        "logo": "0453.jpg"
-    },
-    {
-        "id": "454",
-        "tags": [],
-        "name": "[SKY.FM] Israeli Hits",
-        "url": "http://pub1.diforfree.org:8000/radiotunes_israelihits_hi",
-        "logo": "0454.jpg"
-    },
-    {
-        "id": "455",
-        "tags": [],
-        "name": "[DI.FM] Oldschool House",
-        "url": "http://pub1.diforfree.org:8000di_oldschoolhouse_hi",
-        "logo": "0455.jpg"
-    },
-    {
-        "id": "456",
-        "tags": [],
-        "name": "Радио VBC (Владивосток 101,7 FM)",
-        "url": "http://air.radiovbc.ru:8000/Radio32",
-        "logo": "0456.jpg"
-    },
-    {
-        "id": "457",
-        "tags": [],
-        "name": "[SKY.FM] 90's RnB",
-        "url": "http://pub1.radiotunes.com:80/radiotunes_90srnb_hi",
-        "logo": "0457.jpg"
-    },
-    {
         "id": "458",
         "tags": [],
         "name": "Литературное радио",
@@ -1064,46 +665,11 @@ var stations = [
         "logo": "0458.jpg"
     },
     {
-        "id": "459",
-        "tags": [],
-        "name": "Радио Индиго",
-        "url": "http://stream0.radiostyle.ru:8000/indigo128.m3u",
-        "logo": "0459.jpg"
-    },
-    {
         "id": "460",
         "tags": [],
         "name": "Радио ЧипльДук",
         "url": "http://radio.4duk.ru/4duk64.mp3",
         "logo": "0460.jpg"
-    },
-    {
-        "id": "461",
-        "tags": [],
-        "name": "Red-Radio [Station]",
-        "url": "http://stream.red-radio.ru:8080/red-radio96",
-        "logo": "0461.jpg"
-    },
-    {
-        "id": "462",
-        "tags": [],
-        "name": "Липецк ФМ",
-        "url": "http://media.lipetsk.ru:9009/r_lt.mp3.m3u",
-        "logo": "0462.jpg"
-    },
-    {
-        "id": "463",
-        "tags": [],
-        "name": "Первое железнодорожное радио",
-        "url": "http://s07.radio-tochka.com:6240/;",
-        "logo": "0463.jpg"
-    },
-    {
-        "id": "464",
-        "tags": [],
-        "name": "Казантип FM",
-        "url": "http://radio.kazantip-fm.ru:8000/mp396",
-        "logo": "0464.jpg"
     },
     {
         "id": "465",
@@ -1127,109 +693,25 @@ var stations = [
         "logo": "0467.jpg"
     },
     {
-        "id": "468",
-        "tags": [],
-        "name": "Радио Shizoid Chillout",
-        "url": "http://88.198.48.36:8000/chill",
-        "logo": "0468.jpg"
-    },
-    {
         "id": "469",
-        "tags": [],
+        "tags": ["bike"],
         "name": "Biker-FM",
         "url": "http://stream1.radiostyle.ru:8001/biker-fm",
         "logo": "0469.jpg"
     },
     {
-        "id": "470",
-        "tags": [],
-        "name": "Mostly Classical",
-        "url": "http://pub1.diforfree.org:8000/radiotunes_classical_hi",
-        "logo": "0470.jpg"
-    },
-    {
         "id": "471",
-        "tags": [],
+        "tags": ["ru"],
         "name": "[101.RU] Варшавский Договор",
         "url": "http://ic2.101.ru:8000/c7_25",
         "logo": "0471.jpg"
     },
     {
-        "id": "472",
-        "tags": [],
-        "name": "Приморское радио",
-        "url": "http://mp3.ptr-vlad.ru:8000/Radio96",
-        "logo": "0472.jpg"
-    },
-    {
-        "id": "473",
-        "tags": [],
-        "name": "Live Ireland",
-        "url": "http://66.90.73.250:8080/;",
-        "logo": "0473.jpg"
-    },
-    {
-        "id": "474",
-        "tags": [],
-        "name": "[DI.FM] Oldschool Rave",
-        "url": "http://pub1.diforfree.org:8000di_oldschoolrave_hi",
-        "logo": "0474.jpg"
-    },
-    {
-        "id": "475",
-        "tags": [],
-        "name": "Groove",
-        "url": "http://grooving.me/tunein_ch1.m3u",
-        "logo": "0475.jpg"
-    },
-    {
-        "id": "476",
-        "tags": [],
-        "name": "Under Groove",
-        "url": "http://grooving.me/tunein_ch2.m3u",
-        "logo": "0476.jpg"
-    },
-    {
-        "id": "477",
-        "tags": [],
-        "name": "Радио СК",
-        "url": "http://online.radiosk.ru:8000/sk_aacplus",
-        "logo": "0477.jpg"
-    },
-    {
         "id": "478",
-        "tags": [],
+        "tags": ["ru"],
         "name": "Пилот ФМ",
         "url": "http://online.pilotfm.ru:8000/pilot",
         "logo": "0478.jpg"
-    },
-    {
-        "id": "479",
-        "tags": [],
-        "name": "Фанк ФМ",
-        "url": "http://live.fankfm.ru:8000/FankFm",
-        "logo": "0479.jpg"
-    },
-    {
-        "id": "480",
-        "tags": [],
-        "name": "Фонтанка ФМ",
-        "url": "http://bcs1.fontanka.fm:8000/stream.mp3",
-        "logo": "0480.jpg"
-    },
-    {
-        "id": "481",
-        "tags": [],
-        "name": "Радио Сафинат",
-        "url": "http://stream2.radiostyle.ru:8002/safinat?65",
-        "logo": "0481.jpg"
-    },
-    {
-        "id": "482",
-        "tags": [],
-        "name": "Радио Югра",
-        "url": "http://82.116.29.165:8000/;",
-        "logo": "0482.jpg"
     },
     {
         "id": "483",
@@ -1239,13 +721,6 @@ var stations = [
         "logo": "0483.jpg"
     },
     {
-        "id": "484",
-        "tags": [],
-        "name": "Радио Трек",
-        "url": "http://radiotrek.rv.ua:8010/online",
-        "logo": "0484.jpg"
-    },
-    {
         "id": "485",
         "tags": [],
         "name": "Волшебный шансон ",
@@ -1253,116 +728,11 @@ var stations = [
         "logo": "0485.jpg"
     },
     {
-        "id": "486",
-        "tags": [],
-        "name": "Comfort FM",
-        "url": "http://comfortfm.ru:8000/live_112",
-        "logo": "0486.jpg"
-    },
-    {
-        "id": "487",
-        "tags": [],
-        "name": "Львівська Хвиля",
-        "url": "http://ua.uar.net:8000/lwr.m3u",
-        "logo": "0487.jpg"
-    },
-    {
-        "id": "488",
-        "tags": [],
-        "name": "Tech Groove",
-        "url": "http://grooving.me/tunein_ch3.m3u",
-        "logo": "0488.jpg"
-    },
-    {
-        "id": "489",
-        "tags": [],
-        "name": "Фолк Радио Эльф",
-        "url": "http://folkradio.ru/folkradio.asx",
-        "logo": "0489.jpg"
-    },
-    {
-        "id": "490",
-        "tags": [],
-        "name": "Hot 108 Jamz",
-        "url": "http://www.hot108.com/hot108.asx",
-        "logo": "0490.jpg"
-    },
-    {
-        "id": "491",
-        "tags": [],
-        "name": "Channel N5",
-        "url": "http://radio.promodeejay.net:8000/channel5",
-        "logo": "0491.jpg"
-    },
-    {
-        "id": "492",
-        "tags": [],
-        "name": "Full Moon Channel",
-        "url": "http://radio.promodeejay.net:8000/fullmoon",
-        "logo": "0492.jpg"
-    },
-    {
-        "id": "493",
-        "tags": [],
-        "name": "Deep Channel",
-        "url": "http://radio.promodeejay.net:8000/deep",
-        "logo": "0493.jpg"
-    },
-    {
-        "id": "494",
-        "tags": [],
-        "name": "300 km/h Channel",
-        "url": "http://radio.promodeejay.net:8000/300kmh",
-        "logo": "0494.jpg"
-    },
-    {
-        "id": "495",
-        "tags": [],
-        "name": "Mini Channel",
-        "url": "http://radio.promodeejay.net:8000/mini",
-        "logo": "0495.jpg"
-    },
-    {
-        "id": "496",
-        "tags": [],
-        "name": "Old School Channel",
-        "url": "http://radio.promodeejay.net:8000/oldschool",
-        "logo": "0496.jpg"
-    },
-    {
-        "id": "497",
-        "tags": [],
-        "name": "Brainfck Channel",
-        "url": "http://radio.promodeejay.net:8000/brainfck",
-        "logo": "0497.jpg"
-    },
-    {
-        "id": "498",
-        "tags": [],
-        "name": "Vata Channel",
-        "url": "http://radio.promodeejay.net:8000/vata",
-        "logo": "0498.jpg"
-    },
-    {
-        "id": "499",
-        "tags": [],
-        "name": "Strange Channel",
-        "url": "http://radio.promodeejay.net:8000/strange",
-        "logo": "0499.jpg"
-    },
-    {
         "id": "500",
         "tags": [],
         "name": "Радио BellyUp4blues",
         "url": "http://72.13.82.82:5100/;",
         "logo": "0500.jpg"
-    },
-    {
-        "id": "501",
-        "tags": [],
-        "name": "Garage FM",
-        "url": "http://radio.promodeejay.net:8000/garagefm",
-        "logo": "0501.jpg"
     },
     {
         "id": "502",
@@ -1379,88 +749,11 @@ var stations = [
         "logo": "0503.jpg"
     },
     {
-        "id": "504",
-        "tags": [],
-        "name": "[DI.FM] Electronic Pioneers",
-        "url": "http://pub1.diforfree.org:8000/di_electronicpioneers_hi",
-        "logo": "0504.jpg"
-    },
-    {
-        "id": "505",
-        "tags": [],
-        "name": "Радио FreshClub",
-        "url": "http://freshclub.net/Radio_freshclub.m3u",
-        "logo": "0505.jpg"
-    },
-    {
-        "id": "506",
-        "tags": [],
-        "name": "Радио Образ",
-        "url": "http://93.95.99.202:8000/;",
-        "logo": "0506.jpg"
-    },
-    {
         "id": "507",
-        "tags": [],
+        "tags": ["classic"],
         "name": "Venice Classic Radio",
         "url": "http://174.36.206.197:8000/;",
         "logo": "0507.jpg"
-    },
-    {
-        "id": "508",
-        "tags": [],
-        "name": "Первое Радио, Кубань",
-        "url": "http://217.19.105.43:8000",
-        "logo": "0508.jpg"
-    },
-    {
-        "id": "509",
-        "tags": [],
-        "name": "GTI Radio",
-        "url": "http://radio.globaltranceinvasion.com:8000/radiomid.m3u",
-        "logo": "0509.jpg"
-    },
-    {
-        "id": "510",
-        "tags": [],
-        "name": "Спутник ФМ",
-        "url": "http://stream.tv-rb.ru/sputnik",
-        "logo": "0510.jpg"
-    },
-    {
-        "id": "511",
-        "tags": [],
-        "name": "Радио Прямой наводкой",
-        "url": "http://sv.wargaming.fm:8050/1",
-        "logo": "0511.jpg"
-    },
-    {
-        "id": "512",
-        "tags": [],
-        "name": "Народная Волна, Екатеринбург",
-        "url": "http://www.intervolna.com:8000/rnv",
-        "logo": "0512.jpg"
-    },
-    {
-        "id": "513",
-        "tags": [],
-        "name": "Радиоточка Монреаль",
-        "url": "http://174.142.248.152:8001/rtochka64.aac",
-        "logo": "0513.jpg"
-    },
-    {
-        "id": "514",
-        "tags": [],
-        "name": "Радио Paradise, Калифорния",
-        "url": "http://www.radioparadise.com/musiclinks/rp_128.m3u",
-        "logo": "0514.jpg"
-    },
-    {
-        "id": "515",
-        "tags": [],
-        "name": "Live FM, Бердичев",
-        "url": "http://livefm.no-ip.org:8880/livefm_128.m3u",
-        "logo": "0515.jpg"
     },
     {
         "id": "516",
@@ -1468,27 +761,6 @@ var stations = [
         "name": "Радио Моя Удмуртия",
         "url": "http://radio.myudm.ru:10010/mp3",
         "logo": "0516.jpg"
-    },
-    {
-        "id": "517",
-        "tags": [],
-        "name": "Psychic Radio Station",
-        "url": "http://psyradio.com.ua/PsyRadio_128kbps.m3u",
-        "logo": "0517.jpg"
-    },
-    {
-        "id": "518",
-        "tags": [],
-        "name": "Радио Бит, Брянск",
-        "url": "http://62.122.188.105/;srream.nsv",
-        "logo": "0518.jpg"
-    },
-    {
-        "id": "519",
-        "tags": [],
-        "name": "SKY Радио, Эстония",
-        "url": "http://streamer.akaver.com/streamgen.php?stream=skyradio&format=mp3&quality=hi",
-        "logo": "0519.jpg"
     },
     {
         "id": "520",

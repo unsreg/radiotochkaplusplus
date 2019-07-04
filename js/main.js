@@ -24,15 +24,6 @@ function init() {
     allStations.forEach(station => {
         bootstrapElements += createStationElement(station);
         stationCount++;
-//        $.get(station.url, function () {
-////            alert("success");
-//            bootstrapElements += createStationElement(station);
-//            stationCount++;
-//        }).done(function () {
-//            alert("second success");
-//        }).fail(function () {
-//            //alert("error");
-//        });
     });
     $("#current_station_name").text(stationCount);
     stationContainer.innerHTML += bootstrapElements;
