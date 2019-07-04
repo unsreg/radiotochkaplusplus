@@ -6,40 +6,10 @@ var stations = [
         "logo": "0001.jpg"
     },
     {
-        "number": "2",
-        "name": "Восток FM",
-        "url": "http://vostokfm.hostingradio.ru:8028/vostokfm128.mp3",
-        "logo": "0002.jpg"
-    },
-    {
-        "number": "3",
-        "name": "Радио Орфей",
-        "url": "http://icecast.orpheus.cdnvideo.ru/orpheus_128",
-        "logo": "0003.jpg"
-    },
-    {
         "number": "4",
         "name": "Ретро FM ",
         "url": "http://retroserver.streamr.ru:8043/retro128",
         "logo": "0004.jpg"
-    },
-    {
-        "number": "5",
-        "name": "LIFE",
-        "url": "https://audio.life.ru/life.mp3",
-        "logo": "0005.jpg"
-    },
-    {
-        "number": "6",
-        "name": "Серебряный дождь ",
-        "url": "http://radiosilver.corbina.net:8000/silver128b.mp3",
-        "logo": "0006.jpg"
-    },
-    {
-        "number": "7",
-        "name": "DFM",
-        "url": "http://icecast.radiodfm.cdnvideo.ru/dfm.mp3",
-        "logo": "0007.jpg"
     },
     {
         "number": "8",
@@ -48,28 +18,10 @@ var stations = [
         "logo": "0008.jpg"
     },
     {
-        "number": "9",
-        "name": "Русское Радио ",
-        "url": "http://icecast.russkoeradio.cdnvideo.ru/rr.mp3",
-        "logo": "0009.jpg"
-    },
-    {
-        "number": "10",
-        "name": "Голос России",
-        "url": "http://audio1.video.ria.ru/voicerus",
-        "logo": "0010.jpg"
-    },
-    {
         "number": "11",
         "name": "Авторадио ",
         "url": "http://ic7.101.ru:8000/v3_1",
         "logo": "0011.jpg"
-    },
-    {
-        "number": "12",
-        "name": "Love Radio",
-        "url": "http://net37.ru:8000/love_radio.aac",
-        "logo": "0012.jpg"
     },
     {
         "number": "13",
@@ -82,12 +34,6 @@ var stations = [
         "name": "RADIO RECORD",
         "url": "http://online.radiorecord.ru:8101/rr_128",
         "logo": "0014.jpg"
-    },
-    {
-        "number": "15",
-        "name": "Радио Гардарика",
-        "url": "http://metroclub.ru:8260/;",
-        "logo": "0015.jpg"
     },
     {
         "number": "16",
@@ -114,22 +60,10 @@ var stations = [
         "logo": "0019.jpg"
     },
     {
-        "number": "20",
-        "name": "Радио Максимум",
-        "url": "http://icecast.radiomaximum.cdnvideo.ru/maximum.mp3",
-        "logo": "0020.jpg"
-    },
-    {
         "number": "21",
         "name": "Юмор ФМ",
         "url": "http://ic2.101.ru:8000/v5_1",
         "logo": "0021.jpg"
-    },
-    {
-        "number": "22",
-        "name": "Мегаполис FM",
-        "url": "http://stream04.media.rambler.ru/megapolis128.mp3",
-        "logo": "0022.jpg"
     },
     {
         "number": "23",
@@ -156,40 +90,16 @@ var stations = [
         "logo": "0026.jpg"
     },
     {
-        "number": "27",
-        "name": "СПОРТ FM 93.2 ",
-        "url": "http://sportfm.hostingradio.ru:8050/sportfm32.mp3",
-        "logo": "0027.jpg"
-    },
-    {
         "number": "28",
         "name": "СИТИ-FM",
         "url": "http://ic2.101.ru:8000/v12_1",
         "logo": "0028.jpg"
     },
     {
-        "number": "29",
-        "name": "Милицейская Волна",
-        "url": "http://radio.mvd.ru:8000/mv128.mp3",
-        "logo": "0029.jpg"
-    },
-    {
-        "number": "30",
-        "name": "Радио ЗВЕЗДА",
-        "url": "http://stream.radiozvezda.ru:8088/zvezda_128",
-        "logo": "0030.jpg"
-    },
-    {
         "number": "31",
         "name": "Релакс ФМ",
         "url": "http://ic2.101.ru:8000/v13_1",
         "logo": "0031.jpg"
-    },
-    {
-        "number": "32",
-        "name": "Радио 7",
-        "url": "http://radio7128.streamr.ru/",
-        "logo": "0032.jpg"
     },
     {
         "number": "33",
@@ -202,24 +112,6 @@ var stations = [
         "name": "Детское Радио",
         "url": "http://ic3.101.ru:8000/v14_1",
         "logo": "0034.jpg"
-    },
-    {
-        "number": "35",
-        "name": "[SKY.FM] Mellow Smooth Jazz",
-        "url": "http://pub8.radiotunes.com/radiotunes_mellowjazz_aacplus?type=.flv",
-        "logo": "0035.jpg"
-    },
-    {
-        "number": "36",
-        "name": "Радио Алла",
-        "url": "http://air-online2.hitfm.md/radioalla.mp3",
-        "logo": "0036.jpg"
-    },
-    {
-        "number": "37",
-        "name": "Радио Classic ",
-        "url": "http://cfm.jazzandclassic.ru:14534/rcstream.mp3",
-        "logo": "0037.jpg"
     },
     {
         "number": "38",
@@ -250,18 +142,6 @@ var stations = [
         "name": "Вести ФМ",
         "url": "http://icecast.vgtrk.cdnvideo.ru/vestifm_mp3_192kbps",
         "logo": "0042.jpg"
-    },
-    {
-        "number": "43",
-        "name": "Эхо Москвы ",
-        "url": "http://81.19.85.197/echo.mp3",
-        "logo": "0043.jpg"
-    },
-    {
-        "number": "44",
-        "name": "Радио Свобода",
-        "url": "http://rfe-channel-04.akacast.akamaistream.net/7/885/229654/v1/ibb.akacast.akamaistream.net/rfe_channel_04.mp3",
-        "logo": "0044.jpg"
     },
     {
         "number": "45",

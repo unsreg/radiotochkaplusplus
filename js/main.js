@@ -18,10 +18,23 @@ function init() {
         radio.stationError();
     });
     const stationContainer = document.getElementById('station_container');
+    let stationCount = 0;
     let bootstrapElements = "";
+
     allStations.forEach(station => {
         bootstrapElements += createStationElement(station);
+        stationCount++;
+//        $.get(station.url, function () {
+////            alert("success");
+//            bootstrapElements += createStationElement(station);
+//            stationCount++;
+//        }).done(function () {
+//            alert("second success");
+//        }).fail(function () {
+//            //alert("error");
+//        });
     });
+    $("#current_station_name").text(stationCount);
     stationContainer.innerHTML += bootstrapElements;
 
     radio = new Radio(allStations);
@@ -44,6 +57,9 @@ function createStationElement(station) {
 
 function Radio(stations) {
     const audioPlayer = document.getElementById("audio_player");
+    audioPlayer.onerror = function () {
+        radio.stationError();
+    };
     const radioStations = stations;
     const activeColor = "aquamarine";
     const inactiveColor = "honeydew";

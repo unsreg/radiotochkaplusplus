@@ -25,5 +25,12 @@
     font-size: xx-large;
 }
 #audio_player_container {
-    display: none;
+    /*display: none;*/
+}
+#audio_player {
+    /*display: none;*/   
+}
+#audio_player_status {
+    display: inline-block;
+    vertical-align: middle;
 }
