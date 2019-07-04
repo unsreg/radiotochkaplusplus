@@ -33,14 +33,15 @@ function init() {
 ;
 
 function createStationElement(station) {
+    const stationElementId = "station_element_id_" + station.id;
     const result = '' +
-            '<div class="station" id="' + "station_element_id_" + station.id + '">' +
-            '<img class="card-img-top station_image" src="img/stations/' + station.logo + ' ' + '"alt="' + station.name + '">' +
+            '<div tabIndex="0" class="station" id="' + stationElementId + '" onclick="radio.play(' + station.id + ');">' +
+            '<img class="station_image" src="img/stations/' + station.logo + ' ' + '"alt="' + station.name + '">' +
             '<div class="">' +
             '<h5 class="card-title">' + station.name + '</h5>' +
             '<p class="card-text">' + station.id + '</p>' +
             '</div>' +
-            '<button type="button" class="btn station_play_button" onclick="radio.play(' + station.id + ');">' + buttons.play + '</button>' +
+            //'<button type="button" class="btn station_play_button" ' + buttons.play + '</button>' +
             '</div>';
     return result;
 }
@@ -71,17 +72,17 @@ function Radio(stations) {
         }
     };
 
-    this.play = function (stationNumber) {
+    this.play = function (stationId) {
         const newStation = radioStations.find(station => {
-            return station.id === stationNumber.toString();
+            return station.id === stationId.toString();
         });
         if (!newStation) {
-            throw "Station " + stationNumber + " is not found";
+            throw "Station " + stationId + " is not found";
         }
 
         if (this.currentStation) {
             // same station
-            if (this.currentStation.id === stationNumber.toString()) {
+            if (this.currentStation.id === stationId.toString()) {
                 if (audioPlayer.paused) {
                     audioPlayer.play();
                     $("#station_element_id_" + this.currentStation.id + " > button").text(buttons.stop);

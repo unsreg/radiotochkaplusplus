@@ -4,16 +4,14 @@
     text-align: center;
 }
 .station {
-    margin: 2px;
-    padding-top: 15px;
-    text-align: center;
+    cursor: pointer;
+    margin: 5px;
+    padding: 15px;
     width: 350px;
-    height: 250px;
     display: inline-block;
     border-color: rgba(240, 240, 240, 1);
-    border-style: solid;
+    border-style: dashed;
     border-radius: 15px;
-    box-sizing: border-box;
     background-color: honeydew;
 }
 .station_image {
@@ -21,14 +19,12 @@
     border-radius: 30%;
 }
 .station_play_button {
-    /*font-family: initial;*/
     font-size: xx-large;
 }
 #audio_player_container {
-    /*display: none;*/
 }
 #audio_player {
-    /*display: none;*/   
+    display: none;   
 }
 #audio_player_status {
     display: inline-block;
