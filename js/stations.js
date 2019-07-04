@@ -875,13 +875,6 @@ var stations = [
         "logo": "0425.jpg"
     },
     {
-        "id": "426",
-        "tags": ["rock"],
-        "name": "[SKY.FM] Indie Rock",
-        "url": "http://pub1.diforfree.org:8000/radiotunes_indierock_hi",
-        "logo": "0426.jpg"
-    },
-    {
         "id": "427",
         "tags": [],
         "name": "Радио Динамо, Киев",
@@ -922,13 +915,6 @@ var stations = [
         "name": "Радио MakkiRUS Light",
         "url": "http://stream.makradio.ru:80/light128.mp3",
         "logo": "0432.jpg"
-    },
-    {
-        "id": "433",
-        "tags": [],
-        "name": "Мега Радио",
-        "url": "http://megaradio.pro/SP/megaradio.m3u",
-        "logo": "0433.jpg"
     },
     {
         "id": "434",
@@ -1561,13 +1547,6 @@ var stations = [
         "logo": "0527.jpg"
     },
     {
-        "id": "528",
-        "tags": ["rock"],
-        "name": "Rock FM 95,2",
-        "url": "http://mp3.nashe.ru/rock-128.mp3",
-        "logo": "0528.jpg"
-    },
-    {
         "id": "529",
         "tags": [],
         "name": "Радио Мелодия",
@@ -1650,20 +1629,6 @@ var stations = [
         "name": "Зайцев ФМ RNB",
         "url": "http://www.zaycev.fm:9002/rnb/ZaycevFM(128)",
         "logo": "0540.jpg"
-    },
-    {
-        "id": "541",
-        "tags": ["rock"],
-        "name": "Rock Funk Радио, Пенза",
-        "url": "http://listen.rockfunk.ru:8007/listen",
-        "logo": "0541.jpg"
-    },
-    {
-        "id": "542",
-        "tags": ["rock"],
-        "name": "Радио Rock Online",
-        "url": "http://radio-tochka.com/radio/scasochnik/128/listen.asx",
-        "logo": "0542.jpg"
     },
     {
         "id": "543",
