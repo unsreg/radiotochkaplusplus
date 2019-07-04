@@ -43,13 +43,13 @@ function init() {
 
 function createStationElement(station) {
     const result = '' +
-            '<div class="station" id="' + "station_element_id_" + station.number + '">' +
+            '<div class="station" id="' + "station_element_id_" + station.id + '">' +
             '<img class="card-img-top station_image" src="img/stations/' + station.logo + ' ' + '"alt="' + station.name + '">' +
             '<div class="">' +
             '<h5 class="card-title">' + station.name + '</h5>' +
-            '<p class="card-text">' + station.number + '</p>' +
+            '<p class="card-text">' + station.id + '</p>' +
             '</div>' +
-            '<button type="button" class="btn station_play_button" onclick="radio.play(' + station.number + ');">' + buttons.play + '</button>' +
+            '<button type="button" class="btn station_play_button" onclick="radio.play(' + station.id + ');">' + buttons.play + '</button>' +
             '</div>';
     return result;
 }
@@ -67,22 +67,22 @@ function Radio(stations) {
     this.currentStation = null;
 
     this.stationError = function () {
-        $("#station_element_id_" + this.currentStation.number + " > button").text(buttons.play);
-        $("#station_element_id_" + this.currentStation.number).css("background-color", "#f00");
+        $("#station_element_id_" + this.currentStation.id + " > button").text(buttons.play);
+        $("#station_element_id_" + this.currentStation.id).css("background-color", "#f00");
         this.currentStation = null;
     };
 
     this.stop = function () {
         if (this.currentStation) {
-            $("#station_element_id_" + this.currentStation.number + " > button").text(buttons.play);
-            $("#station_element_id_" + this.currentStation.number).css("background-color", inactiveColor);
+            $("#station_element_id_" + this.currentStation.id + " > button").text(buttons.play);
+            $("#station_element_id_" + this.currentStation.id).css("background-color", inactiveColor);
             this.currentStation = null;
         }
     };
 
     this.play = function (stationNumber) {
         const newStation = radioStations.find(station => {
-            return station.number === stationNumber.toString();
+            return station.id === stationNumber.toString();
         });
         if (!newStation) {
             throw "Station " + stationNumber + " is not found";
@@ -90,27 +90,27 @@ function Radio(stations) {
 
         if (this.currentStation) {
             // same station
-            if (this.currentStation.number === stationNumber.toString()) {
+            if (this.currentStation.id === stationNumber.toString()) {
                 if (audioPlayer.paused) {
                     audioPlayer.play();
-                    $("#station_element_id_" + this.currentStation.number + " > button").text(buttons.stop);
-                    $("#station_element_id_" + this.currentStation.number).css("background-color", activeColor);
+                    $("#station_element_id_" + this.currentStation.id + " > button").text(buttons.stop);
+                    $("#station_element_id_" + this.currentStation.id).css("background-color", activeColor);
                 } else {
                     audioPlayer.pause();
-                    $("#station_element_id_" + this.currentStation.number + " > button").text(buttons.play);
-                    $("#station_element_id_" + this.currentStation.number).css("background-color", inactiveColor);
+                    $("#station_element_id_" + this.currentStation.id + " > button").text(buttons.play);
+                    $("#station_element_id_" + this.currentStation.id).css("background-color", inactiveColor);
                 }
             } else {
-                $("#station_element_id_" + this.currentStation.number + " > button").text(buttons.play);
-                $("#station_element_id_" + this.currentStation.number).css("background-color", inactiveColor);
+                $("#station_element_id_" + this.currentStation.id + " > button").text(buttons.play);
+                $("#station_element_id_" + this.currentStation.id).css("background-color", inactiveColor);
 
                 this.currentStation = newStation;
 
                 audioPlayer.src = this.currentStation.url;
                 audioPlayer.play();
 
-                $("#station_element_id_" + this.currentStation.number + " > button").text(buttons.stop);
-                $("#station_element_id_" + this.currentStation.number).css("background-color", activeColor);
+                $("#station_element_id_" + this.currentStation.id + " > button").text(buttons.stop);
+                $("#station_element_id_" + this.currentStation.id).css("background-color", activeColor);
             }
         } else {
             this.currentStation = newStation;
@@ -118,8 +118,8 @@ function Radio(stations) {
             audioPlayer.src = this.currentStation.url;
             audioPlayer.play();
 
-            $("#station_element_id_" + this.currentStation.number + " > button").text(buttons.stop);
-            $("#station_element_id_" + this.currentStation.number).css("background-color", activeColor);
+            $("#station_element_id_" + this.currentStation.id + " > button").text(buttons.stop);
+            $("#station_element_id_" + this.currentStation.id).css("background-color", activeColor);
         }
     };
 }
