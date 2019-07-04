@@ -1,3 +1,29 @@
+#container {
+}
+#station_container {
+    text-align: center;
+}
 .station {
-    padding: 15px;
+    margin: 2px;
+    padding-top: 15px;
+    text-align: center;
+    width: 350px;
+    height: 250px;
+    display: inline-block;
+    border-color: rgba(240, 240, 240, 1);
+    border-style: solid;
+    border-radius: 15px;
+    box-sizing: border-box;
+    background-color: honeydew;
+}
+.station_image {
+    width: 82px;
+    border-radius: 30%;
+}
+.station_play_button {
+    /*font-family: initial;*/
+    font-size: xx-large;
+}
+#audio_player_container {
+    display: none;
 }

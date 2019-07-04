@@ -1,54 +1,102 @@
-const btnSmblStart = "▶";
-const btnSmblStartPause = "⏯";
-const btnSmblStop = "⏹";
-const btnSmblPause = "⏸";
-const btnSmblPrev = "⏮";
-const btnSmblNext = "⏭";
+/* global stations */
 
-var allStations;
-if (stations) {
-    allStations = stations;
-} else {
-    allStations = [];
-}
+const allStations = stations ? stations : [];
 
-const currentRadioState = {
-    "currentRadioStation": null
+const buttons = {
+    play: "▶",
+    playPause: "⏯",
+    stop: "⏹",
+    pause: "⏸",
+    prev: "⏮",
+    next: "⏭"
 };
 
-function init() {
-    let stationContainer = document.getElementById('station_container');
-    let bootstrapElements = '<div class="row">';
-    allStations.forEach(station => {
-        let bootstrapElement = '' +
-                '<div class="col station" style="text-align: center;">' +
-                '<img class="card-img-top" style="width: 82px;" src="img/stations/' + station.logo + ' ' + '"alt="' + station.name + '">' +
-                '<div class="span3">' +
-                '<h5 class="card-title">' + station.name + '</h5>' +
-                '<p class="card-text">' + station.number + '</p>' +
-                '<button type="button" class="btn btn-dark" style="font-family: initial;" onclick="play(' + station.number + ');">' + btnSmblStart + '</button>' +
-                '</div>' +
-                '</div>';
-        bootstrapElements += bootstrapElement;
-    });
-    bootstrapElements += '</div>';
-    stationContainer.innerHTML += bootstrapElements;
-}
+let radio = null;
 
-function play(stationNumber) {
-    try {
-        let station = allStations.find(station => {
+function init() {
+    window.addEventListener("unhandledrejection", promiseRejectionEvent => {
+        alert(promiseRejectionEvent);
+    });
+    const stationContainer = document.getElementById('station_container');
+    let bootstrapElements = "";
+    allStations.forEach(station => {
+        bootstrapElements += createStationElement(station);
+    });
+    stationContainer.innerHTML += bootstrapElements;
+
+    radio = new Radio(allStations);
+}
+;
+
+function createStationElement(station) {
+    const result = '' +
+            '<div class="station" id="' + "station_element_id_" + station.number + '">' +
+            '<img class="card-img-top station_image" src="img/stations/' + station.logo + ' ' + '"alt="' + station.name + '">' +
+            '<div class="">' +
+            '<h5 class="card-title">' + station.name + '</h5>' +
+            '<p class="card-text">' + station.number + '</p>' +
+            '</div>' +
+            '<button type="button" class="btn station_play_button" onclick="radio.play(' + station.number + ');">' + buttons.play + '</button>' +
+            '</div>';
+    return result;
+}
+;
+
+function Radio(stations) {
+    const audioPlayer = document.getElementById("audio_player");
+    const radioStations = stations;
+    const activeColor = "aquamarine";
+    const inactiveColor = "honeydew";
+
+    this.currentStation = null;
+    this.previousStation = null;
+
+    this.currentStationElement = null;
+    this.previousStationElement = null;
+
+    this.play = function (stationNumber) {
+        const newStation = radioStations.find(station => {
             return station.number === stationNumber.toString();
         });
-        if (currentRadioState.currentRadioStation === null) {
-            currentRadioState.currentRadioStation = station;
-        } else {
-
+        if (!newStation) {
+            throw "Station " + stationNumber + " is not found";
         }
-        let audioPlayer = document.getElementById("audio_player");
-        audioPlayer.src = currentRadioState.currentRadioStation.url;
-        audioPlayer.play();
-    } catch (exception) {
-        alert("Failed to start stream\n" + exception);
-    }
+
+        if (this.currentStation) {
+            // same station
+            if (this.currentStation.number === stationNumber.toString()) {
+                if (audioPlayer.paused) {
+                    audioPlayer.play();
+                    $("#station_element_id_" + this.currentStation.number + " > button").text(buttons.stop);
+                    $("#station_element_id_" + this.currentStation.number).css("background-color", activeColor);
+                } else {
+                    audioPlayer.pause();
+                    $("#station_element_id_" + this.currentStation.number + " > button").text(buttons.play);
+                    $("#station_element_id_" + this.currentStation.number).css("background-color", inactiveColor);
+                }
+            } else {
+                $("#station_element_id_" + this.currentStation.number + " > button").text(buttons.play);
+                $("#station_element_id_" + this.currentStation.number).css("background-color", inactiveColor);
+
+                this.previousStation = this.currentStation;
+                this.currentStation = newStation;
+
+                audioPlayer.src = this.currentStation.url;
+                audioPlayer.play();
+
+                $("#station_element_id_" + this.currentStation.number + " > button").text(buttons.stop);
+                $("#station_element_id_" + this.currentStation.number).css("background-color", activeColor);
+            }
+        } else {
+            this.previousStation = this.currentStation;
+            this.currentStation = newStation;
+
+            audioPlayer.src = this.currentStation.url;
+            audioPlayer.play();
+
+            $("#station_element_id_" + this.currentStation.number + " > button").text(buttons.stop);
+            $("#station_element_id_" + this.currentStation.number).css("background-color", activeColor);
+        }
+    };
 }
+;
