@@ -8,28 +8,28 @@ var stations = [
     },
     {
         "id": "4",
-        "tags": ["retro"],
+        "tags": ["retro", "relax", "ru"],
         "name": "Ретро FM ",
         "url": "http://retroserver.streamr.ru:8043/retro128",
         "logo": "0004.jpg"
     },
     {
         "id": "8",
-        "tags": [],
+        "tags": ["ru"],
         "name": "Радио Маяк ",
         "url": "http://icecast.vgtrk.cdnvideo.ru/mayakfm_mp3_192kbps",
         "logo": "0008.jpg"
     },
     {
         "id": "11",
-        "tags": [],
+        "tags": ["ru", "auto"],
         "name": "Авторадио ",
         "url": "http://ic7.101.ru:8000/v3_1",
         "logo": "0011.jpg"
     },
     {
         "id": "13",
-        "tags": [],
+        "tags": ["ru"],
         "name": "Дорожное Радио",
         "url": "http://dorognoe.hostingradio.ru:8000/dorognoe",
         "logo": "0013.jpg"
@@ -43,42 +43,42 @@ var stations = [
     },
     {
         "id": "16",
-        "tags": [],
+        "tags": ["ru"],
         "name": "Радио Мир",
         "url": "http://icecast.mirtv.cdnvideo.ru:8000/radio_mir128",
         "logo": "0016.jpg"
     },
     {
         "id": "17",
-        "tags": [],
+        "tags": ["jazz", "ru"],
         "name": "Радио Джаз",
         "url": "http://jazz.streamr.ru/jazz-64.mp3",
         "logo": "0017.jpg"
     },
     {
         "id": "18",
-        "tags": [],
+        "tags": ["classic", "ru"],
         "name": "Классика",
         "url": "http://music.myradio.com.ua:8000/Classica128.mp3",
         "logo": "0018.jpg"
     },
     {
         "id": "19",
-        "tags": [],
+        "tags": ["ru", "shanson"],
         "name": "Радио Шансон",
         "url": "http://chanson.hostingradio.ru:8041/chanson128.mp3",
         "logo": "0019.jpg"
     },
     {
         "id": "21",
-        "tags": [],
+        "tags": ["ru", "comedy"],
         "name": "Юмор ФМ",
         "url": "http://ic2.101.ru:8000/v5_1",
         "logo": "0021.jpg"
     },
     {
         "id": "23",
-        "tags": [],
+        "tags": ["ru"],
         "name": "Наше Радио",
         "url": "http://nashe1.hostingradio.ru/nashe-128.mp3",
         "logo": "0023.jpg"
@@ -99,7 +99,7 @@ var stations = [
     },
     {
         "id": "26",
-        "tags": [],
+        "tags": ["ru"],
         "name": "Говорит Москва",
         "url": "http://video.govoritmoskva.ru:8880/rufm.mp3",
         "logo": "0026.jpg"
@@ -113,7 +113,7 @@ var stations = [
     },
     {
         "id": "31",
-        "tags": [],
+        "tags": ["relax", "ru"],
         "name": "Релакс ФМ",
         "url": "http://ic2.101.ru:8000/v13_1",
         "logo": "0031.jpg"
@@ -127,21 +127,21 @@ var stations = [
     },
     {
         "id": "34",
-        "tags": [],
+        "tags": ["kids", "ru"],
         "name": "Детское Радио",
         "url": "http://ic3.101.ru:8000/v14_1",
         "logo": "0034.jpg"
     },
     {
         "id": "38",
-        "tags": [],
+        "tags": ["ru"],
         "name": "Радонеж",
         "url": "http://icecast.radonezh.cdnvideo.ru:8000/rad",
         "logo": "0038.jpg"
     },
     {
         "id": "39",
-        "tags": [],
+        "tags": ["ru"],
         "name": "Радио Дача",
         "url": "http://listen.vdfm.ru:8000/dacha",
         "logo": "0039.jpg"
@@ -155,42 +155,42 @@ var stations = [
     },
     {
         "id": "41",
-        "tags": [],
+        "tags": ["ru"],
         "name": "Коммерсантъ FM",
         "url": "http://kommersant77.hostingradio.ru:8016/kommersant128.mp3",
         "logo": "0041.jpg"
     },
     {
         "id": "42",
-        "tags": [],
+        "tags": ["ru"],
         "name": "Вести ФМ",
         "url": "http://icecast.vgtrk.cdnvideo.ru/vestifm_mp3_192kbps",
         "logo": "0042.jpg"
     },
     {
         "id": "46",
-        "tags": [],
+        "tags": ["ru", "news"],
         "name": "Комсомольская правда",
         "url": "http://kpradio.hostingradio.ru:8000/russia.radiokp128.mp3",
         "logo": "0046.jpg"
     },
     {
         "id": "53",
-        "tags": [],
+        "tags": ["ru"],
         "name": "Радио Карнавал",
         "url": "http://online.carnivalfm.ru:8000/stream/2/",
         "logo": "0053.jpg"
     },
     {
         "id": "54",
-        "tags": [],
+        "tags": ["ru", "relax", "romantic"],
         "name": "Радио Романтика",
         "url": "http://ic3.101.ru:8000/v4_1",
         "logo": "0054.jpg"
     },
     {
         "id": "56",
-        "tags": [],
+        "tags": ["ru"],
         "name": "Радио Metro",
         "url": "http://195.182.132.18:8230/;",
         "logo": "0056.jpg"
@@ -204,7 +204,7 @@ var stations = [
     },
     {
         "id": "62",
-        "tags": [],
+        "tags": ["ru"],
         "name": "Радио Зенит",
         "url": "http://ic3.101.ru:8000/v15_1",
         "logo": "0062.jpg"
@@ -218,91 +218,91 @@ var stations = [
     },
     {
         "id": "67",
-        "tags": [],
+        "tags": ["dance", "ua"],
         "name": "Kiss FM, Украина",
         "url": "http://online-kissfm.tavrmedia.ua/KissFM",
         "logo": "0067.jpg"
     },
     {
         "id": "72",
-        "tags": [],
+        "tags": ["ua"],
         "name": "Наше радiо, Украина",
         "url": "http://cast.radiogroup.com.ua:8000/nashe",
         "logo": "0072.jpg"
     },
     {
         "id": "73",
-        "tags": [],
+        "tags": ["ua"],
         "name": "Радiо Люкс, Украина",
         "url": "http://icecast.luxnet.ua/lux",
         "logo": "0073.jpg"
     },
     {
         "id": "75",
-        "tags": [],
+        "tags": ["ua"],
         "name": "Mfm, Украина",
         "url": "http://radio.mfm.ua:8080/online128",
         "logo": "0075.jpg"
     },
     {
         "id": "78",
-        "tags": [],
+        "tags": ["relax", "retro", "ua"],
         "name": "Ретро FM, Украина",
         "url": "http://cast.radiogroup.com.ua:8000/retro",
         "logo": "0078.jpg"
     },
     {
         "id": "81",
-        "tags": [],
+        "tags": ["ua"],
         "name": "Киев, Украина",
         "url": "http://217.76.201.26:8000/;stream.nsv",
         "logo": "0081.jpg"
     },
     {
         "id": "85",
-        "tags": [],
+        "tags": ["ua"],
         "name": "Динамо, Украина",
         "url": "http://cast.radiogroup.com.ua:8000/106fm",
         "logo": "0085.jpg"
     },
     {
         "id": "88",
-        "tags": [],
+        "tags": ["comady"],
         "name": "Comedy Radio 102.5 FM",
         "url": "http://ic2.101.ru:8000/n11_1",
         "logo": "0088.jpg"
     },
     {
         "id": "90",
-        "tags": [],
+        "tags": ["ua", "shanson"],
         "name": "Радио Шансон, Украина",
         "url": "http://217.20.164.163:8002/;",
         "logo": "0090.jpg"
     },
     {
         "id": "92",
-        "tags": [],
+        "tags": ["ua"],
         "name": "Бiзнес, Украина",
         "url": "http://217.20.164.163:8018/;",
         "logo": "0092.jpg"
     },
     {
         "id": "96",
-        "tags": [],
+        "tags": ["ua"],
         "name": "Best FM, Украина",
         "url": "http://radio.bestfm.fm:8080/bestfm64",
         "logo": "0096.jpg"
     },
     {
         "id": "106",
-        "tags": [],
+        "tags": ["ru"],
         "name": "Радио Минск, Беларусь",
         "url": "http://93.84.113.142:8000/radio",
         "logo": "0106.jpg"
     },
     {
         "id": "108",
-        "tags": [],
+        "tags": ["ru"],
         "name": "Новое Радио (Минск), Беларусь",
         "url": "http://212.98.181.84:8000/novoeradio_128",
         "logo": "0108.jpg"
@@ -316,105 +316,105 @@ var stations = [
     },
     {
         "id": "213",
-        "tags": [],
+        "tags": ["ru"],
         "name": "[101.RU] Лето 2012",
         "url": "http://ic2.101.ru:8000/c13_16",
         "logo": "0213.jpg"
     },
     {
         "id": "214",
-        "tags": [],
+        "tags": ["ru", "dance", "club"],
         "name": "[101.RU] Club Dance",
         "url": "http://ic2.101.ru:8000/c4_2",
         "logo": "0214.jpg"
     },
     {
         "id": "215",
-        "tags": [],
+        "tags": ["ru"],
         "name": "[101.RU] Hot Traxx",
         "url": "http://ic2.101.ru:8000/c4_4",
         "logo": "0215.jpg"
     },
     {
         "id": "216",
-        "tags": [],
+        "tags": ["ru"],
         "name": "[101.RU] Euro Hits",
         "url": "http://ic2.101.ru:8000/c16_13",
         "logo": "0216.jpg"
     },
     {
         "id": "217",
-        "tags": [],
+        "tags": ["ru", "dance", "club"],
         "name": "[101.RU] Russian Dance",
         "url": "http://ic2.101.ru:8000/c4_6",
         "logo": "0217.jpg"
     },
     {
         "id": "218",
-        "tags": [],
+        "tags": ["ru"],
         "name": "[101.RU] House",
         "url": "http://ic2.101.ru:8000/c6_5",
         "logo": "0218.jpg"
     },
     {
         "id": "219",
-        "tags": [],
+        "tags": ["ru", "dance", "club"],
         "name": "[101.RU] Electro",
         "url": "http://ic2.101.ru:8000/c6_3",
         "logo": "0219.jpg"
     },
     {
         "id": "220",
-        "tags": [],
+        "tags": ["ru", "progressive"],
         "name": "[101.RU] Progressive",
         "url": "http://ic2.101.ru:8000/c8_4",
         "logo": "0220.jpg"
     },
     {
         "id": "230",
-        "tags": [],
+        "tags": ["ru", "trance"],
         "name": "[101.RU] Trance",
         "url": "http://ic2.101.ru:8000/c13_3",
         "logo": "0230.jpg"
     },
     {
         "id": "232",
-        "tags": [],
+        "tags": ["ru", "tech"],
         "name": "[101.RU] Техно",
         "url": "http://ic2.101.ru:8000/c17_3",
         "logo": "0232.jpg"
     },
     {
         "id": "245",
-        "tags": [],
+        "tags": ["ru"],
         "name": "[101.RU] Mainstream",
         "url": "http://ic2.101.ru:8000/c7_2",
         "logo": "0245.jpg"
     },
     {
         "id": "246",
-        "tags": [],
+        "tags": ["concerts"],
         "name": "Live Concerts",
         "url": "http://uk1.internet-radio.com:15254/;",
         "logo": "0246.jpg"
     },
     {
         "id": "250",
-        "tags": [],
+        "tags": ["ru"],
         "name": "[101.RU] Акустика",
         "url": "http://ic2.101.ru:8000/c16_34",
         "logo": "0250.jpg"
     },
     {
         "id": "251",
-        "tags": [],
+        "tags": ["ru"],
         "name": "[101.RU] Chillоut",
         "url": "http://ic2.101.ru:8000/c15_3",
         "logo": "0251.jpg"
     },
     {
         "id": "264",
-        "tags": [],
+        "tags": ["ru"],
         "name": "[101.RU] Love Songs",
         "url": "http://ic2.101.ru:8000/c9_1",
         "logo": "0264.jpg"
@@ -442,35 +442,35 @@ var stations = [
     },
     {
         "id": "285",
-        "tags": ["ru"],
+        "tags": ["ru", "jazz"],
         "name": "[101.RU] Jazz",
         "url": "http://ic2.101.ru:8000/c10_5",
         "logo": "0285.jpg"
     },
     {
         "id": "286",
-        "tags": ["ru"],
+        "tags": ["ru", "jazz"],
         "name": "[101.RU] Smooth Jazz",
         "url": "http://ic2.101.ru:8000/c2_3",
         "logo": "0286.jpg"
     },
     {
         "id": "293",
-        "tags": ["ru"],
+        "tags": ["ru", "comedy"],
         "name": "[101.RU] Анекдоты",
         "url": "http://ic2.101.ru:8000/c3_5",
         "logo": "0293.jpg"
     },
     {
         "id": "294",
-        "tags": ["ru"],
+        "tags": ["ru", "comedy"],
         "name": "[101.RU] Юмор Non-Stop",
         "url": "http://ic2.101.ru:8000/c2_4",
         "logo": "0294.jpg"
     },
     {
         "id": "295",
-        "tags": ["ru"],
+        "tags": ["ru", "classic"],
         "name": "[101.RU] Классика Жанра",
         "url": "http://ic2.101.ru:8000/c4_1",
         "logo": "0295.jpg"
@@ -498,7 +498,7 @@ var stations = [
     },
     {
         "id": "388",
-        "tags": [],
+        "tags": ["trance"],
         "name": "[SOMA.FM] Tags Trance Trip",
         "url": "http://ice.somafm.com/thetrip-64.aac",
         "logo": "0388.jpg"
@@ -575,28 +575,28 @@ var stations = [
     },
     {
         "id": "425",
-        "tags": [],
+        "tags": ["ru"],
         "name": "Кабриолет",
         "url": "http://setmedia.ru:8000/high3",
         "logo": "0425.jpg"
     },
     {
         "id": "427",
-        "tags": [],
+        "tags": ["ua"],
         "name": "Радио Динамо, Киев",
         "url": "http://cast.radiogroup.com.ua:8000/106fm",
         "logo": "0427.jpg"
     },
     {
         "id": "429",
-        "tags": [],
+        "tags": ["ru"],
         "name": "Хорошее ФМ",
         "url": "http://radio.horoshee.fm:8000/mp3",
         "logo": "0429.jpg"
     },
     {
         "id": "432",
-        "tags": [],
+        "tags": ["ru"],
         "name": "Радио MakkiRUS Light",
         "url": "http://stream.makradio.ru:80/light128.mp3",
         "logo": "0432.jpg"
@@ -617,21 +617,21 @@ var stations = [
     },
     {
         "id": "436",
-        "tags": [],
+        "tags": ["ru"],
         "name": "МОСТ Радио",
         "url": "http://94.181.181.72:8000/;stream.nsv?82",
         "logo": "0436.jpg"
     },
     {
         "id": "443",
-        "tags": [],
+        "tags": ["ru"],
         "name": "Гоп ФМ",
         "url": "http://online.radiorecord.ru:8102/gop_128",
         "logo": "0443.jpg"
     },
     {
         "id": "445",
-        "tags": [],
+        "tags": ["ru", "club", "dance", "dj"],
         "name": "DJ Station",
         "url": "http://s.djstation.ru/stream192",
         "logo": "0445.jpg"
@@ -715,14 +715,14 @@ var stations = [
     },
     {
         "id": "483",
-        "tags": [],
+        "tags": ["ru"],
         "name": "Радио Прибой",
         "url": "http://46.174.49.15:8006/priboyfm",
         "logo": "0483.jpg"
     },
     {
         "id": "485",
-        "tags": [],
+        "tags": ["ru", "shanson"],
         "name": "Волшебный шансон ",
         "url": "http://listen.myradio24.com:9000/8144",
         "logo": "0485.jpg"
@@ -736,7 +736,7 @@ var stations = [
     },
     {
         "id": "502",
-        "tags": [],
+        "tags": ["ru"],
         "name": "Радио Зайцев.FM",
         "url": "http://zaycev.fm:9002/ZaycevFM(128)",
         "logo": "0502.jpg"
@@ -771,7 +771,7 @@ var stations = [
     },
     {
         "id": "529",
-        "tags": ["ua"],
+        "tags": ["ua", "relax"],
         "name": "Радио Мелодия",
         "url": "http://melodia.ipfm.net:80/RadioMelodia",
         "logo": "0529.jpg"
@@ -855,14 +855,14 @@ var stations = [
     },
     {
         "id": "556",
-        "tags": ["dance"],
+        "tags": ["dance", "club"],
         "name": "DNBFM",
         "url": "http://go.dnbfm.ru:8000/play",
         "logo": "0556.jpg"
     },
     {
         "id": "560",
-        "tags": ["techno", "dance"],
+        "tags": ["techno", "dance", "club"],
         "name": "Techno4ever.FM",
         "url": "http://tunein.t4e.dj/main/dsl/mp3",
         "logo": "0560.jpg"
@@ -890,7 +890,7 @@ var stations = [
     },
     {
         "id": "569",
-        "tags": [],
+        "tags": ["ru"],
         "name": "Авторитетное радио, Красноярск ",
         "url": "http://84.22.142.130:8000/arstream",
         "logo": "0569.jpg"
@@ -932,14 +932,14 @@ var stations = [
     },
     {
         "id": "597",
-        "tags": ["dance"],
+        "tags": ["dance", "club", "dj"],
         "name": "NRJ Dance",
         "url": "http://energydance.ice.infomaniak.ch/energydance-high.mp3",
         "logo": "0597.jpg"
     },
     {
         "id": "598",
-        "tags": ["dance"],
+        "tags": ["dance", "club", "dj"],
         "name": "NRJ Hot",
         "url": "http://energyhot.ice.infomaniak.ch/energyhot-high.mp3",
         "logo": "0598.jpg"
@@ -1016,7 +1016,7 @@ var stations = [
     },
     {
         "id": "641",
-        "tags": ["disco", "club", "dance"],
+        "tags": ["disco", "club", "dance", "dj"],
         "name": "RECORD CLUB",
         "url": "http://online.radiorecord.ru:8102/club_128",
         "logo": "0641.jpg"
@@ -1037,7 +1037,7 @@ var stations = [
     },
     {
         "id": "645",
-        "tags": ["dance", "dubstep"],
+        "tags": ["dance", "dubstep", "club"],
         "name": "RECORD URBAN",
         "url": "http://online.radiorecord.ru:8102/dub_128",
         "logo": "0645.jpg"
@@ -1072,7 +1072,7 @@ var stations = [
     },
     {
         "id": "650",
-        "tags": ["dance", "club"],
+        "tags": ["dance", "club", "dj"],
         "name": "Anison FM",
         "url": "http://s1.radio.ru-hoster.com:8000/AniSonFM(320)",
         "logo": "0650.jpg"
@@ -1086,7 +1086,7 @@ var stations = [
     },
     {
         "id": "656",
-        "tags": [],
+        "tags": ["jazz"],
         "name": "Radio Jazz International",
         "url": "http://broadcast.infomaniak.net/radiojazz-high.mp3",
         "logo": "0656.jpg"
