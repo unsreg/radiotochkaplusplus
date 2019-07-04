@@ -15,7 +15,7 @@ let radio = null;
 
 function init() {
     window.addEventListener("unhandledrejection", promiseRejectionEvent => {
-        radio.stationError();
+        console.log(promiseRejectionEvent);
     });
     const stationContainer = document.getElementById('station_container');
     let stationCount = 0;
@@ -48,31 +48,37 @@ function createStationElement(station) {
 ;
 
 function Radio(stations) {
+    const context = this;
     const audioPlayer = document.getElementById("audio_player");
-    audioPlayer.onerror = function () {
-        radio.stationError();
-    };
     const radioStations = stations;
     const activeColor = "aquamarine";
     const inactiveColor = "honeydew";
 
     this.currentStation = null;
 
-    this.stationError = function () {
+    audioPlayer.onerror = () => {
         $("#station_element_id_" + this.currentStation.id + " > button").text(buttons.play);
         $("#station_element_id_" + this.currentStation.id).css("background-color", "#f00");
-        this.currentStation = null;
+        context.currentStation = null;
+    };
+    audioPlayer.onplay = () => {
+        $("#station_element_id_" + context.currentStation.id + " > button").text(buttons.stop);
+        $("#station_element_id_" + context.currentStation.id).css("background-color", activeColor);
+    };
+    audioPlayer.onpause = () => {
+        $("#station_element_id_" + context.currentStation.id + " > button").text(buttons.play);
+        $("#station_element_id_" + context.currentStation.id).css("background-color", inactiveColor);
     };
 
-    this.stop = function () {
-        if (this.currentStation) {
-            $("#station_element_id_" + this.currentStation.id + " > button").text(buttons.play);
-            $("#station_element_id_" + this.currentStation.id).css("background-color", inactiveColor);
-            this.currentStation = null;
+    context.stop = function () {
+        if (context.currentStation) {
+            $("#station_element_id_" + context.currentStation.id + " > button").text(buttons.play);
+            $("#station_element_id_" + context.currentStation.id).css("background-color", inactiveColor);
+            context.currentStation = null;
         }
     };
 
-    this.play = function (stationId) {
+    context.play = function (stationId) {
         const newStation = radioStations.find(station => {
             return station.id === stationId.toString();
         });
@@ -80,38 +86,28 @@ function Radio(stations) {
             throw "Station " + stationId + " is not found";
         }
 
-        if (this.currentStation) {
+        if (context.currentStation) {
             // same station
-            if (this.currentStation.id === stationId.toString()) {
+            if (context.currentStation.id === stationId.toString()) {
                 if (audioPlayer.paused) {
                     audioPlayer.play();
-                    $("#station_element_id_" + this.currentStation.id + " > button").text(buttons.stop);
-                    $("#station_element_id_" + this.currentStation.id).css("background-color", activeColor);
                 } else {
                     audioPlayer.pause();
-                    $("#station_element_id_" + this.currentStation.id + " > button").text(buttons.play);
-                    $("#station_element_id_" + this.currentStation.id).css("background-color", inactiveColor);
                 }
             } else {
-                $("#station_element_id_" + this.currentStation.id + " > button").text(buttons.play);
-                $("#station_element_id_" + this.currentStation.id).css("background-color", inactiveColor);
+                $("#station_element_id_" + context.currentStation.id + " > button").text(buttons.play);
+                $("#station_element_id_" + context.currentStation.id).css("background-color", inactiveColor);
 
                 this.currentStation = newStation;
 
-                audioPlayer.src = this.currentStation.url;
+                audioPlayer.src = context.currentStation.url;
                 audioPlayer.play();
-
-                $("#station_element_id_" + this.currentStation.id + " > button").text(buttons.stop);
-                $("#station_element_id_" + this.currentStation.id).css("background-color", activeColor);
             }
         } else {
-            this.currentStation = newStation;
+            context.currentStation = newStation;
 
-            audioPlayer.src = this.currentStation.url;
+            audioPlayer.src = context.currentStation.url;
             audioPlayer.play();
-
-            $("#station_element_id_" + this.currentStation.id + " > button").text(buttons.stop);
-            $("#station_element_id_" + this.currentStation.id).css("background-color", activeColor);
         }
     };
 }
