@@ -16,6 +16,7 @@ let radio = null;
 function init() {
     window.addEventListener("unhandledrejection", promiseRejectionEvent => {
         alert(promiseRejectionEvent);
+        radio.stop();
     });
     const stationContainer = document.getElementById('station_container');
     let bootstrapElements = "";
@@ -51,8 +52,18 @@ function Radio(stations) {
     this.currentStation = null;
     this.previousStation = null;
 
-    this.currentStationElement = null;
-    this.previousStationElement = null;
+    this.stop = function() {
+        if(this.currentStation) {
+            $("#station_element_id_" + this.currentStation.number + " > button").text(buttons.play);
+            $("#station_element_id_" + this.currentStation.number).css("background-color", inactiveColor);
+            this.currentStation = null;
+        }
+        if(this.previousStation) {
+            $("#station_element_id_" + this.previousStation.number + " > button").text(buttons.play);
+            $("#station_element_id_" + this.previousStation.number).css("background-color", inactiveColor);
+            this.previousStation = null;
+        }
+    }
 
     this.play = function (stationNumber) {
         const newStation = radioStations.find(station => {
