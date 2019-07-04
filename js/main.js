@@ -15,8 +15,7 @@ let radio = null;
 
 function init() {
     window.addEventListener("unhandledrejection", promiseRejectionEvent => {
-        alert(promiseRejectionEvent);
-        radio.stop();
+        radio.stationError();
     });
     const stationContainer = document.getElementById('station_container');
     let bootstrapElements = "";
@@ -50,20 +49,20 @@ function Radio(stations) {
     const inactiveColor = "honeydew";
 
     this.currentStation = null;
-    this.previousStation = null;
 
-    this.stop = function() {
-        if(this.currentStation) {
+    this.stationError = function () {
+        $("#station_element_id_" + this.currentStation.number + " > button").text(buttons.play);
+        $("#station_element_id_" + this.currentStation.number).css("background-color", "#f00");
+        this.currentStation = null;
+    };
+
+    this.stop = function () {
+        if (this.currentStation) {
             $("#station_element_id_" + this.currentStation.number + " > button").text(buttons.play);
             $("#station_element_id_" + this.currentStation.number).css("background-color", inactiveColor);
             this.currentStation = null;
         }
-        if(this.previousStation) {
-            $("#station_element_id_" + this.previousStation.number + " > button").text(buttons.play);
-            $("#station_element_id_" + this.previousStation.number).css("background-color", inactiveColor);
-            this.previousStation = null;
-        }
-    }
+    };
 
     this.play = function (stationNumber) {
         const newStation = radioStations.find(station => {
@@ -89,7 +88,6 @@ function Radio(stations) {
                 $("#station_element_id_" + this.currentStation.number + " > button").text(buttons.play);
                 $("#station_element_id_" + this.currentStation.number).css("background-color", inactiveColor);
 
-                this.previousStation = this.currentStation;
                 this.currentStation = newStation;
 
                 audioPlayer.src = this.currentStation.url;
@@ -99,7 +97,6 @@ function Radio(stations) {
                 $("#station_element_id_" + this.currentStation.number).css("background-color", activeColor);
             }
         } else {
-            this.previousStation = this.currentStation;
             this.currentStation = newStation;
 
             audioPlayer.src = this.currentStation.url;
