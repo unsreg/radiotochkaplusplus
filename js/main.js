@@ -60,7 +60,10 @@ function onLoadBody() {
 
     tags.sort();
     let tagElements = "";
-
+    tagElements += '' +
+            '<div tabIndex="0" class="tag" onclick="onClickTag(event);" style="background-color: ' + CONST_TAG.inactiveColor + ';">' +
+            '<img class="favorit_button_image" src="img/star_fill.svg" alt="Favorite" onclick="onClickFavoritButton(event);"/>' +
+            '</div>';
     tags.forEach(tag => {
         tagElements += createTagElement(tag);
     });
@@ -156,7 +159,7 @@ function createStationElement(station) {
     }
     const result = '' +
             '<div tabIndex="0" class="station" id="' + stationElementId + '" ' + 'onclick="radio.play(' + station.id + ');">' +
-            '<img class="station_favorit_star" src="' + favoriteStateImage + '" alt="Empty star" onclick="onClickStationFavorite(event, ' + station.id + ');"/>' +
+            '<img class="station_favorit_star" src="' + favoriteStateImage + '" alt="Favorite" onclick="onClickStationFavorite(event, ' + station.id + ');"/>' +
             '<img class="station_image" src="img/stations/' + station.logo + ' ' + '"alt="' + station.name + '">' +
             '<div class="">' +
             '<h5 class="card-title">' + station.name + '</h5>' +
