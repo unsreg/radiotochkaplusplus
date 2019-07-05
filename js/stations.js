@@ -1201,6 +1201,6 @@ var stations = [
         "tags": ["lounge", "relax"],
         "name": "loungefm",
         "url": "http://cast.loungefm.com.ua/loungefm",
-        "logo": "0701.jpg"
+        "logo": "0701.png"
     }
 ];
