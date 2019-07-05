@@ -30,3 +30,8 @@
     display: inline-block;
     vertical-align: middle;
 }
+.station_favorit_star {
+    width : 48px;
+    height : 48px;
+    float: right;
+}
