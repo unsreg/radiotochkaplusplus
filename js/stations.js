@@ -1195,5 +1195,12 @@ var stations = [
         "name": "Radio Zabawa",
         "url": "http://listen.myradio24.com:9000/8020",
         "logo": "0694.jpg"
+    },
+    {
+        "id": "701",
+        "tags": ["lounge", "relax"],
+        "name": "loungefm",
+        "url": "http://cast.loungefm.com.ua/loungefm",
+        "logo": "0701.jpg"
     }
 ];
