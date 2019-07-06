@@ -12,7 +12,6 @@
     border-color: rgba(240, 240, 240, 1);
     border-style: dashed;
     border-radius: 15px;
-    background-color: honeydew;
 }
 .station_image {
     width: 82px;
@@ -38,6 +37,12 @@
 #filter_container {
 
 }
+#current_station_name {
+
+}
+#current_station_count {
+
+}
 .tag {
     cursor: pointer;
     margin: 5px;
@@ -52,5 +57,5 @@
 .favorit_button_image{
     width : 32px;
     height : 32px;
-    margin-bottom: 5px;
+    margin-top: -10px;
 }

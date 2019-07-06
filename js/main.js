@@ -1,155 +1,201 @@
-/* global stations */
-
-const ALL_STATIONS = stations ? stations : [];
-const CONST_BUTTON = {
-    play: "▶",
-    playPause: "⏯",
-    stop: "⏹",
-    pause: "⏸",
-    prev: "⏮",
-    next: "⏭"
-};
-const CONST_TAG = {
-    activeColor: "aquamarine",
-    inactiveColor: "honeydew"
-};
-const APP_STORAGE = new AppStorage();
-let radio = null;
-
-function AppStorage() {
+const GLOBAL = new function () {
+    const context = this;
+    const storageName = "rtpp_app_state_v20190706";
     const defaultStorageObj = {
-        favorite: [],
-        selectedTag: []
+        favorites: [],
+        selectedTags: [],
+        favoritActiveFlag: false
     };
-    const localStorageAppName = "rtpp_app_state";
-
-    this.getState = function () {
-        if (!localStorage.getItem(localStorageAppName)) {
-            localStorage.setItem(localStorageAppName, JSON.stringify(defaultStorageObj));
+    const allStations = stations ? stations : [];/* global stations */
+    this.componentColor = {
+        activeColor: "aquamarine",
+        inactiveColor: "honeydew",
+        errorColor: "#f00"
+    };
+    this.button = {
+        play: "▶",
+        playPause: "⏯",
+        stop: "⏹",
+        pause: "⏸",
+        prev: "⏮",
+        next: "⏭"
+    };
+    this.getAllStations = function () {
+        return allStations;
+    };
+    const existingTags = [];
+    this.getAllStations().forEach(station => {
+        station.tags.forEach(tag => {
+            if (!existingTags.includes(tag)) {
+                existingTags.push(tag);
+            }
+        });
+    });
+    existingTags.sort();
+    this.getAllTags = function () {
+        return existingTags;
+    };
+    this.getFavoriteActiveFlag = function () {
+        return context.appStorage.getState()["favoritActiveFlag"];
+    };
+    this.invertFavoritActiveFlag = function () {
+        const state = context.appStorage.getState();
+        state["favoritActiveFlag"] = !state["favoritActiveFlag"];
+        context.appStorage.setState(state);
+    };
+    this.getSelectedTags = function () {
+        return context.appStorage.getState()["selectedTags"];
+    };
+    this.setSelectedTags = function (tags) {
+        const state = context.appStorage.getState();
+        state["selectedTags"] = tags;
+        context.appStorage.setState(state);
+    };
+    this.getFavorites = function () {
+        return context.appStorage.getState()["favorites"];
+    };
+    this.setFavorites = function (favorites) {
+        const state = context.appStorage.getState();
+        state["favorites"] = favorites;
+        context.appStorage.setState(state);
+    };
+    this.appStorage = new AppStorage();
+    function AppStorage() {
+        // remove old version
+        if (localStorage.getItem("rtpp_app_state") !== null) {
+            localStorage.removeItem("rtpp_app_state");
         }
-        return JSON.parse(localStorage.getItem(localStorageAppName));
-    };
-    this.setState = function (state) {
-        localStorage.setItem(localStorageAppName, JSON.stringify(state));
-    };
-}
+        this.getState = function () {
+            if (!localStorage.getItem(storageName)) {
+                localStorage.setItem(storageName, JSON.stringify(defaultStorageObj));
+            }
+            return JSON.parse(localStorage.getItem(storageName));
+        };
+        this.setState = function (state) {
+            localStorage.setItem(storageName, JSON.stringify(state));
+        };
+    }
+};
+
+let radio = null;
 
 function onLoadBody() {
     window.addEventListener("unhandledrejection", promiseRejectionEvent => {
         console.log(promiseRejectionEvent);
     });
 
-    let stationCount = 0;
     let stationElements = "";
-    let tags = [];
 
-    ALL_STATIONS.forEach(station => {
-        station.tags.forEach(tag => {
-            if (!tags.includes(tag)) {
-                tags.push(tag);
-            }
-        });
-        if (isAnyTagSelected(station.tags)) {
-            stationElements += createStationElement(station);
-            stationCount++;
-        }
+    GLOBAL.getAllStations().forEach(station => {
+        stationElements += createElementStation(station);
     });
 
     const stationContainer = document.getElementById('station_container');
     stationContainer.innerHTML += stationElements;
 
-    tags.sort();
     let tagElements = "";
+
+    let favColor = GLOBAL.componentColor.inactiveColor;
+    if (GLOBAL.getFavoriteActiveFlag()) {
+        favColor = GLOBAL.componentColor.activeColor;
+    }
+    // add favorite
     tagElements += '' +
-            '<div tabIndex="0" class="tag" onclick="onClickTag(event);" style="background-color: ' + CONST_TAG.inactiveColor + ';">' +
-            '<img class="favorit_button_image" src="img/star_fill.svg" alt="Favorite" onclick="onClickFavoritButton(event);"/>' +
-            '</div>';
-    tags.forEach(tag => {
-        tagElements += createTagElement(tag);
+            '<span id="favorite_tag_id" tabIndex="0" class="tag" onclick="onClickTag(event);" style="background-color: ' + favColor + ';">' +
+            '<img class="favorit_button_image" src="img/star_fill.svg" alt="Favorite"/>' +
+            '</span>';
+    GLOBAL.getAllTags().forEach(tag => {
+        tagElements += createElementTag(tag);
     });
     const tagContainer = document.getElementById('tag_container');
     tagContainer.innerHTML += tagElements;
 
-    $("#current_station_name").text(stationCount);
+    radio = new Radio(GLOBAL.getAllStations());
 
-    radio = new Radio(ALL_STATIONS);
+    updateView();
 }
 
-function isAnyTagSelected(tags) {
-    const appState = APP_STORAGE.getState();
-    const selectedTags = appState["selectedTag"];
-    let result = false;
-    if (selectedTags.length === 0) {
-        result = true;
-    } else {
-        tags.forEach(tag => {
-            if (selectedTags.includes(tag)) {
-                result = true;
-                return;
-            }
-        });
-    }
-    return result;
-}
-
-function onClickTag(event) {
-    const appState = APP_STORAGE.getState();
-    const tagElement = $(event.currentTarget);
-    const tagName = tagElement.text();
-    let selectedTags = appState["selectedTag"];
-
-    if (selectedTags.includes(tagName)) {
-        // remove element
-        selectedTags.splice(selectedTags.indexOf(tagName), 1);
-        tagElement.css("background-color", CONST_TAG.inactiveColor);
-    } else {
-        selectedTags.push(tagName);
-        tagElement.css("background-color", CONST_TAG.activeColor);
-    }
-    appState["selectedTag"] = selectedTags;
-    APP_STORAGE.setState(appState);
-
+function updateView() {
     let stationCount = 0;
     $("#station_container > .station").each(function () {
-        const elemId = $(this).attr('id').replace("station_element_id_", "");
-        ALL_STATIONS.forEach(station => {
-            if (station.id.toString() === elemId.toString()) {
-                let anyTagFound = false;
-                station.tags.forEach(tag => {
-                    if (selectedTags.includes(tag)) {
-                        anyTagFound = true;
-                        return;
+        const elemId = $(this).attr('id').replace("station_element_id_", "").toString();
+        GLOBAL.getAllStations().forEach(station => {
+            const stationId = station.id.toString();
+            if (stationId === elemId) {
+                let showByFavoriteStatus = true;
+                if (GLOBAL.getFavoriteActiveFlag()) {
+                    if (!GLOBAL.getFavorites().includes(station.id.toString())) {
+                        showByFavoriteStatus = false;
                     }
-                });
-                if (anyTagFound || selectedTags.length === 0) {
-                    $(this).css('display', 'inline-block');
-                    stationCount++;
+                }
+                if (showByFavoriteStatus) {
+                    let anyTagFound = false;
+                    station.tags.forEach(tag => {
+                        if (GLOBAL.getSelectedTags().includes(tag)) {
+                            anyTagFound = true;
+                            return;
+                        }
+                    });
+                    if (anyTagFound || GLOBAL.getSelectedTags().length === 0) {
+                        $(this).css('display', 'inline-block');
+                        stationCount++;
+                    } else {
+                        $(this).css('display', 'none');
+                    }
+                    return;
                 } else {
                     $(this).css('display', 'none');
                 }
-                return;
             }
         });
     });
-    $("#current_station_name").text(stationCount);
+    $("#current_station_count").text(stationCount);
 }
 
-function createTagElement(tagName) {
-    const appState = APP_STORAGE.getState();
-    let tagColor = CONST_TAG.inactiveColor;
-    if (appState["selectedTag"].includes(tagName)) {
-        tagColor = CONST_TAG.activeColor;
+function onClickTag(event) {
+    const tagElement = $(event.currentTarget);
+
+    if (tagElement.attr("id") === "favorite_tag_id") {// if favorite tag element
+        GLOBAL.invertFavoritActiveFlag();
+        if (GLOBAL.getFavoriteActiveFlag()) {
+            tagElement.css("background-color", GLOBAL.componentColor.activeColor);
+        } else {
+            tagElement.css("background-color", GLOBAL.componentColor.inactiveColor);
+        }
+    } else {// if common tag element
+        const tagName = tagElement.text();
+        let selectedTags = GLOBAL.getSelectedTags();
+
+        if (selectedTags.includes(tagName)) {
+            // remove element
+            selectedTags.splice(selectedTags.indexOf(tagName), 1);
+            tagElement.css("background-color", GLOBAL.componentColor.inactiveColor);
+        } else {
+            selectedTags.push(tagName);
+            tagElement.css("background-color", GLOBAL.componentColor.activeColor);
+        }
+        GLOBAL.setSelectedTags(selectedTags);
+    }
+    updateView();
+}
+
+function createElementTag(tagName) {
+    const appState = GLOBAL.appStorage.getState();
+    let backColor = GLOBAL.componentColor.inactiveColor;
+    if (GLOBAL.getSelectedTags().includes(tagName)) {
+        backColor = GLOBAL.componentColor.activeColor;
     } else {
-        tagColor = CONST_TAG.inactiveColor;
+        backColor = GLOBAL.componentColor.inactiveColor;
     }
     const result = '' +
-            '<div tabIndex="0" class="tag" onclick="onClickTag(event);" style="background-color: ' + tagColor + ';">' +
+            '<span tabIndex="0" class="tag" onclick="onClickTag(event);" style="background-color: ' + backColor + ';">' +
             tagName
-            + '</div>';
+            + '</span>';
     return result;
 }
 
-function createStationElement(station) {
+function createElementStation(station) {
+    const backColor = GLOBAL.componentColor.inactiveColor;
     const stationElementId = "station_element_id_" + station.id;
     let favoriteStateImage;
     if (isFavorite(station.id)) {
@@ -158,7 +204,7 @@ function createStationElement(station) {
         favoriteStateImage = "img/star_empty.svg";
     }
     const result = '' +
-            '<div tabIndex="0" class="station" id="' + stationElementId + '" ' + 'onclick="radio.play(' + station.id + ');">' +
+            '<div tabIndex="0" class="station" id="' + stationElementId + '" ' + 'onclick="radio.play(' + station.id + ');" ondblclick="onClickStationFavorite(event, ' + station.id + ');" style="background-color: ' + backColor + ';">' +
             '<img class="station_favorit_star" src="' + favoriteStateImage + '" alt="Favorite" onclick="onClickStationFavorite(event, ' + station.id + ');"/>' +
             '<img class="station_image" src="img/stations/' + station.logo + ' ' + '"alt="' + station.name + '">' +
             '<div class="">' +
@@ -170,63 +216,57 @@ function createStationElement(station) {
 }
 
 function isFavorite(stationId) {
-    const appState = APP_STORAGE.getState();
-    if (appState["favorite"].includes(stationId.toString())) {
+    if (GLOBAL.getFavorites().includes(stationId.toString())) {
         return true;
     } else {
         return false;
     }
 }
 
-function changeFavoriteStatus(stationId) {
-    const appState = APP_STORAGE.getState();
-    let favoriteStationIds = appState["favorite"];
+function onClickStationFavorite(event, stationId) {
+    event.stopPropagation();
+
+    const favoriteStationIds = GLOBAL.getFavorites();
     let favoriteStateImage;
     if (favoriteStationIds.includes(stationId.toString())) {
         // remove element
         favoriteStationIds.splice(favoriteStationIds.indexOf(stationId.toString()), 1);
-        appState["favorite"] = favoriteStationIds;
         favoriteStateImage = "img/star_empty.svg";
     } else {
-        appState["favorite"].push(stationId.toString());
+        favoriteStationIds.push(stationId.toString());
         favoriteStateImage = "img/star_fill.svg";
     }
     $("#station_element_id_" + stationId + " > .station_favorit_star").attr("src", favoriteStateImage);
-    APP_STORAGE.setState(appState);
-}
-
-function onClickStationFavorite(event, stationId) {
-    event.stopPropagation();
-    changeFavoriteStatus(stationId);
+    GLOBAL.setFavorites(favoriteStationIds);
 }
 
 function Radio(stations) {
     const context = this;
     const audioPlayer = document.getElementById("audio_player");
     const radioStations = stations;
-    const activeColor = "aquamarine";
-    const inactiveColor = "honeydew";
+    const stationNameElement = $("#current_station_name");
 
     this.currentStation = null;
 
     audioPlayer.onerror = () => {
-        $("#station_element_id_" + this.currentStation.id).css("background-color", "#f00");
+        $("#station_element_id_" + context.currentStation.id).css("background-color", GLOBAL.componentColor.errorColor);
+        stationNameElement.text("");
         context.currentStation = null;
     };
     audioPlayer.onplay = () => {
-        $("#station_element_id_" + context.currentStation.id).css("background-color", activeColor);
+        $("#station_element_id_" + context.currentStation.id).css("background-color", GLOBAL.componentColor.activeColor);
+        stationNameElement.text(context.currentStation.name + " (" + context.currentStation.id + ")");
     };
     audioPlayer.onpause = () => {
-        $("#station_element_id_" + context.currentStation.id).css("background-color", inactiveColor);
+        $("#station_element_id_" + context.currentStation.id).css("background-color", GLOBAL.componentColor.inactiveColor);
+        stationNameElement.text("");
     };
-
     context.stop = function () {
         if (context.currentStation) {
-            $("#station_element_id_" + context.currentStation.id).css("background-color", inactiveColor);
+            $("#station_element_id_" + context.currentStation.id).css("background-color", GLOBAL.componentColor.inactiveColor);
             context.currentStation = null;
         }
     };
-
     context.play = function (stationId) {
         const newStation = radioStations.find(station => {
             return station.id === stationId.toString();
@@ -243,16 +283,13 @@ function Radio(stations) {
                     audioPlayer.pause();
                 }
             } else {
-                $("#station_element_id_" + context.currentStation.id).css("background-color", inactiveColor);
-
+                $("#station_element_id_" + context.currentStation.id).css("background-color", GLOBAL.componentColor.inactiveColor);
                 this.currentStation = newStation;
-
                 audioPlayer.src = context.currentStation.url;
                 audioPlayer.play();
             }
         } else {
             context.currentStation = newStation;
-
             audioPlayer.src = context.currentStation.url;
             audioPlayer.play();
         }
