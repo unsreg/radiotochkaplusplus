@@ -40,8 +40,28 @@
     /*display: inline-block;*/
 }
 #audio_player_button_stop {
-    font-size: 2em;
-    cursor: pointer;    
+    cursor: pointer;
+    margin: 5px;
+    display: inline-block;
+    border-color: rgba(240, 240, 240, 1);
+    border-style: dashed;
+    border-radius: 10px;
+    border-width: 3px;
+    background-color: honeydew;
+    font-size: x-large;
+    padding: 5px;    
+}
+#audio_player_button_ranrom {
+    cursor: pointer;
+    margin: 5px;
+    display: inline-block;
+    border-color: rgba(240, 240, 240, 1);
+    border-style: dashed;
+    border-radius: 10px;
+    border-width: 3px;
+    background-color: honeydew;
+    font-size: x-large;
+    padding: 5px;    
 }
 .station_favorit_star {
     width : 48px;

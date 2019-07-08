@@ -53,7 +53,7 @@ const GLOBAL = new function () {
     this.getAllStationElements = function () {
         const allStationElenentsCacheKey = "all_station_elements_cache_key";
         context.cache.set(allStationElenentsCacheKey, () => {
-            return $("#station_container > .station");
+            return domUtils.getChildElementsById("station_container");
         });
         return () => {
             return context.cache.get(allStationElenentsCacheKey);
@@ -64,7 +64,6 @@ const GLOBAL = new function () {
         context.cache.set(allStationsCacheKey, () => {
             return stations ? stations : [];/* global stations */
         });
-        const allStations = stations ? stations : [];/* global stations */
         return () => {
             return context.cache.get(allStationsCacheKey);
         };
@@ -160,6 +159,32 @@ const GLOBAL = new function () {
 
 let radio = null;
 
+const domUtils = new function () {
+    this.getElementById = (id) => {
+        return document.getElementById(id);
+    };
+    this.getElementByClass = (className) => {
+        return document.getElementsByClassName(className);
+    };
+    this.getChildElementsById = (id) => {
+        return $("#" + id + " > .station");
+    };
+    this.addClass = (element, className) => {
+        return element.classList.add(className);
+    };
+    this.removeClass = (element, className) => {
+        return element.classList.remove(className);
+    };
+    this.toggleClass = (element, className) => {
+        if (element.classList.contains(className)) {
+            element.classList.toggle(className);
+        }
+    };
+    this.changeStyle = (element, styleKey, styleValue) => {
+        element.style[styleKey] = styleValue;
+    };
+}();
+
 function onLoadBody() {
     window.addEventListener("unhandledrejection", promiseRejectionEvent => {
         console.log(promiseRejectionEvent);
@@ -188,7 +213,7 @@ function onLoadBody() {
     GLOBAL.getAllTags().forEach(tag => {
         tagElements += createElementTag(tag);
     });
-    const tagContainer = document.getElementById('tag_container');
+    const tagContainer = domUtils.getElementById('tag_container');
     tagContainer.innerHTML += tagElements;
 
     radio = new Radio(GLOBAL.getAllStations());
@@ -230,7 +255,7 @@ function updateView() {
             }
         });
     });
-    $("#current_station_count").text("Stations: " + stationCount + "; ");
+    domUtils.getElementById("current_station_count").innerText = "Stations: " + stationCount + "; ";
 }
 
 function onClickTag(event) {
@@ -395,6 +420,10 @@ function Radio(stations) {
                 audioPlayer.pause();
             }
         }
+    };
+    context.playRandomStation = function () {
+        const stationIndex = Math.floor((Math.random() * radioStations.length - 1) + 1);
+        context.play(radioStations[stationIndex].id);
     };
     context.play = function (stationId) {
         const newStation = radioStations.find(station => {
