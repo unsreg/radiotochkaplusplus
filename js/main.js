@@ -6,7 +6,8 @@ const GLOBAL = new function () {
         selectedTags: [],
         favoritActiveFlag: false
     };
-    const allStations = stations ? stations : [];/* global stations */
+    this.cache = new Cache();
+    // ==========================================
     this.componentColor = {
         activeColor: "aquamarine",
         inactiveColor: "honeydew",
@@ -21,59 +22,138 @@ const GLOBAL = new function () {
         prev: "⏮",
         next: "⏭"
     };
-    this.getAllStations = function () {
-        return allStations;
-    };
-    const existingTags = [];
-    this.getAllStations().forEach(station => {
-        station.tags.forEach(tag => {
-            if (!existingTags.includes(tag)) {
-                existingTags.push(tag);
+    // ==========================================    
+    this.getAppStorage = function () {
+        function AppStorage() {
+            const storageCacheKey = "app_storage_cache";
+            // remove old version
+            if (localStorage.getItem("rtpp_app_state") !== null) {
+                localStorage.removeItem("rtpp_app_state");
             }
+            context.cache.set(storageCacheKey, () => {
+                if (!localStorage.getItem(storageName)) {
+                    localStorage.setItem(storageName, JSON.stringify(defaultStorageObj));
+                }
+                return JSON.parse(localStorage.getItem(storageName));
+            });
+            this.getState = function () {
+                return context.cache.get(storageCacheKey);
+            };
+            this.setState = function (state) {
+                localStorage.setItem(storageName, JSON.stringify(state));
+                context.cache.invalidate(storageCacheKey);
+            };
+        }
+        const appStorage = new AppStorage();
+        return  () => {
+            return appStorage;
+        };
+    }();
+    // ==========================================    
+    this.getAllStationElements = function () {
+        const allStationElenentsCacheKey = "all_station_elements_cache_key";
+        context.cache.set(allStationElenentsCacheKey, () => {
+            return $("#station_container > .station");
         });
-    });
-    existingTags.sort();
+        return () => {
+            return context.cache.get(allStationElenentsCacheKey);
+        };
+    }();
+    this.getAllStations = function () {
+        const allStationsCacheKey = "all_stations_cache_key";
+        context.cache.set(allStationsCacheKey, () => {
+            return stations ? stations : [];/* global stations */
+        });
+        const allStations = stations ? stations : [];/* global stations */
+        return () => {
+            return context.cache.get(allStationsCacheKey);
+        };
+    }();
+    // ==========================================
     this.getAllTags = function () {
-        return existingTags;
-    };
-    this.getFavoriteActiveFlag = function () {
-        return context.appStorage.getState()["favoritActiveFlag"];
-    };
-    this.invertFavoritActiveFlag = function () {
-        const state = context.appStorage.getState();
-        state["favoritActiveFlag"] = !state["favoritActiveFlag"];
-        context.appStorage.setState(state);
-    };
+        const allTagsCacheKey = "all_tags_cache_key";
+        context.cache.set(allTagsCacheKey, () => {
+            const existingTags = [];
+            context.getAllStations().forEach(station => {
+                station.tags.forEach(tag => {
+                    if (!existingTags.includes(tag)) {
+                        existingTags.push(tag);
+                    }
+                });
+            });
+            existingTags.sort();
+            return existingTags;
+        });
+        return () => {
+            return context.cache.get(allTagsCacheKey);
+        };
+    }();
     this.getSelectedTags = function () {
-        return context.appStorage.getState()["selectedTags"];
-    };
+        const selectedTagsCacheKey = "selected_tags_cache_key";
+        context.cache.set(selectedTagsCacheKey, () => {
+            return context.getAppStorage().getState()["selectedTags"];
+        });
+        return () => {
+            return context.cache.get(selectedTagsCacheKey);
+        };
+    }();
     this.setSelectedTags = function (tags) {
-        const state = context.appStorage.getState();
+        const selectedTagsCacheKey = "selected_tags_cache_key";
+        const state = context.getAppStorage().getState();
         state["selectedTags"] = tags;
-        context.appStorage.setState(state);
+        context.getAppStorage().setState(state);
+        context.cache.invalidate(selectedTagsCacheKey);
+    };
+    // ==========================================
+    this.getFavoriteActiveFlag = function () {
+        const favoriteActiveFlagCacheKey = "favorite_active_flag_cache_key";
+        context.cache.set(favoriteActiveFlagCacheKey, () => {
+            return context.getAppStorage().getState()["favoritActiveFlag"];
+        });
+        return () => {
+            return context.cache.get(favoriteActiveFlagCacheKey);
+        };
+    }();
+    this.invertFavoritActiveFlag = function () {
+        const favoriteActiveFlagCacheKey = "favorite_active_flag_cache_key";
+        const state = context.getAppStorage().getState();
+        state["favoritActiveFlag"] = !state["favoritActiveFlag"];
+        context.getAppStorage().setState(state);
+        context.cache.invalidate(favoriteActiveFlagCacheKey);
     };
     this.getFavorites = function () {
-        return context.appStorage.getState()["favorites"];
-    };
-    this.setFavorites = function (favorites) {
-        const state = context.appStorage.getState();
-        state["favorites"] = favorites;
-        context.appStorage.setState(state);
-    };
-    this.appStorage = new AppStorage();
-    function AppStorage() {
-        // remove old version
-        if (localStorage.getItem("rtpp_app_state") !== null) {
-            localStorage.removeItem("rtpp_app_state");
-        }
-        this.getState = function () {
-            if (!localStorage.getItem(storageName)) {
-                localStorage.setItem(storageName, JSON.stringify(defaultStorageObj));
-            }
-            return JSON.parse(localStorage.getItem(storageName));
+        const favoritesCacheKey = "favorites_cache_key";
+        context.cache.set(favoritesCacheKey, () => {
+            return context.getAppStorage().getState()["favorites"];
+        });
+        return () => {
+            return context.cache.get(favoritesCacheKey);
         };
-        this.setState = function (state) {
-            localStorage.setItem(storageName, JSON.stringify(state));
+    }();
+    this.setFavorites = function (favorites) {
+        const favoritesCacheKey = "favorites_cache_key";
+        const state = context.getAppStorage().getState();
+        state["favorites"] = favorites;
+        context.getAppStorage().setState(state);
+        context.cache.invalidate(favoritesCacheKey);
+    };
+
+    function Cache() {
+        const cache = {};
+        this.set = function (key, getDataCallback) {
+            cache[key] = {
+                data: null,
+                dataProvider: getDataCallback
+            };
+        };
+        this.get = function (key) {
+            if (!cache[key].data) {
+                cache[key].data = cache[key]["dataProvider"]();
+            }
+            return cache[key].data;
+        };
+        this.invalidate = function (key) {
+            cache[key].data = null;
         };
     }
 };
@@ -118,7 +198,7 @@ function onLoadBody() {
 
 function updateView() {
     let stationCount = 0;
-    $("#station_container > .station").each(function () {
+    GLOBAL.getAllStationElements().each(function () {
         const elemId = $(this).attr('id').replace("station_element_id_", "").toString();
         GLOBAL.getAllStations().forEach(station => {
             const stationId = station.id.toString();
@@ -181,7 +261,6 @@ function onClickTag(event) {
 }
 
 function createElementTag(tagName) {
-    const appState = GLOBAL.appStorage.getState();
     let backColor = GLOBAL.componentColor.inactiveColor;
     if (GLOBAL.getSelectedTags().includes(tagName)) {
         backColor = GLOBAL.componentColor.activeColor;
@@ -206,11 +285,12 @@ function createElementStation(station) {
     }
     const result = '' +
             '<div tabIndex="0" class="station" id="' + stationElementId + '" ' + 'onclick="radio.play(' + station.id + ');" ondblclick="onClickStationFavorite(event, ' + station.id + ');" style="background-color: ' + backColor + ';">' +
+            '<div class="station_image_container">' +
             '<img class="station_favorit_star" src="' + favoriteStateImage + '" alt="Favorite" onclick="onClickStationFavorite(event, ' + station.id + ');"/>' +
             '<img class="station_image" src="img/stations/' + station.logo + ' ' + '"alt="' + station.name + '">' +
-            '<div class="">' +
-            '<h5 class="card-title">' + station.name + '</h5>' +
-            '<p class="card-text">' + station.id + '</p>' +
+            '</div>' +
+            '<div class="station_name_and_id">' +
+            '<p class="">' + station.name + ' (' + station.id + ')' + '</p>' +
             '</div>' +
             '</div>';
     return result;
@@ -237,40 +317,12 @@ function onClickStationFavorite(event, stationId) {
         favoriteStationIds.push(stationId.toString());
         favoriteStateImage = "img/star_fill.svg";
     }
-    $("#station_element_id_" + stationId + " > .station_favorit_star").attr("src", favoriteStateImage);
+    $("#station_element_id_" + stationId + " > .station_image_container > .station_favorit_star").attr("src", favoriteStateImage);
     GLOBAL.setFavorites(favoriteStationIds);
+    if (GLOBAL.getFavoriteActiveFlag()) {
+        updateView();
+    }
 }
-
-//function setMainBackgroundColor(station) {
-//    const container = $("#container");
-//    if (station) {
-//        let red = 0;
-//        let green = 0;
-//        let blue = 0;
-//
-//        let codeSum = 255;
-//        let codeSum2 = 255;
-//        for (let i = 0; i < station.name.length; i++) {
-//            let charCode = station.name.charCodeAt(i);
-//            codeSum += charCode;
-//            while (charCode > 255) {
-//                charCode %= 255;
-//            }
-//            codeSum2 += charCode;
-//        }
-//        let avg = codeSum / station.name.length;
-//        console.log("avg: " + avg);
-//
-//        red = avg % 255;
-//        green = codeSum2 % 255;
-//        blue = (station.id + 1000000) % 255;
-//        console.log("crc32Hash" + crc32Hash(station.name));
-//        console.log("rgb(" + parseInt(red, 10) + ", " + parseInt(green, 10) + ", " + parseInt(blue, 10) + ")");
-//        container.css("background-color", "rgb(" + parseInt(red, 10) + ", " + parseInt(green, 10) + ", " + parseInt(blue, 10) + ", 0.2)");
-//    } else {
-//        container.css("background-color", GLOBAL.componentColor.defaultBackColor);
-//    }
-//}
 
 function setMainBackgroundColor(station) {
     const container = $("#container");
@@ -286,11 +338,6 @@ function setMainBackgroundColor(station) {
     } else {
         container.css("background-color", GLOBAL.componentColor.defaultBackColor);
     }
-}
-
-function rgb2htmlColor(red, green, blue) {
-    var decColor = 0x1000000 + parseInt(blue, 10) + 0x100 * parseInt(green, 10) + 0x10000 * parseInt(red, 10);
-    return '#' + decColor.toString(16).substr(1);
 }
 
 function crc32Hash(string) {
