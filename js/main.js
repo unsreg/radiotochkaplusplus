@@ -207,7 +207,7 @@ function onLoadBody() {
     }
     // add favorite
     tagElements += '' +
-            '<span id="favorite_tag_id" tabIndex="0" class="tag" onclick="onClickTag(event);" style="background-color: ' + favColor + ';">' +
+            '<span id="favorite_tag_id" tabIndex="0" class="tag common_control" onclick="onClickTag(event);" style="background-color: ' + favColor + ';">' +
             '<img class="favorit_button_image" src="img/star_fill.svg" alt="Favorite"/>' +
             '</span>';
     GLOBAL.getAllTags().forEach(tag => {
@@ -293,7 +293,7 @@ function createElementTag(tagName) {
         backColor = GLOBAL.componentColor.inactiveColor;
     }
     const result = '' +
-            '<span tabIndex="0" class="tag" onclick="onClickTag(event);" style="background-color: ' + backColor + ';">' +
+            '<span tabIndex="0" class="tag common_control" onclick="onClickTag(event);" style="background-color: ' + backColor + ';">' +
             tagName
             + '</span>';
     return result;
@@ -309,7 +309,7 @@ function createElementStation(station) {
         favoriteStateImage = "img/star_empty.svg";
     }
     const result = '' +
-            '<div tabIndex="0" class="station" id="' + stationElementId + '" ' + 'onclick="radio.play(' + station.id + ');" ondblclick="onClickStationFavorite(event, ' + station.id + ');" style="background-color: ' + backColor + ';">' +
+            '<div tabIndex="0" class="station common_control" id="' + stationElementId + '" ' + 'onclick="radio.play(' + station.id + ');" ondblclick="onClickStationFavorite(event, ' + station.id + ');" style="background-color: ' + backColor + ';">' +
             '<div class="station_image_container">' +
             '<img class="station_favorit_star" src="' + favoriteStateImage + '" alt="Favorite" onclick="onClickStationFavorite(event, ' + station.id + ');"/>' +
             '<img class="station_image" src="img/stations/' + station.logo + ' ' + '"alt="' + station.name + '">' +
