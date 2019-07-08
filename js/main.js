@@ -10,7 +10,8 @@ const GLOBAL = new function () {
     this.componentColor = {
         activeColor: "aquamarine",
         inactiveColor: "honeydew",
-        errorColor: "#f00"
+        errorColor: "#f00",
+        defaultBackColor: "#fff"
     };
     this.button = {
         play: "▶",
@@ -240,6 +241,82 @@ function onClickStationFavorite(event, stationId) {
     GLOBAL.setFavorites(favoriteStationIds);
 }
 
+//function setMainBackgroundColor(station) {
+//    const container = $("#container");
+//    if (station) {
+//        let red = 0;
+//        let green = 0;
+//        let blue = 0;
+//
+//        let codeSum = 255;
+//        let codeSum2 = 255;
+//        for (let i = 0; i < station.name.length; i++) {
+//            let charCode = station.name.charCodeAt(i);
+//            codeSum += charCode;
+//            while (charCode > 255) {
+//                charCode %= 255;
+//            }
+//            codeSum2 += charCode;
+//        }
+//        let avg = codeSum / station.name.length;
+//        console.log("avg: " + avg);
+//
+//        red = avg % 255;
+//        green = codeSum2 % 255;
+//        blue = (station.id + 1000000) % 255;
+//        console.log("crc32Hash" + crc32Hash(station.name));
+//        console.log("rgb(" + parseInt(red, 10) + ", " + parseInt(green, 10) + ", " + parseInt(blue, 10) + ")");
+//        container.css("background-color", "rgb(" + parseInt(red, 10) + ", " + parseInt(green, 10) + ", " + parseInt(blue, 10) + ", 0.2)");
+//    } else {
+//        container.css("background-color", GLOBAL.componentColor.defaultBackColor);
+//    }
+//}
+
+function setMainBackgroundColor(station) {
+    const container = $("#container");
+    if (station) {
+        let strHash = crc32Hash(station.id + station.name + station.url).toString();
+        let red = parseInt(strHash.substring(0, 3), 10);
+        let green = parseInt(strHash.substring(3, 6), 10);
+        let blue = parseInt(strHash.substring(7, 10), 10);
+        red > 255 ? red %= 255 : red;
+        green > 255 ? green %= 255 : green;
+        blue > 255 ? blue %= 255 : blue;
+        container.css("background-color", "rgb(" + parseInt(red, 10) + ", " + parseInt(green, 10) + ", " + parseInt(blue, 10) + ", 0.2)");
+    } else {
+        container.css("background-color", GLOBAL.componentColor.defaultBackColor);
+    }
+}
+
+function rgb2htmlColor(red, green, blue) {
+    var decColor = 0x1000000 + parseInt(blue, 10) + 0x100 * parseInt(green, 10) + 0x10000 * parseInt(red, 10);
+    return '#' + decColor.toString(16).substr(1);
+}
+
+function crc32Hash(string) {
+    function makeCRCTable() {
+        let c;
+        let crcTable = [];
+        for (let n = 0; n < 256; n++) {
+            c = n;
+            for (let k = 0; k < 8; k++) {
+                c = ((c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1));
+            }
+            crcTable[n] = c;
+        }
+        return crcTable;
+    }
+    function crc32(str) {
+        let crcTable = window.crcTable || (window.crcTable = makeCRCTable());
+        let crc = 0 ^ (-1);
+        for (let i = 0; i < str.length; i++) {
+            crc = (crc >>> 8) ^ crcTable[(crc ^ str.charCodeAt(i)) & 0xFF];
+        }
+        return (crc ^ (-1)) >>> 0;
+    }
+    return crc32(string);
+}
+
 function Radio(stations) {
     const context = this;
     const audioPlayer = document.getElementById("audio_player");
@@ -251,15 +328,18 @@ function Radio(stations) {
     audioPlayer.onerror = () => {
         $("#station_element_id_" + context.currentStation.id).css("background-color", GLOBAL.componentColor.errorColor);
         stationNameElement.text("");
+        setMainBackgroundColor();
         context.currentStation = null;
     };
     audioPlayer.onplay = () => {
         $("#station_element_id_" + context.currentStation.id).css("background-color", GLOBAL.componentColor.activeColor);
-        stationNameElement.text(context.currentStation.name + " (" + context.currentStation.id + ")");
+        stationNameElement.text('"' + context.currentStation.name + " (" + context.currentStation.id + ")" + '"');
+        setMainBackgroundColor(context.currentStation);
     };
     audioPlayer.onpause = () => {
         $("#station_element_id_" + context.currentStation.id).css("background-color", GLOBAL.componentColor.inactiveColor);
         stationNameElement.text("");
+        setMainBackgroundColor();
     };
     context.stop = function () {
         if (context.currentStation) {
