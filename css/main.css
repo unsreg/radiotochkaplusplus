@@ -24,9 +24,6 @@
     margin-top: 5px;
     font-size: large;
 }
-.station_play_button {
-    font-size: xx-large;
-}
 #audio_player {
     display: none;
 }
