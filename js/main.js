@@ -230,7 +230,7 @@ function updateView() {
             }
         });
     });
-    $("#current_station_count").text(stationCount);
+    $("#current_station_count").text("Stations: " + stationCount + "; ");
 }
 
 function onClickTag(event) {
@@ -380,18 +380,20 @@ function Radio(stations) {
     };
     audioPlayer.onplay = () => {
         $("#station_element_id_" + context.currentStation.id).css("background-color", GLOBAL.componentColor.activeColor);
-        stationNameElement.text('"' + context.currentStation.name + " (" + context.currentStation.id + ")" + '"');
+        stationNameElement.text('Current station: "' + context.currentStation.name + " (" + context.currentStation.id + ")" + '";');
         setMainBackgroundColor(context.currentStation);
     };
     audioPlayer.onpause = () => {
         $("#station_element_id_" + context.currentStation.id).css("background-color", GLOBAL.componentColor.inactiveColor);
         stationNameElement.text("");
         setMainBackgroundColor();
+        context.currentStation = null;
     };
     context.stop = function () {
         if (context.currentStation) {
-            $("#station_element_id_" + context.currentStation.id).css("background-color", GLOBAL.componentColor.inactiveColor);
-            context.currentStation = null;
+            if (audioPlayer.played) {
+                audioPlayer.pause();
+            }
         }
     };
     context.play = function (stationId) {

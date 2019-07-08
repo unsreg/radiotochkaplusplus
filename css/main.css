@@ -37,7 +37,11 @@
     display: none;   
 }
 #audio_player_status {
-    display: inline-block;
+    /*display: inline-block;*/
+}
+#audio_player_button_stop {
+    font-size: 2em;
+    cursor: pointer;    
 }
 .station_favorit_star {
     width : 48px;
