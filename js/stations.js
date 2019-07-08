@@ -267,7 +267,7 @@ var stations = [
     },
     {
         "id": "88",
-        "tags": ["comady"],
+        "tags": ["comedy"],
         "name": "Comedy Radio 102.5 FM",
         "url": "http://ic2.101.ru:8000/n11_1",
         "logo": "0088.jpg"
@@ -393,7 +393,7 @@ var stations = [
     },
     {
         "id": "246",
-        "tags": ["concerts"],
+        "tags": ["concert"],
         "name": "Live Concerts",
         "url": "http://uk1.internet-radio.com:15254/;",
         "logo": "0246.jpg"
