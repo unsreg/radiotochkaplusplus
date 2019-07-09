@@ -255,7 +255,8 @@ function updateView() {
             }
         });
     });
-    domUtils.getElementById("current_station_count").innerText = "Stations: " + stationCount + "; ";
+    domUtils.getElementById("current_station_count").innerText = "Count: " + stationCount + "; ";
+    $("#current_station_name").text("Current: ");
 }
 
 function onClickTag(event) {
@@ -399,18 +400,18 @@ function Radio(stations) {
 
     audioPlayer.onerror = () => {
         $("#station_element_id_" + context.currentStation.id).css("background-color", GLOBAL.componentColor.errorColor);
-        stationNameElement.text("");
+        stationNameElement.text("Current: ");
         setMainBackgroundColor();
         context.currentStation = null;
     };
     audioPlayer.onplay = () => {
         $("#station_element_id_" + context.currentStation.id).css("background-color", GLOBAL.componentColor.activeColor);
-        stationNameElement.text('Current station: "' + context.currentStation.name + " (" + context.currentStation.id + ")" + '";');
+        stationNameElement.text('Current: "' + context.currentStation.name + " (" + context.currentStation.id + ")" + '";');
         setMainBackgroundColor(context.currentStation);
     };
     audioPlayer.onpause = () => {
         $("#station_element_id_" + context.currentStation.id).css("background-color", GLOBAL.componentColor.inactiveColor);
-        stationNameElement.text("");
+        stationNameElement.text("Current: ");
         setMainBackgroundColor();
         context.currentStation = null;
     };

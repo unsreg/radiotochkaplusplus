@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
     <head>
         <title>RadioTochka++</title>
 
@@ -13,30 +14,27 @@
         <script src="js/jquery-3.4.1.min.js"></script>
         <script src="js/stations.js"></script>
     </head>
+
     <body onload="onLoadBody();">
         <div id="container">
             <div id="audio_player_container">
                 <div id="audio_player_status">
-                    <span id="audio_player_button_stop" class="common_control" tabindex="0" onclick="radio.stop();">Stop ⏹</span>
-                    <span id="audio_player_button_ranrom" class="common_control" tabindex="0" onclick="radio.playRandomStation();">Random</span>
-                    <br/>
-                    <br/>
-                    <span class="common_control" id="audio_player_status_info">
-                        <span id="current_station_count"></span>
-                        <span id="current_station_name"></span>
-                    </span>
+                    <div id="audio_player_button_stop" class="common_control" tabindex="0" onclick="radio.stop();">Stop ⏹</div>
+                    <div id="audio_player_button_ranrom" class="common_control" tabindex="0" onclick="radio.playRandomStation();">Random</div>
+                    <div id="current_station_count" class="common_control"></div>                
+                    <div id="current_station_name" class="common_control"></div>
                 </div>
-                <div></div>
                 <audio controls id="audio_player"></audio>
             </div>
-            <br/>
-            <div id="filter_container">                    
+            <br />
+            <div id="filter_container">
                 <div id="tag_container"></div>
             </div>
-            <br/>
+            <br />
             <div id="station_container"></div>
         </div>
 
         <script src="js/main.js"></script>
     </body>
+
 </html>

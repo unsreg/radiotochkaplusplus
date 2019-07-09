@@ -6,7 +6,7 @@
 }
 .station {
     padding: 15px;
-    width: 250px;
+    width: 280px;
     height: 130px;
     display: inline-block;    
 }
@@ -30,6 +30,7 @@
 .common_control {
     cursor: pointer;
     margin: 5px;
+    display: inline-block;
     border-color: rgba(240, 240, 240, 1);
     border-style: dashed;
     border-radius: 10px;
@@ -38,17 +39,8 @@
     font-size: x-large;
     padding: 5px;    
 }
-#audio_player_status {
-    /*display: inline-block;*/
-}
 #audio_player_button_stop {   
     display: inline-block;
-}
-#audio_player_button_ranrom {
-
-}
-#audio_player_status_info{
-
 }
 .station_favorit_star {
     width : 48px;
@@ -61,4 +53,7 @@
 .favorit_button_image{
     width : 32px;
     height : 32px;
+}
+#current_station_count {
+    white-space: nowrap;
 }
