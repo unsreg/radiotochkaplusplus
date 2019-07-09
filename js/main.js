@@ -5,8 +5,7 @@ if ('serviceWorker' in navigator) {
                 console.log('ServiceWorker registration successful with scope: ', registration.scope);
             }, (err) => {
                 console.log('ServiceWorker registration failed: ', err);
-            }
-            );
+            });
 }
 
 const GLOBAL = new function () {
@@ -267,7 +266,7 @@ function updateView() {
         });
     });
     domUtils.getElementById("current_station_count").innerText = "Count: " + stationCount;
-    $("#current_station_name").text("Current: ");
+    setRadioStatusCurrentStation(radio.currentStation);
 }
 
 function onClickTag(event) {
@@ -361,7 +360,6 @@ function onClickStationFavorite(event, stationId) {
 }
 
 function setMainBackgroundColor(station) {
-    const container = $("#container");
     if (station) {
         let strHash = crc32Hash(station.id + station.name + station.url).toString();
         let red = parseInt(strHash.substring(0, 3), 10);
@@ -370,9 +368,17 @@ function setMainBackgroundColor(station) {
         red > 255 ? red %= 255 : red;
         green > 255 ? green %= 255 : green;
         blue > 255 ? blue %= 255 : blue;
-        container.css("background-color", "rgb(" + parseInt(red, 10) + ", " + parseInt(green, 10) + ", " + parseInt(blue, 10) + ", 0.2)");
+        domUtils.getElementById("container").style.backgroundColor = "rgb(" + parseInt(red, 10) + ", " + parseInt(green, 10) + ", " + parseInt(blue, 10) + ", 0.2)";
     } else {
-        container.css("background-color", GLOBAL.componentColor.defaultBackColor);
+        domUtils.getElementById("container").style.backgroundColor = GLOBAL.componentColor.defaultBackColor;
+    }
+}
+
+function setRadioStatusCurrentStation(station) {
+    if (station && station.name && station.id) {
+        domUtils.getElementById("current_station_name").innerText = 'Current: "' + station.name + " (" + station.id + ")" + '"';
+    } else {
+        domUtils.getElementById("current_station_name").innerText = "Current: ";
     }
 }
 
@@ -402,26 +408,27 @@ function crc32Hash(string) {
 
 function Radio(stations) {
     const context = this;
-    const audioPlayer = document.getElementById("audio_player");
+    const audioPlayer = domUtils.getElementById("audio_player");
     const radioStations = stations;
-    const stationNameElement = $("#current_station_name");
 
     this.currentStation = null;
 
     audioPlayer.onerror = () => {
-        $("#station_element_id_" + context.currentStation.id).css("background-color", GLOBAL.componentColor.errorColor);
-        stationNameElement.text("Current: ");
+        domUtils.getElementById("station_element_id_" + context.currentStation.id).style.backgroundColor = GLOBAL.componentColor.errorColor;
+        setRadioStatusCurrentStation();
         setMainBackgroundColor();
         context.currentStation = null;
     };
     audioPlayer.onplay = () => {
-        $("#station_element_id_" + context.currentStation.id).css("background-color", GLOBAL.componentColor.activeColor);
-        stationNameElement.text('Current: "' + context.currentStation.name + " (" + context.currentStation.id + ")" + '"');
+        domUtils.getElementById("station_element_id_" + context.currentStation.id).style.backgroundColor = GLOBAL.componentColor.activeColor;
+        setRadioStatusCurrentStation(context.currentStation);
         setMainBackgroundColor(context.currentStation);
     };
     audioPlayer.onpause = () => {
-        $("#station_element_id_" + context.currentStation.id).css("background-color", GLOBAL.componentColor.inactiveColor);
-        stationNameElement.text("Current: ");
+        if (context.currentStation && context.currentStation.id) {
+            domUtils.getElementById("station_element_id_" + context.currentStation.id).style.backgroundColor = GLOBAL.componentColor.inactiveColor;
+        }
+        setRadioStatusCurrentStation();
         setMainBackgroundColor();
         context.currentStation = null;
     };
@@ -452,7 +459,7 @@ function Radio(stations) {
                     audioPlayer.pause();
                 }
             } else {
-                $("#station_element_id_" + context.currentStation.id).css("background-color", GLOBAL.componentColor.inactiveColor);
+                domUtils.getElementById("station_element_id_" + context.currentStation.id).style.backgroundColor = GLOBAL.componentColor.inactiveColor;
                 this.currentStation = newStation;
                 audioPlayer.src = context.currentStation.url;
                 audioPlayer.play();
