@@ -1,3 +1,14 @@
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker
+            .register('./js/service-worker.js', {scope: './js/'})
+            .then((registration) => {
+                console.log('ServiceWorker registration successful with scope: ', registration.scope);
+            }, (err) => {
+                console.log('ServiceWorker registration failed: ', err);
+            }
+            );
+}
+
 const GLOBAL = new function () {
     const context = this;
     const storageName = "rtpp_app_state_v20190706";
