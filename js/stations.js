@@ -273,13 +273,6 @@ var stations = [
         "logo": "0088.jpg"
     },
     {
-        "id": "90",
-        "tags": ["ua", "shanson"],
-        "name": "Радио Шансон, Украина",
-        "url": "http://217.20.164.163:8002/;",
-        "logo": "0090.jpg"
-    },
-    {
         "id": "92",
         "tags": ["ua"],
         "name": "Бiзнес, Украина",
@@ -1202,5 +1195,12 @@ var stations = [
         "name": "loungefm",
         "url": "http://cast.loungefm.com.ua/loungefm",
         "logo": "0701.png"
+    },
+    {
+        "id": "702",
+        "tags": ["ua"],
+        "name": "Power FM Ukraine",
+        "url": "http://media2.brg.ua:8000/power_h",
+        "logo": "0702.jpg"
     }
 ];
