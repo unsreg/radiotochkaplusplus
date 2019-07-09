@@ -1,6 +1,9 @@
 #container {
     padding: 5px;
 }
+#station_container {
+    text-align: center;
+}
 .station {
     padding: 15px !important;
     max-width: 434px !important;/* 480px with all margin and padding */
