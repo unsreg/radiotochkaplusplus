@@ -4,6 +4,12 @@
 #station_container {
     text-align: center;
 }
+.container_separator {
+    border-width: 2px;
+    border-color: rgba(245, 245, 245, 1);
+    border-style: solid;
+    margin: 5px;
+}
 .station {
     padding: 10px !important;
     min-width: 240px;
