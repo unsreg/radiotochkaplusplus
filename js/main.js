@@ -313,9 +313,10 @@ function createElementStation(station) {
             '<div tabIndex="0" class="common_control station" id="' + stationElementId + '" ' + 'onclick="radio.play(' + station.id + ');" ondblclick="onClickStationFavorite(event, ' + station.id + ');" style="background-color: ' + backColor + ';">' +
             '<div class="station_image_container">' +
             '<img class="station_favorit_star" src="' + favoriteStateImage + '" alt="Favorite" onclick="onClickStationFavorite(event, ' + station.id + ');"/>' +
+            '<div class="station_status_id">' + '(' + station.id + ')' + '</div>' +
             '<img class="station_image" src="img/stations/' + station.logo + ' ' + '"alt="' + station.name + '">' +
             '</div>' +
-            '<div class="station_name_and_id">' + station.name + ' (' + station.id + ')' + '</div>' +
+            '<div class="station_status_name">' + station.name + '</div>' +
             '</div>';
     return result;
 }

@@ -5,24 +5,37 @@
     text-align: center;
 }
 .station {
-    padding: 15px !important;
-    max-width: 434px !important;/* 480px with all margin and padding */
+    padding: 10px !important;
+    min-width: 240px;
+    width: 240px;
+    max-width: 454px;/* 480px with margin + padding */
 }
 .station_image {
     width: 82px;
     border-radius: 30%;
     float: right;
-    margin-left: 10px;
 }
 .station_image_container {
     display: inline-block;
-    width: 100%
+    width: 100%;
 }
-.station_name_and_id {
+.station_status_name {
     clear: both;
-    margin-top: 5px;
+    margin-top: 10px;
     font-size: large;
     text-align: center;
+    cursor: default;
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.station_status_id {
+    font-size: large;
+    text-align: center;
+    display: inline-block;
+    margin: 15px;
+    white-space: nowrap;
 }
 #audio_player {
     display: none;
@@ -48,7 +61,6 @@
     float: left;
 }
 .tag {
-    display: inline-block;
 }
 .favorit_button_image{
     width : 32px;
@@ -56,4 +68,8 @@
 }
 #current_station_count {
     white-space: nowrap;
+    cursor: default;
+}
+#current_station_name {
+    cursor: default;
 }
