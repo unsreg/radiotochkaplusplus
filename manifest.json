@@ -1,7 +1,7 @@
 {
     "name": "RadioTochka++",
     "short_name": "rtpp",
-    "start_url": "./js/",
+    "start_url": ".",
     "display": "standalone",
     "icons": [
         {
