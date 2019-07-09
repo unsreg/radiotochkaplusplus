@@ -1,19 +1,15 @@
 #container {
     padding: 5px;
 }
-#station_container {
-    text-align: center;
-}
 .station {
-    padding: 15px;
-    width: 280px;
-    height: 130px;
-    display: inline-block;    
+    padding: 15px !important;
+    max-width: 434px !important;/* 480px with all margin and padding */
 }
 .station_image {
     width: 82px;
     border-radius: 30%;
     float: right;
+    margin-left: 10px;
 }
 .station_image_container {
     display: inline-block;
@@ -23,6 +19,7 @@
     clear: both;
     margin-top: 5px;
     font-size: large;
+    text-align: center;
 }
 #audio_player {
     display: none;

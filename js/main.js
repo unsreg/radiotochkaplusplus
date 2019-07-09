@@ -310,14 +310,12 @@ function createElementStation(station) {
         favoriteStateImage = "img/star_empty.svg";
     }
     const result = '' +
-            '<div tabIndex="0" class="station common_control" id="' + stationElementId + '" ' + 'onclick="radio.play(' + station.id + ');" ondblclick="onClickStationFavorite(event, ' + station.id + ');" style="background-color: ' + backColor + ';">' +
+            '<div tabIndex="0" class="common_control station" id="' + stationElementId + '" ' + 'onclick="radio.play(' + station.id + ');" ondblclick="onClickStationFavorite(event, ' + station.id + ');" style="background-color: ' + backColor + ';">' +
             '<div class="station_image_container">' +
             '<img class="station_favorit_star" src="' + favoriteStateImage + '" alt="Favorite" onclick="onClickStationFavorite(event, ' + station.id + ');"/>' +
             '<img class="station_image" src="img/stations/' + station.logo + ' ' + '"alt="' + station.name + '">' +
             '</div>' +
-            '<div class="station_name_and_id">' +
-            '<p class="">' + station.name + ' (' + station.id + ')' + '</p>' +
-            '</div>' +
+            '<div class="station_name_and_id">' + station.name + ' (' + station.id + ')' + '</div>' +
             '</div>';
     return result;
 }
