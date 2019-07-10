@@ -1,30 +1,36 @@
 #container {
     padding: 5px;
 }
+
 #station_container {
     text-align: center;
 }
+
 .container_separator {
     border-width: 2px;
     border-color: rgba(245, 245, 245, 1);
     border-style: solid;
     margin: 5px;
 }
+
 .station {
     padding: 10px !important;
     min-width: 240px;
     width: 240px;
-    max-width: 454px;/* 480px with margin + padding */
+    max-width: 454px; /* 480px with margin + padding */
 }
+
 .station_image {
     width: 82px;
     border-radius: 30%;
     float: right;
 }
+
 .station_image_container {
     display: inline-block;
     width: 100%;
 }
+
 .station_status_name {
     clear: both;
     margin-top: 10px;
@@ -36,6 +42,7 @@
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+
 .station_status_id {
     font-size: large;
     text-align: center;
@@ -43,9 +50,11 @@
     margin: 15px;
     white-space: nowrap;
 }
+
 #audio_player {
     display: none;
 }
+
 .common_control {
     cursor: pointer;
     margin: 5px;
@@ -56,26 +65,32 @@
     border-width: 3px;
     background-color: honeydew;
     font-size: x-large;
-    padding: 5px;    
+    padding: 5px;
 }
-#audio_player_button_stop {   
+
+#audio_player_button_stop {
     display: inline-block;
 }
-.station_favorit_star {
-    width : 48px;
-    height : 48px;
+
+.station_favorite_star {
+    width: 48px;
+    height: 48px;
     float: left;
 }
+
 .tag {
 }
-.favorit_button_image{
-    width : 32px;
-    height : 32px;
+
+.favorite_button_image {
+    width: 32px;
+    height: 32px;
 }
+
 #current_station_count {
     white-space: nowrap;
     cursor: default;
 }
+
 #current_station_name {
     cursor: default;
 }

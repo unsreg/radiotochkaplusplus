@@ -1,20 +1,22 @@
+"use strict";
+
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker
-            .register('./service-worker.js', {scope: '.'})
-            .then((registration) => {
-                console.log('ServiceWorker registration successful with scope: ', registration.scope);
-            }, (err) => {
-                console.log('ServiceWorker registration failed: ', err);
-            });
+        .register('./service-worker.js', {scope: '.'})
+        .then((registration) => {
+            console.log('ServiceWorker registration successful with scope: ', registration.scope);
+        }, (error) => {
+            console.log('ServiceWorker registration failed: ', error);
+        });
 }
 
 const GLOBAL = new function () {
     const context = this;
-    const storageName = "rtpp_app_state_v20190706";
+    const storageName = "rtpp_app_state_v20190710";
     const defaultStorageObj = {
         favorites: [],
         selectedTags: [],
-        favoritActiveFlag: false
+        favoriteActiveFlag: false
     };
     this.cache = new Cache();
     // ==========================================
@@ -34,12 +36,17 @@ const GLOBAL = new function () {
     };
     // ==========================================    
     this.getAppStorage = function () {
+        function removeOldVersion(version) {
+            if (localStorage.getItem(version) !== null) {
+                localStorage.removeItem(version);
+            }
+        }
+
         function AppStorage() {
             const storageCacheKey = "app_storage_cache";
-            // remove old version
-            if (localStorage.getItem("rtpp_app_state") !== null) {
-                localStorage.removeItem("rtpp_app_state");
-            }
+            removeOldVersion("rtpp_app_state");
+            removeOldVersion("rtpp_app_state_v20190706");
+
             context.cache.set(storageCacheKey, () => {
                 if (!localStorage.getItem(storageName)) {
                     localStorage.setItem(storageName, JSON.stringify(defaultStorageObj));
@@ -54,19 +61,20 @@ const GLOBAL = new function () {
                 context.cache.invalidate(storageCacheKey);
             };
         }
+
         const appStorage = new AppStorage();
-        return  () => {
+        return () => {
             return appStorage;
         };
     }();
     // ==========================================    
     this.getAllStationElements = function () {
-        const allStationElenentsCacheKey = "all_station_elements_cache_key";
-        context.cache.set(allStationElenentsCacheKey, () => {
+        const allStationElementsCacheKey = "all_station_elements_cache_key";
+        context.cache.set(allStationElementsCacheKey, () => {
             return domUtils.getChildElementsById("station_container");
         });
         return () => {
-            return context.cache.get(allStationElenentsCacheKey);
+            return context.cache.get(allStationElementsCacheKey);
         };
     }();
     this.getAllStations = function () {
@@ -117,16 +125,16 @@ const GLOBAL = new function () {
     this.getFavoriteActiveFlag = function () {
         const favoriteActiveFlagCacheKey = "favorite_active_flag_cache_key";
         context.cache.set(favoriteActiveFlagCacheKey, () => {
-            return context.getAppStorage().getState()["favoritActiveFlag"];
+            return context.getAppStorage().getState()["favoriteActiveFlag"];
         });
         return () => {
             return context.cache.get(favoriteActiveFlagCacheKey);
         };
     }();
-    this.invertFavoritActiveFlag = function () {
+    this.invertFavoriteActiveFlag = function () {
         const favoriteActiveFlagCacheKey = "favorite_active_flag_cache_key";
         const state = context.getAppStorage().getState();
-        state["favoritActiveFlag"] = !state["favoritActiveFlag"];
+        state["favoriteActiveFlag"] = !state["favoriteActiveFlag"];
         context.getAppStorage().setState(state);
         context.cache.invalidate(favoriteActiveFlagCacheKey);
     };
@@ -217,9 +225,9 @@ function onLoadBody() {
     }
     // add favorite
     tagElements += '' +
-            '<span id="favorite_tag_id" tabIndex="0" class="tag common_control" onclick="onClickTag(event);" style="background-color: ' + favColor + ';">' +
-            '<img class="favorit_button_image" src="img/star_fill.svg" alt="Favorite"/>' +
-            '</span>';
+        '<span id="favorite_tag_id" tabIndex="0" class="tag common_control" onclick="onClickTag(event);" style="background-color: ' + favColor + ';">' +
+        '<img class="favorite_button_image" src="img/star_fill.svg" alt="Favorite"/>' +
+        '</span>';
     GLOBAL.getAllTags().forEach(tag => {
         tagElements += createElementTag(tag);
     });
@@ -273,7 +281,7 @@ function onClickTag(event) {
     const tagElement = $(event.currentTarget);
 
     if (tagElement.attr("id") === "favorite_tag_id") {// if favorite tag element
-        GLOBAL.invertFavoritActiveFlag();
+        GLOBAL.invertFavoriteActiveFlag();
         if (GLOBAL.getFavoriteActiveFlag()) {
             tagElement.css("background-color", GLOBAL.componentColor.activeColor);
         } else {
@@ -297,17 +305,16 @@ function onClickTag(event) {
 }
 
 function createElementTag(tagName) {
-    let backColor = GLOBAL.componentColor.inactiveColor;
+    let backColor;
     if (GLOBAL.getSelectedTags().includes(tagName)) {
         backColor = GLOBAL.componentColor.activeColor;
     } else {
         backColor = GLOBAL.componentColor.inactiveColor;
     }
-    const result = '' +
-            '<span tabIndex="0" class="tag common_control" onclick="onClickTag(event);" style="background-color: ' + backColor + ';">' +
-            tagName
-            + '</span>';
-    return result;
+    return '' +
+        '<span tabIndex="0" class="tag common_control" onclick="onClickTag(event);" style="background-color: ' + backColor + ';">' +
+        tagName
+        + '</span>';
 }
 
 function createElementStation(station) {
@@ -319,24 +326,19 @@ function createElementStation(station) {
     } else {
         favoriteStateImage = "img/star_empty.svg";
     }
-    const result = '' +
-            '<div tabIndex="0" class="common_control station" id="' + stationElementId + '" ' + 'onclick="radio.play(' + station.id + ');" ondblclick="onClickStationFavorite(event, ' + station.id + ');" style="background-color: ' + backColor + ';">' +
-            '<div class="station_image_container">' +
-            '<img class="station_favorit_star" src="' + favoriteStateImage + '" alt="Favorite" onclick="onClickStationFavorite(event, ' + station.id + ');"/>' +
-            '<div class="station_status_id">' + '(' + station.id + ')' + '</div>' +
-            '<img class="station_image" src="img/stations/' + station.logo + ' ' + '"alt="' + station.name + '">' +
-            '</div>' +
-            '<div class="station_status_name">' + station.name + '</div>' +
-            '</div>';
-    return result;
+    return '' +
+        '<div tabIndex="0" class="common_control station" id="' + stationElementId + '" ' + 'onclick="radio.play(' + station.id + ');" ondblclick="onClickStationFavorite(event, ' + station.id + ');" style="background-color: ' + backColor + ';">' +
+        '<div class="station_image_container">' +
+        '<img class="station_favorite_star" src="' + favoriteStateImage + '" alt="Favorite" onclick="onClickStationFavorite(event, ' + station.id + ');"/>' +
+        '<div class="station_status_id">' + '(' + station.id + ')' + '</div>' +
+        '<img class="station_image" src="img/stations/' + station.logo + ' ' + '"alt="' + station.name + '">' +
+        '</div>' +
+        '<div class="station_status_name">' + station.name + '</div>' +
+        '</div>';
 }
 
 function isFavorite(stationId) {
-    if (GLOBAL.getFavorites().includes(stationId.toString())) {
-        return true;
-    } else {
-        return false;
-    }
+    return GLOBAL.getFavorites().includes(stationId.toString());
 }
 
 function onClickStationFavorite(event, stationId) {
@@ -352,7 +354,7 @@ function onClickStationFavorite(event, stationId) {
         favoriteStationIds.push(stationId.toString());
         favoriteStateImage = "img/star_fill.svg";
     }
-    $("#station_element_id_" + stationId + " > .station_image_container > .station_favorit_star").attr("src", favoriteStateImage);
+    $("#station_element_id_" + stationId + " > .station_image_container > .station_favorite_star").attr("src", favoriteStateImage);
     GLOBAL.setFavorites(favoriteStationIds);
     if (GLOBAL.getFavoriteActiveFlag()) {
         updateView();
@@ -368,7 +370,7 @@ function setMainBackgroundColor(station) {
         red > 255 ? red %= 255 : red;
         green > 255 ? green %= 255 : green;
         blue > 255 ? blue %= 255 : blue;
-        domUtils.getElementById("container").style.backgroundColor = "rgb(" + parseInt(red, 10) + ", " + parseInt(green, 10) + ", " + parseInt(blue, 10) + ", 0.2)";
+        domUtils.getElementById("container").style.backgroundColor = "rgb(" + parseInt(red.toString(), 10) + ", " + parseInt(green.toString(), 10) + ", " + parseInt(blue.toString(), 10) + ", 0.2)";
     } else {
         domUtils.getElementById("container").style.backgroundColor = GLOBAL.componentColor.defaultBackColor;
     }
@@ -395,6 +397,7 @@ function crc32Hash(string) {
         }
         return crcTable;
     }
+
     function crc32(str) {
         let crcTable = window.crcTable || (window.crcTable = makeCRCTable());
         let crc = 0 ^ (-1);
@@ -403,6 +406,7 @@ function crc32Hash(string) {
         }
         return (crc ^ (-1)) >>> 0;
     }
+
     return crc32(string);
 }
 

@@ -15,19 +15,19 @@ self.addEventListener('install', (event) => {
     console.log('[ServiceWorker] Install');
     // Precache static resources here.
     event.waitUntil(
-            caches.open(CACHE_NAME)
+        caches.open(CACHE_NAME)
             .then((cache) => {
-                console.log('[ServiceWorker] Pre-caching offline page');
-                return cache.addAll(FILES_TO_CACHE);
-            }
+                    console.log('[ServiceWorker] Pre-caching offline page');
+                    return cache.addAll(FILES_TO_CACHE);
+                }
             ));
-    self.skipWaiting();
+    return self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {
     console.log('[ServiceWorker] Activate');
     // Remove previous cached data from disk.
-    self.clients.claim();
+    return self.clients.claim();
 });
 
 self.addEventListener('fetch', (event) => {
@@ -38,12 +38,12 @@ self.addEventListener('fetch', (event) => {
         return;
     }
     event.respondWith(
-            fetch(event.request)
+        fetch(event.request)
             .catch(() => {
                 return caches.open(CACHE_NAME)
-                        .then((cache) => {
-                            return cache.match(OFFLINE_PAGE);
-                        });
+                    .then((cache) => {
+                        return cache.match(OFFLINE_PAGE);
+                    });
             })
-            );
+    );
 });
