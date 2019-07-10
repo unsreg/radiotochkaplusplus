@@ -1,5 +1,5 @@
 CACHE MANIFEST
-#version 5
+#version 6
 # 2019-07-10 v20190710
 
 # ========================================
@@ -36,7 +36,6 @@ CACHE MANIFEST
 ./apple-icon-72x72.png
 ./apple-icon-76x76.png
 ./apple-icon-precomposed.png
-./download.png
 ./favicon-16x16.png
 ./favicon-32x32.png
 ./favicon-96x96.png
