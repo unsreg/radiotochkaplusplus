@@ -1,5 +1,5 @@
 CACHE MANIFEST
-#version 6
+#version 7
 # 2019-07-10 v20190710
 
 # ========================================
@@ -43,6 +43,7 @@ CACHE MANIFEST
 ./ms-icon-150x150.png
 ./ms-icon-310x310.png
 ./ms-icon-70x70.png
+./icon-512x512.png
 
 # STATION IMAGE
 ./img/stations/0001.jpg
