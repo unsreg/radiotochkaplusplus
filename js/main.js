@@ -16,7 +16,8 @@ const GLOBAL = new function () {
     const defaultStorageObj = {
         favorites: [],
         selectedTags: [],
-        favoriteActiveFlag: false
+        favoriteActiveFlag: false,
+        stationOrderArray: []
     };
     this.cache = new Cache();
     // ==========================================
@@ -153,6 +154,27 @@ const GLOBAL = new function () {
         state["favorites"] = favorites;
         context.getAppStorage().setState(state);
         context.cache.invalidate(favoritesCacheKey);
+    };
+    this.getStationOrderArray = function () {
+        const stationOrderArrayCacheKey = "station_order_array_cache_key";
+        context.cache.set(stationOrderArrayCacheKey, () => {
+            const currentState = context.getAppStorage().getState();
+            if (!currentState["stationOrderArray"]) {
+                currentState["stationOrderArray"] = [];
+                context.getAppStorage().setState(currentState);
+            }
+            return context.getAppStorage().getState()["stationOrderArray"];
+        });
+        return () => {
+            return context.cache.get(stationOrderArrayCacheKey);
+        };
+    }();
+    this.setStationOrderArray = function (stationOrderArray) {
+        const stationOrderArrayCacheKey = "station_order_array_cache_key";
+        const state = context.getAppStorage().getState();
+        state["stationOrderArray"] = stationOrderArray;
+        context.getAppStorage().setState(state);
+        context.cache.invalidate(stationOrderArrayCacheKey);
     };
 
     function Cache() {
@@ -410,6 +432,19 @@ function crc32Hash(string) {
     return crc32(string);
 }
 
+function changeStationOrder(station) {
+    const stationOrderArray = GLOBAL.getStationOrderArray();
+    if (stationOrderArray.includes(station.id)) {
+        stationOrderArray.splice(stationOrderArray.indexOf(station.id), 1)
+    }
+    stationOrderArray.push(station.id);
+    GLOBAL.setStationOrderArray(stationOrderArray);
+
+    const stationContainerElement = domUtils.getElementById("station_container");
+    const currentStationElement = domUtils.getElementById("station_element_id_" + station.id);
+    stationContainerElement.insertBefore(currentStationElement, stationContainerElement.firstChild);
+}
+
 function Radio(stations) {
     const context = this;
     const audioPlayer = domUtils.getElementById("audio_player");
@@ -427,6 +462,7 @@ function Radio(stations) {
         domUtils.getElementById("station_element_id_" + context.currentStation.id).style.backgroundColor = GLOBAL.componentColor.activeColor;
         setRadioStatusCurrentStation(context.currentStation);
         setMainBackgroundColor(context.currentStation);
+        changeStationOrder(context.currentStation);
     };
     audioPlayer.onpause = () => {
         if (context.currentStation && context.currentStation.id) {
