@@ -7,14 +7,14 @@ export default class StationManager {
     instanceExists = false;
 
     constructor(stationProvider) {
-        if (instanceExists) {
+        if (this.instanceExists) {
 
         }
-        if (!instance) {
-            //instance = this;
-            //Object.freeze(this.instance);
-        }
-        return this.instance;
+        // if (!instance) {
+        //     //instance = this;
+        //     //Object.freeze(this.instance);
+        // }
+        // return this.instance;
     }
 
     addStationProvider(stationProvider) {

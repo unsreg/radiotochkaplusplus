@@ -39,11 +39,13 @@
 
     <script type="module" src="./js/logger/SimpleLogger.js"></script>
     <script type="module" src="./js/StationManager.js"></script>
-    <script>
-        "use strict";
+    <script type="module">
+        import Engine from "./js/Engine.js";
         import StationManager from "./js/StationManager.js";
 
         const stationManager = new StationManager();
+
+        new Engine().start();
     </script>
 </head>
 
