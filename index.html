@@ -36,6 +36,15 @@
 
     <script src="js/jquery-3.4.1.min.js"></script>
     <script src="js/stations.js"></script>
+
+    <script type="module" src="./js/logger/SimpleLogger.js"></script>
+    <script type="module" src="./js/StationManager.js"></script>
+    <script>
+        "use strict";
+        import StationManager from "./js/StationManager.js";
+
+        const stationManager = new StationManager();
+    </script>
 </head>
 
 <body onload="onLoadBody();">
