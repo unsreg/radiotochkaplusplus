@@ -1,7 +1,20 @@
-/* global self, caches, fetch */
 // https://developers.google.com/web/fundamentals/codelabs/your-first-pwapp/
 
 'use strict';
+import SimpleLogger from "./js/logger/SimpleLogger.js";
+
+const LOGGER = SimpleLogger;
+const CONTEXT = self;
+
+if ('serviceWorker' in CONTEXT.navigator) {
+    CONTEXT.navigator.serviceWorker
+        .register('./service-worker.js', {scope: '.'})
+        .then((registration) => {
+            LOGGER.info('ServiceWorker registration successful with scope: ', registration.scope);
+        }, (error) => {
+            LOGGER.error('ServiceWorker registration failed: ', error);
+        });
+}
 
 const OFFLINE_PAGE = "./offline.html";
 // Update cache names any time any of the cached files change.
@@ -11,27 +24,27 @@ const FILES_TO_CACHE = [
     OFFLINE_PAGE
 ];
 
-self.addEventListener('install', (event) => {
-    console.log('[ServiceWorker] Install');
+CONTEXT.addEventListener('install', (event) => {
+    LOGGER.info('[ServiceWorker] Install');
     // Precache static resources here.
     event.waitUntil(
-        caches.open(CACHE_NAME)
+        CONTEXT.caches.open(CACHE_NAME)
             .then((cache) => {
-                    console.log('[ServiceWorker] Pre-caching offline page');
+                    LOGGER.info('[ServiceWorker] Pre-caching offline page');
                     return cache.addAll(FILES_TO_CACHE);
                 }
             ));
-    return self.skipWaiting();
+    return CONTEXT.skipWaiting();
 });
 
-self.addEventListener('activate', (event) => {
-    console.log('[ServiceWorker] Activate');
+CONTEXT.addEventListener('activate', (event) => {
+    LOGGER.info('[ServiceWorker] Activate');
     // Remove previous cached data from disk.
-    return self.clients.claim();
+    return CONTEXT.clients.claim();
 });
 
-self.addEventListener('fetch', (event) => {
-    console.log('[ServiceWorker] Fetch', event.request.url);
+CONTEXT.addEventListener('fetch', (event) => {
+    LOGGER.info('[ServiceWorker] Fetch', event.request.url);
     // Add fetch event handler here.
     if (event.request.mode !== 'navigate') {
         // Not a page navigation, bail.
@@ -40,7 +53,7 @@ self.addEventListener('fetch', (event) => {
     event.respondWith(
         fetch(event.request)
             .catch(() => {
-                return caches.open(CACHE_NAME)
+                return CONTEXT.caches.open(CACHE_NAME)
                     .then((cache) => {
                         return cache.match(OFFLINE_PAGE);
                     });

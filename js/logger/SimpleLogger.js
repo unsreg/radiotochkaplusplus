@@ -2,7 +2,7 @@
 
 import Logger from "./Logger.js"
 
-export default class SimpleLogger extends Logger {
+class SimpleLogger extends Logger {
 
     info(message) {
         console.info(SimpleLogger.format("INFO", message));
@@ -21,3 +21,8 @@ export default class SimpleLogger extends Logger {
             + "[" + level + "\t]" + "\t" + message + "\n";
     }
 }
+
+const simpleLogger = new SimpleLogger();
+Object.freeze(simpleLogger);
+
+export default simpleLogger;
