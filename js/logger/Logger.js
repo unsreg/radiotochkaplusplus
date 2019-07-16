@@ -1,6 +1,6 @@
 "use strict";
 
-export class Logger {
+export default class Logger {
     info(message) {
         throw "Method is not implemented";
     }

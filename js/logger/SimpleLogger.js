@@ -1,6 +1,6 @@
 "use strict";
 
-import {Logger} from "./Logger.js"
+import Logger from "./Logger.js"
 
 export default class SimpleLogger extends Logger {
 

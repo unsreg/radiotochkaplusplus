@@ -2,7 +2,7 @@
 
 import StationProvider from "./StationProvider.js"
 
-export class StaticStationProvider extends StationProvider {
+export default class StaticStationProvider extends StationProvider {
     staticStations = [];
 
     constructor(stations) {
