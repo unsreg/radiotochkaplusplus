@@ -1,9 +1,8 @@
 // https://developers.google.com/web/fundamentals/codelabs/your-first-pwapp/
 
 'use strict';
-import SimpleLogger from "./js/logger/SimpleLogger.js";
+import {LOGGER} from "./js/logger/SimpleLogger.js";
 
-const LOGGER = SimpleLogger;
 const CONTEXT = self;
 
 if ('serviceWorker' in CONTEXT.navigator) {

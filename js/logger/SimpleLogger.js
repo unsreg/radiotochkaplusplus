@@ -25,4 +25,4 @@ class SimpleLogger extends Logger {
 const simpleLogger = new SimpleLogger();
 Object.freeze(simpleLogger);
 
-export default simpleLogger;
+export const LOGGER = simpleLogger;

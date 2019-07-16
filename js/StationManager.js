@@ -1,20 +1,9 @@
 "use strict";
 
-// import StationProvider from "./station_provider/StationProvider.js";
-
-export default class StationManager {
+class StationManager {
     stationProviders = {};
-    instanceExists = false;
 
-    constructor(stationProvider) {
-        if (this.instanceExists) {
-
-        }
-        // if (!instance) {
-        //     //instance = this;
-        //     //Object.freeze(this.instance);
-        // }
-        // return this.instance;
+    constructor() {
     }
 
     addStationProvider(stationProvider) {
@@ -24,16 +13,9 @@ export default class StationManager {
             this.stationProviders[stationProvider.id.toString()] = stationProvider;
         }
     }
-
-    static get instance() {
-        let instance;
-        return function () {
-            if (!instance) {
-                instance = new StationManager();
-                Object.freeze(instance);
-            }
-            return instance;
-        }();
-    }
-
 }
+
+const stationManager = new StationManager();
+Object.freeze(stationManager);
+
+export const STATION_MANAGER = stationManager;

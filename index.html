@@ -41,13 +41,11 @@
     <script src="js/jquery-3.4.1.min.js"></script>
     <script src="js/stations.js"></script>
 
-    <script type="module" src="./js/logger/SimpleLogger.js"></script>
-    <script type="module" src="./js/StationManager.js"></script>
     <script type="module">
         import Engine from "./js/Engine.js";
-        import StationManager from "./js/StationManager.js";
+        import {STATION_MANAGER} from "./js/StationManager.js";
 
-        const stationManager = new StationManager();
+        STATION_MANAGER.addStationProvider({});
 
         new Engine().start();
     </script>
