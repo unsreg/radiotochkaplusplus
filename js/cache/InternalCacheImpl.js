@@ -61,14 +61,15 @@ export default class InternalCacheImpl extends InternalCache {
     #getLocal(key) {
         let result = null;
         if (this.#cache[key]) {
-            let cachedItem = this.#cache[key];
+            const cachedItem = this.#cache[key];
             const timeDelta = (new Date().getTime() - cachedItem.loadTime) / 1000;
             if (!cachedItem.data || (timeDelta > cachedItem.ttl)) {
                 cachedItem.data = cachedItem.dataProviderCallback();
                 cachedItem.loadTime = new Date().getTime();
                 this.#cache[key] = cachedItem;
+                LOGGER.info("Local cache is updated. Updated key: (" + key + ")")
             }
-            result = this.#cache[key].data;
+            result = cachedItem.data;
         } else {
             LOGGER.warn("Local cache doesn't have this key: (" + key + ")");
         }
@@ -85,24 +86,24 @@ export default class InternalCacheImpl extends InternalCache {
             storedItem = {};
         }
         if (storedItem[key]) {
-            let cachedItem = storedItem[key];
+            const cachedItem = storedItem[key];
             const timeDelta = (new Date().getTime() - cachedItem.loadTime) / 1000;
             if (!cachedItem.data || (timeDelta > cachedItem.ttl)) {
                 cachedItem.data = cachedItem.dataProviderCallback();
                 cachedItem.loadTime = new Date().getTime();
                 storedItem[key] = cachedItem;
                 storage.setItem(this.getName(), JSON.stringify(storedItem));
+                LOGGER.info("Global cache is updated. Updated key: (" + key + ")")
             }
-            result = storedItem[key].data;
+            result = cachedItem.data;
         } else {
-            LOGGER.warn("Local cache doesn't have this key: (" + key + ")");
+            LOGGER.warn("Global cache doesn't have this key: (" + key + ")");
         }
         return result;
     }
 
     #saveLocal(savedItem) {
-        savedItem.let
-        result = null;
+        let result = null;
         if (this.#cache[savedItem.key]) {
             result = this.#cache[savedItem.key].data;
         } else {
