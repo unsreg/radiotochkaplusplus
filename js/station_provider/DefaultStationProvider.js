@@ -2,7 +2,7 @@
 
 import StationProvider from "./StationProvider.js"
 
-export default class StaticStationProvider extends StationProvider {
+export default class DefaultStationProvider extends StationProvider {
     staticStations = [];
 
     constructor(stations) {
@@ -10,11 +10,15 @@ export default class StaticStationProvider extends StationProvider {
         this.staticStations = stations;
     }
 
-    get stations() {
+    getStations() {
         return this.staticStations;
     }
 
-    get id() {
+    getStationById(id) {
+        return this.staticStations.find(value => value.id.toString().eq(id.toString()));
+    }
+
+    getId() {
         return super.id;
     }
 }

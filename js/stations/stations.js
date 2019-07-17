@@ -1,4 +1,6 @@
-const stations = [
+"use strict";
+
+export const STATIONS = [
     {
         "id": "1",
         "tags": ["ru"],
