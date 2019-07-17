@@ -1,7 +1,7 @@
 "use strict";
 
-import {LOGGER} from "./logger/SimpleLogger.js";
-import {STATION_MANAGER} from "./StationManager.js";
+import LOGGER from "./logger/SimpleLogger.js";
+import STATION_MANAGER from "./StationManager.js";
 
 export default class Engine {
 

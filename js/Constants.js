@@ -12,7 +12,7 @@ class Constants {
     }
 }
 
-const constants = new Constants();
-Object.freeze(constants);
+const CONSTANTS = new Constants();
+Object.freeze(CONSTANTS);
 
-export const CONSTANTS = constants;
+export default CONSTANTS;

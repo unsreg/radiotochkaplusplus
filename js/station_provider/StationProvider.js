@@ -1,15 +1,21 @@
 "use strict";
 
 export default class StationProvider {
-    getStations() {
+    #name;
+
+    constructor(providerName) {
+        this.#name = providerName;
+    }
+
+    getName() {
+        return this.#name;
+    }
+
+    getAll() {
         throw new Error("Method is not implemented");
     }
 
-    getId() {
-        throw new Error("Method is not implemented");
-    }
-
-    getStationById(id) {
+    getById(id) {
         throw new Error("Method is not implemented");
     }
 }

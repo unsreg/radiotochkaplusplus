@@ -10,15 +10,11 @@ export default class DefaultStationProvider extends StationProvider {
         this.staticStations = stations;
     }
 
-    getStations() {
+    getAll() {
         return this.staticStations;
     }
 
-    getStationById(id) {
+    getById(id) {
         return this.staticStations.find(value => value.id.toString().eq(id.toString()));
-    }
-
-    getId() {
-        return super.id;
     }
 }

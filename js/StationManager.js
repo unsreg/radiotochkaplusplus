@@ -15,7 +15,7 @@ class StationManager {
     }
 }
 
-const stationManager = new StationManager();
-Object.freeze(stationManager);
+const STATION_MANAGER = new StationManager();
+Object.freeze(STATION_MANAGER);
 
-export const STATION_MANAGER = stationManager;
+export default STATION_MANAGER;

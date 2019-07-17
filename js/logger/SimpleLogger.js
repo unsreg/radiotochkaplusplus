@@ -22,7 +22,7 @@ class SimpleLogger extends Logger {
     }
 }
 
-const simpleLogger = new SimpleLogger();
-Object.freeze(simpleLogger);
+const LOGGER = new SimpleLogger();
+Object.freeze(LOGGER);
 
-export const LOGGER = simpleLogger;
+export default LOGGER;
