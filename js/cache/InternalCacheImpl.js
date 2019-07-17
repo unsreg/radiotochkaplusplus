@@ -62,17 +62,13 @@ export default class InternalCacheImpl extends InternalCache {
         let result = null;
         if (this.#cache[key]) {
             let cachedItem = this.#cache[key];
-            if (cachedItem.data) {
-                const timeDelta = (new Date().getTime() - cachedItem.loadTime) / 1000;
-                if(timeDelta > cachedItem.ttl) {
-
-                }
-            } else {
+            const timeDelta = (new Date().getTime() - cachedItem.loadTime) / 1000;
+            if (!cachedItem.data || (timeDelta > cachedItem.ttl)) {
                 cachedItem.data = cachedItem.dataProviderCallback();
                 cachedItem.loadTime = new Date().getTime();
+                this.#cache[key] = cachedItem;
             }
-            this.#cache[key] = cachedItem;
-            result = cachedItem.data;
+            result = this.#cache[key].data;
         } else {
             LOGGER.warn("Local cache doesn't have this key: (" + key + ")");
         }
@@ -80,7 +76,28 @@ export default class InternalCacheImpl extends InternalCache {
     }
 
     #getGlobal(key) {
-
+        let result = null;
+        const storage = this.#GLOBAL_CONTEXT.localStorage;
+        let storedItem;
+        if (storage.getItem(this.getName())) {
+            storedItem = JSON.parse(storage.getItem(this.getName()));
+        } else {
+            storedItem = {};
+        }
+        if (storedItem[key]) {
+            let cachedItem = storedItem[key];
+            const timeDelta = (new Date().getTime() - cachedItem.loadTime) / 1000;
+            if (!cachedItem.data || (timeDelta > cachedItem.ttl)) {
+                cachedItem.data = cachedItem.dataProviderCallback();
+                cachedItem.loadTime = new Date().getTime();
+                storedItem[key] = cachedItem;
+                storage.setItem(this.getName(), JSON.stringify(storedItem));
+            }
+            result = storedItem[key].data;
+        } else {
+            LOGGER.warn("Local cache doesn't have this key: (" + key + ")");
+        }
+        return result;
     }
 
     #saveLocal(savedItem) {
