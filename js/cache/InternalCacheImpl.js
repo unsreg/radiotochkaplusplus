@@ -1,7 +1,9 @@
 "use strict";
 
-import {LOGGER} from "../logger/SimpleLogger.js";
+import LOGGER_FACTORY from "../logger/LoggerFactory";
 import InternalCache from "./InternalCache.js";
+
+const LOGGER = LoggerFactory.getLogger();
 
 export default class InternalCacheImpl extends InternalCache {
     #GLOBAL_CONTEXT = self;

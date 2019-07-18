@@ -15,8 +15,8 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-title" content="RadioTochka++">
 
-    <!-- init service worker -->
-    <script type="module" src="./service-worker.js"></script>
+    <!--     init service worker -->
+    <!--    <script type="module" src="./service-worker.js"></script>-->
 
     <link rel="apple-touch-icon" href="./apple-icon-152x152.png">
 
@@ -43,7 +43,7 @@
     <script type="module">import "./js/app.js";</script>
 </head>
 
-<body onload="onLoadBodyInner();">
+<body onload="">
 <div id="container">
     <div id="audio_player_container">
         <div id="audio_player_status">
@@ -63,14 +63,8 @@
     <div class="container_separator"></div>
     <div id="station_container"></div>
 </div>
+<script>
 
-<script type="module" src="js/main.js"></script>
-<script type="module">
-    import {onLoadBody} from "./js/main.js";
-
-    function onLoadBodyInner() {
-        onLoadBody();
-    }
 </script>
 </body>
 

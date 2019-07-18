@@ -2,15 +2,15 @@
 
 import Logger from "./Logger.js"
 
-class SimpleLogger extends Logger {
-    static #instance;
+const SINGLETON = class SimpleLogger extends Logger {
+    static #INSTANCE;
 
     constructor() {
         super();
-        if (!SimpleLogger.#instance) {
-            SimpleLogger.#instance = this;
+        if (!SINGLETON.#INSTANCE) {
+            SINGLETON.#INSTANCE = this;
         }
-        return SimpleLogger.#instance;
+        return SINGLETON.#INSTANCE;
     }
 
     info(message) {
@@ -38,9 +38,9 @@ class SimpleLogger extends Logger {
         return "[" + new Date().toISOString() + "]"
             + "[" + level + "\t]" + "\t" + message + "\n";
     }
-}
+};
 
-const LOGGER = new SimpleLogger();
-Object.freeze(LOGGER);
+const SIMPLE_LOGGER = new SINGLETON();
+Object.freeze(SIMPLE_LOGGER);
 
-export default LOGGER;
+export default SIMPLE_LOGGER;
