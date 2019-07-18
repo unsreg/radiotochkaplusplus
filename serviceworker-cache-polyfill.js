@@ -10,10 +10,9 @@ if (!Cache.prototype.add) {
         return this.addAll([request]);
     };
 }
-
 if (!Cache.prototype.addAll) {
     Cache.prototype.addAll = function addAll(requests) {
-        var cache = this;
+        const cache = this;
 
         // Since DOMExceptions are not constructable:
         function NetworkError(message) {
@@ -23,68 +22,61 @@ if (!Cache.prototype.addAll) {
         }
 
         NetworkError.prototype = Object.create(Error.prototype);
-
         return Promise.resolve().then(function () {
-            if (arguments.length < 1) throw new TypeError();
-
+            if (arguments.length < 1) {
+                throw new TypeError();
+            }
             // Simulate sequence<(Request or USVString)> binding:
             // var sequence = [];
-
-            requests = requests.map(function (request) {
+            requests = requests.map((request) => {
                 if (request instanceof Request) {
                     return request;
                 } else {
                     return String(request); // may throw TypeError
                 }
             });
-
             return Promise.all(
-                requests.map(function (request) {
+                requests.map((request) => {
                     if (typeof request === 'string') {
                         request = new Request(request);
                     }
-
-                    var scheme = new URL(request.url).protocol;
-
+                    const scheme = new URL(request.url).protocol;
                     if (scheme !== 'http:' && scheme !== 'https:') {
                         throw new NetworkError("Invalid scheme");
                     }
-
                     return fetch(request.clone());
                 })
             );
-        }).then(function (responses) {
+        }).then((responses) => {
             // TODO: check that requests don't overwrite one another
             // (don't think this is possible to polyfill due to opaque responses)
             return Promise.all(
-                responses.map(function (response, i) {
+                responses.map((response, i) => {
                     return cache.put(requests[i], response);
                 })
             );
-        }).then(function () {
+        }).then(() => {
             return undefined;
         });
     };
 }
-
 if (!CacheStorage.prototype.match) {
     // This is probably vulnerable to race conditions (removing caches etc)
     CacheStorage.prototype.match = function match(request, opts) {
-        var caches = this;
-
-        return this.keys().then(function (cacheNames) {
-            var match;
-
-            return cacheNames.reduce(function (chain, cacheName) {
-                return chain.then(function () {
-                    return match || caches.open(cacheName).then(function (cache) {
-                        return cache.match(request, opts);
-                    }).then(function (response) {
-                        match = response;
-                        return match;
+        const caches = this;
+        return this.keys().then((cacheNames) => {
+            let match;
+            return cacheNames.reduce((chain, cacheName) => {
+                    return chain.then(() => {
+                        return match || caches.open(cacheName).then((cache) => {
+                            return cache.match(request, opts);
+                        }).then((response) => {
+                            match = response;
+                            return match;
+                        });
                     });
-                });
-            }, Promise.resolve());
+                },
+                Promise.resolve());
         });
     };
 }
