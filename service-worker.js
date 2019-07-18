@@ -1,7 +1,7 @@
 // https://developers.google.com/web/fundamentals/codelabs/your-first-pwapp/
 
-'use strict';
-import {LOGGER} from "./js/logger/SimpleLogger.js";
+"use strict";
+import LOGGER from "./js/logger/SimpleLogger.js";
 
 const CONTEXT = self;
 

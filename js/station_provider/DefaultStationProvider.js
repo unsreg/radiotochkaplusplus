@@ -6,7 +6,7 @@ export default class DefaultStationProvider extends StationProvider {
     staticStations = [];
 
     constructor(stations) {
-        super();
+        super("Default station provider");
         this.staticStations = stations;
     }
 

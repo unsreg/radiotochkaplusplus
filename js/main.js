@@ -1,4 +1,5 @@
 "use strict";
+import {STATIONS} from "./stations/stations.js"
 
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker
@@ -81,7 +82,7 @@ const GLOBAL = new function () {
     this.getAllStations = function () {
         const allStationsCacheKey = "all_stations_cache_key";
         context.cache.set(allStationsCacheKey, () => {
-            return stations ? stations : [];/* global stations */
+            return STATIONS ? STATIONS : [];/* global stations */
         });
         return () => {
             return context.cache.get(allStationsCacheKey);
@@ -225,7 +226,7 @@ const domUtils = new function () {
     };
 }();
 
-function onLoadBody() {
+export const onLoadBody = function onLoadBody() {
     window.addEventListener("unhandledrejection", promiseRejectionEvent => {
         console.log(promiseRejectionEvent);
     });

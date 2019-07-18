@@ -39,19 +39,11 @@
     <link rel="stylesheet" href="css/main.css">
 
     <script src="js/jquery-3.4.1.min.js"></script>
-    <script src="js/stations/stations.js"></script>
 
-    <script type="module">
-        import Engine from "./js/Engine.js";
-        import {STATION_MANAGER} from "./js/StationManager.js";
-
-        STATION_MANAGER.addStationProvider({});
-
-        new Engine().start();
-    </script>
+    <script type="module">import "./js/app.js";</script>
 </head>
 
-<body onload="onLoadBody();">
+<body onload="onLoadBodyInner();">
 <div id="container">
     <div id="audio_player_container">
         <div id="audio_player_status">
@@ -72,7 +64,14 @@
     <div id="station_container"></div>
 </div>
 
-<script src="js/main.js"></script>
+<script type="module" src="js/main.js"></script>
+<script type="module">
+    import {onLoadBody} from "./js/main.js";
+
+    function onLoadBodyInner() {
+        onLoadBody();
+    }
+</script>
 </body>
 
 </html>
