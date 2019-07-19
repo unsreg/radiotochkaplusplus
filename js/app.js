@@ -19,7 +19,7 @@ STATION_MANAGER.addStationProvider(stationProvider);
 function registerServiceworker() {
     if ('serviceWorker' in CONTEXT.navigator) {
         CONTEXT.navigator.serviceWorker
-            .register('./service-worker.js', {scope: '.'})
+            .register('./file-cache-service-worker.js', {scope: '.'})
             .then((registration) => {
                 LOGGER.info('ServiceWorker registration successful with scope: ' + registration.scope);
             }, (error) => {

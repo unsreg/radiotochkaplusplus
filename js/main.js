@@ -3,7 +3,7 @@ import {STATIONS} from "./stations/stations.js"
 
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker
-        .register('./service-worker.js', {scope: '.'})
+        .register('./file-cache-service-worker.js', {scope: '.'})
         .then((registration) => {
             console.log('ServiceWorker registration successful with scope: ', registration.scope);
         }, (error) => {

@@ -1,15 +1,15 @@
 "use strict";
 
-let cacheList = [];
+let cacheList = {};
 
 importScripts('./cache/cache-list-img.js');
-cacheList = cacheList.concat(cacheListImg);
+cacheList["images"] = cacheListImg;
 
 importScripts('./cache/cache-list-css.js');
-cacheList = cacheList.concat(cacheListCss);
+cacheList["styles"] = cacheListCss;
 
 importScripts('./cache/cache-list-js.js');
-cacheList = cacheList.concat(cacheListJs);
+cacheList["scripts"] = cacheListJs;
 
 importScripts('./cache/cache-list-html.js');
-cacheList = cacheList.concat(cacheListHtml);
+cacheList["pages"] = cacheListHtml;
