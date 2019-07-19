@@ -1,15 +1,15 @@
 "use strict";
 
-let cacheList = {};
-
-importScripts('./cache/cache-list-img.js');
-cacheList["images"] = cacheListImg;
-
-importScripts('./cache/cache-list-css.js');
-cacheList["styles"] = cacheListCss;
-
-importScripts('./cache/cache-list-js.js');
-cacheList["scripts"] = cacheListJs;
-
-importScripts('./cache/cache-list-html.js');
-cacheList["pages"] = cacheListHtml;
+const CACHE_VERSION = "8";
+const CACHE_FILES = [
+    './cache/cache-list-img.js',
+    './cache/cache-list-css.js',
+    './cache/cache-list-js.js',
+    './cache/cache-list-html.js',
+    './cache/cache-list-other.js'
+];
+const CACHE_LISTS = {};
+CACHE_FILES.forEach((cacheFile) => {
+    importScripts(cacheFile);
+    CACHE_LISTS[cacheList["name"]] = cacheList;
+});

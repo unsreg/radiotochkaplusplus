@@ -1,8 +1,8 @@
 "use strict";
 
 var cacheList = {
-    name: "pages",
+    name: "other",
     files: [
-        "./offline.html"
+        "./manifest.json"
     ]
 };

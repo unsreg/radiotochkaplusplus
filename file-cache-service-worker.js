@@ -2,131 +2,116 @@
 
 "use strict";
 
-extendCacheAddMissingChrome40Functionality();
+const CONTEXT = self;
+const CONTEXT_NAME = Object.prototype.toString.call(CONTEXT).slice(8, -1);
 
-// This polyfill provides Cache.add(), Cache.addAll(), and CacheStorage.match(),
-// which are not implemented in Chrome 40.
-importScripts('./cache/cache-list.js');
+if (CONTEXT_NAME.toLowerCase() === "Window".toLowerCase()) {
+    registerServiceWorker();
+}
 
-// While overkill for this specific sample in which there is only one cache,
-// this is one best practice that can be followed in general to keep track of
-// multiple caches used by a given service worker, and keep them all versioned.
-// It maps a shorthand identifier for a cache to a specific, versioned cache name.
+if (CONTEXT_NAME.toLowerCase() === "ServiceWorkerGlobalScope".toLowerCase()) {
+    extendCacheAddMissingChrome40Functionality();
 
-// Note that since global state is discarded in between service worker restarts, these
-// variables will be reinitialized each time the service worker handles an event, and you
-// should not attempt to change their values inside an event handler. (Treat them as constants.)
+    importScripts('./cache/cache-list.js');
+    registerListeners();
+}
 
-// If at any point you want to force pages that use this service worker to start using a fresh
-// cache, then increment the CACHE_VERSION value. It will kick off the service worker update
-// flow and the old cache(s) will be purged as part of the activate event handler when the
-// updated service worker is activated.
+function registerServiceWorker() {
+    if ('serviceWorker' in CONTEXT.navigator) {
+        CONTEXT.navigator.serviceWorker
+            .register('./file-cache-service-worker.js', {scope: '.'})
+            .then((registration) => {
+                console.info('ServiceWorker registration successful with scope: ' + registration.scope);
+            }, (error) => {
+                console.info('ServiceWorker registration failed: ' + error);
+            });
+    }
+}
 
-const CACHE_VERSION = 5;
-const CURRENT_CACHES = {
-    prefetch: 'prefetch-cache-v' + CACHE_VERSION
-};
+function registerListeners() {
+    CONTEXT.addEventListener('install', (event) => {
+        const now = Date.now();
 
-self.addEventListener('install', (event) => {
-    debugger;
-
-    const now = Date.now();
-    for (const propertyName in cacheList) {
-        const urlsToPrefetch = cacheList[propertyName];
-        event.waitUntil(
-            caches.open(CURRENT_CACHES.prefetch).then((cache) => {
-                const cachePromises = urlsToPrefetch.map((urlToPrefetch) => {
-                    // This constructs a new URL object using the service worker's script location as the base
-                    // for relative URLs.
-                    const url = new URL(urlToPrefetch, location.href);
-                    // Append a cache-bust=TIMESTAMP URL parameter to each URL's query string.
-                    // This is particularly important when pre-caching resources that are later used in the
-                    // fetch handler as responses directly, without consulting the network (i.e. cache-first).
-                    // If we were to get back a response from the HTTP browser cache for this pre-caching request
-                    // then that stale response would be used indefinitely, or at least until the next time
-                    // the service worker script changes triggering the install flow.
-                    url.search += (url.search ? '&' : '?') + 'cache-bust=' + now;
-
-                    // It's very important to use {mode: 'no-cors'} if there is any chance that
-                    // the resources being fetched are served off of a server that doesn't support
-                    // CORS (http://en.wikipedia.org/wiki/Cross-origin_resource_sharing).
-                    // In this example, www.chromium.org doesn't support CORS, and the fetch()
-                    // would fail if the default mode of 'cors' was used for the fetch() request.
-                    // The drawback of hardcoding {mode: 'no-cors'} is that the response from all
-                    // cross-origin hosts will always be opaque
-                    // (https://slightlyoff.github.io/ServiceWorker/spec/service_worker/index.html#cross-origin-resources)
-                    // and it is not possible to determine whether an opaque response represents a success or failure
-                    // (https://github.com/whatwg/fetch/issues/14).
-                    const request = new Request(url.toString(), {mode: 'no-cors'});
-                    return fetch(request).then((response) => {
-                        if (response.status >= 400) {
-                            throw new Error('request for ' + urlToPrefetch + ' failed with status ' + response.statusText);
-                        }
-                        // Use the original URL without the cache-busting parameter as the key for cache.put().
-                        return cache.put(urlToPrefetch, response);
-                    }).catch((error) => {
-                        console.error('Not caching ' + urlToPrefetch + ' due to ' + error);
+        for (const propertyName in CACHE_LISTS) {
+            const CACHE_LIST = CACHE_LISTS[propertyName];
+            const CACHE_NAME = CACHE_LIST["name"] + "_v" + CACHE_VERSION;
+            const urlsToPrefetch = CACHE_LIST["files"];
+            event.waitUntil(deleteOldCaches());
+            event.waitUntil(
+                CONTEXT.caches.open(CACHE_NAME).then((cache) => {
+                    const cachePromises = urlsToPrefetch.map((urlToPrefetch) => {
+                        const url = new URL(urlToPrefetch, location.href);
+                        url.search += (url.search ? '&' : '?') + 'cache-bust=' + now;
+                        const request = new Request(url.toString(), {mode: 'no-cors'});
+                        return fetch(request).then((response) => {
+                            if (response.status >= 400) {
+                                throw new Error('request for ' + urlToPrefetch + ' failed with status ' + response.statusText);
+                            }
+                            return cache.put(urlToPrefetch, response);
+                        }).catch((error) => {
+                            console.error('Not caching ' + urlToPrefetch + ' due to ' + error);
+                        });
                     });
+                    return Promise.all(cachePromises).then(() => {
+                        console.log('Pre-fetching complete.');
+                    });
+                }).catch((error) => {
+                    console.error('Pre-fetching failed:', error);
+                })
+            );
+        }
+    });
+    CONTEXT.addEventListener('activate', (event) => {
+        event.waitUntil(deleteOldCaches());
+    });
+
+    CONTEXT.addEventListener('fetch', (event) => {
+        // console.log('Handling fetch event for', event.request.url);
+        event.respondWith(
+            // caches.match() will look for a cache entry in all of the caches available to the service worker.
+            // It's an alternative to first opening a specific named cache and then matching on that.
+            CONTEXT.caches.match(event.request).then((response) => {
+                if (response) {
+                    console.log('Found response in cache:', response);
+                    return response;
+                }
+                // console.log('No response found in cache. About to fetch from network...');
+                // event.request will always have the proper mode set ('cors, 'no-cors', etc.) so we don't
+                // have to hardcode 'no-cors' like we do when fetch()ing in the install handler.
+                return fetch(event.request).then((response) => {
+                    console.log('Response from network is:', response);
+                    return response;
+                }).catch((error) => {
+                    // This catch() will handle exceptions thrown from the fetch() operation.
+                    // Note that a HTTP error response (e.g. 404) will NOT trigger an exception.
+                    // It will return a normal response object that has the appropriate error code set.
+                    console.error('Fetching failed:', error);
+                    throw error;
                 });
-                return Promise.all(cachePromises).then(() => {
-                    console.log('Pre-fetching complete.');
-                });
-            }).catch((error) => {
-                console.error('Pre-fetching failed:', error);
             })
         );
-    }
-});
-
-self.addEventListener('activate', (event) => {
-    // Delete all caches that aren't named in CURRENT_CACHES.
-    // While there is only one cache in this example, the same logic will handle the case where
-    // there are multiple versioned caches.
-    const expectedCacheNames = Object.keys(CURRENT_CACHES).map((key) => {
-        return CURRENT_CACHES[key];
     });
-    event.waitUntil(
-        caches.keys().then((cacheNames) => {
+
+    function deleteOldCaches() {
+        const expectedCacheNames = [];
+        for (const propertyName in CACHE_LISTS) {
+            const CACHE_LIST = CACHE_LISTS[propertyName];
+            const CACHE_NAME = CACHE_LIST["name"] + "_v" + CACHE_VERSION;
+            expectedCacheNames.push(CACHE_NAME);
+        }
+        return CONTEXT.caches.keys().then((cacheNames) => {
             return Promise.all(
                 cacheNames.map((cacheName) => {
-                    debugger;
-                    if (expectedCacheNames.indexOf(cacheName) === -1) {
+                    if (!expectedCacheNames.includes(cacheName)) {
                         // If this cache name isn't present in the array of "expected" cache names, then delete it.
                         console.log('Deleting out of date cache:', cacheName);
-                        return caches.delete(cacheName);
+                        return CONTEXT.caches.delete(cacheName);
                     }
                 })
             );
         })
-    );
-});
-
-self.addEventListener('fetch', (event) => {
-    console.log('Handling fetch event for', event.request.url);
-    event.respondWith(
-        // caches.match() will look for a cache entry in all of the caches available to the service worker.
-        // It's an alternative to first opening a specific named cache and then matching on that.
-        caches.match(event.request).then((response) => {
-            if (response) {
-                console.log('Found response in cache:', response);
-                return response;
-            }
-            console.log('No response found in cache. About to fetch from network...');
-            // event.request will always have the proper mode set ('cors, 'no-cors', etc.) so we don't
-            // have to hardcode 'no-cors' like we do when fetch()ing in the install handler.
-            return fetch(event.request).then((response) => {
-                console.log('Response from network is:', response);
-                return response;
-            }).catch((error) => {
-                // This catch() will handle exceptions thrown from the fetch() operation.
-                // Note that a HTTP error response (e.g. 404) will NOT trigger an exception.
-                // It will return a normal response object that has the appropriate error code set.
-                console.error('Fetching failed:', error);
-                throw error;
-            });
-        })
-    );
-});
+    }
+}
 
 function extendCacheAddMissingChrome40Functionality() {
     // source - https://github.com/GoogleChrome/samples/blob/gh-pages/service-worker/serviceworker-cache-polyfill.js
@@ -143,13 +128,13 @@ function extendCacheAddMissingChrome40Functionality() {
 
     NetworkError.prototype = Object.create(Error.prototype);
 
-    if (!Cache.prototype.add) {
-        Cache.prototype.add = function add(request) {
+    if (!CONTEXT.Cache.prototype.add) {
+        CONTEXT.Cache.prototype.add = function add(request) {
             return this.addAll([request]);
         };
     }
-    if (!Cache.prototype.addAll) {
-        Cache.prototype.addAll = (requests) => {
+    if (!CONTEXT.Cache.prototype.addAll) {
+        CONTEXT.Cache.prototype.addAll = (requests) => {
             const cache = this;
             return Promise.resolve().then(() => {
                 if (arguments.length < 1) {
@@ -189,9 +174,9 @@ function extendCacheAddMissingChrome40Functionality() {
             });
         };
     }
-    if (!CacheStorage.prototype.match) {
+    if (!CONTEXT.CacheStorage.prototype.match) {
         // This is probably vulnerable to race conditions (removing caches etc)
-        CacheStorage.prototype.match = (request, opts) => {
+        CONTEXT.CacheStorage.prototype.match = (request, opts) => {
             const caches = this;
             return this.keys().then((cacheNames) => {
                 let match;
