@@ -49,23 +49,21 @@ function registerServiceWorker() {
             .register('./file-cache-service-worker.js', {scope: '.'})
             .then((registration) => {
                 console.info('ServiceWorker registration successful with scope: ' + registration.scope);
-            }, (error) => {
+            })
+            .then(() => {
+                CONTEXT.navigator.serviceWorker.ready.then((worker) => {
+                    return worker.sync.register('syncdata');
+                });
+            })
+            .catch((error) => {
                 console.info('ServiceWorker registration failed: ' + error);
             });
-        // CONTEXT.navigator.serviceWorker.ready
-        //     .then(() => {
-        //         console.log("Controller initialized successfully");
-        //         CONTEXT.navigator.serviceWorker.controller.postMessage({'cache-version': CACHE_VERSION});
-        //     })
-        //     .catch((error) => {
-        //         console.error(error);
-        //     });
     }
 }
 
 function registerListeners() {
     CONTEXT.addEventListener('install', (event) => {
-        event.waitUntil(CONTEXT.skipWaiting());
+        console.info("Service worker: installing");
         const now = Date.now();
 
         for (const propertyName in CACHE_LISTS) {
@@ -96,13 +94,19 @@ function registerListeners() {
                 })
             );
         }
+        event.waitUntil(CONTEXT.skipWaiting());
     });
     CONTEXT.addEventListener('activate', (event) => {
-        event.waitUntil(CONTEXT.skipWaiting());
+        console.info("Service worker: activating");
+
         event.waitUntil(deleteOldCaches());
+        event.waitUntil(CONTEXT.skipWaiting());
+        event.waitUntil(CONTEXT.clients.claim());
     });
 
     CONTEXT.addEventListener('fetch', (event) => {
+        console.info("Service worker: request to server");
+
         event.waitUntil(CONTEXT.skipWaiting());
         // console.log('Handling fetch event for', event.request.url);
         event.respondWith(
@@ -130,7 +134,10 @@ function registerListeners() {
         );
     });
     CONTEXT.addEventListener('message', (event) => {
+        console.info("Service worker: processing message");
+
         console.log("Got reply from service worker: " + JSON.stringify(event.data));
+
         if (event.data && event.data["cache-version"]) {
             changeCacheVersion(event.data["cache-version"].toString());
         }
