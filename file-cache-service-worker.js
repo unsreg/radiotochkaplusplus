@@ -4,16 +4,43 @@
 
 const CONTEXT = self;
 const CONTEXT_NAME = Object.prototype.toString.call(CONTEXT).slice(8, -1);
+const CACHE_ROOT = "./cache";
+let CURRENT_CACHE_VERSION = null;
 
 if (CONTEXT_NAME.toLowerCase() === "Window".toLowerCase()) {
     registerServiceWorker();
+
+    let checkContextCount = 0;
+    const checkContextTimer = setInterval(() => {
+        if (checkContextCount >= 100) {
+            clearInterval(checkContextTimer);
+            console.log("------ 3");
+            throw new Error("Controller waiting timeout");
+        } else {
+            console.log("------ 1");
+            checkContextCount++;
+        }
+        if (CONTEXT.navigator.serviceWorker.controller) {
+            console.log("------ 2");
+            clearInterval(checkContextTimer);
+            console.log("Controller initialized successfully");
+            CONTEXT.navigator.serviceWorker.controller.postMessage({'cache-version': CACHE_VERSION});
+        }
+    }, 500);
 }
 
 if (CONTEXT_NAME.toLowerCase() === "ServiceWorkerGlobalScope".toLowerCase()) {
-    extendCacheAddMissingChrome40Functionality();
-
-    importScripts('./cache/cache-list.js');
+    importScripts(CACHE_ROOT + '/cache-list.js');
     registerListeners();
+}
+
+function changeCacheVersion(newCacheVersion) {
+    if (newCacheVersion) {
+        console.info("Cache version changed, from (" + CURRENT_CACHE_VERSION + ") to (" + newCacheVersion + ")");
+        CURRENT_CACHE_VERSION = newCacheVersion;
+    } else {
+        console.warn("(newCacheVersion) variable is undefined");
+    }
 }
 
 function registerServiceWorker() {
@@ -25,16 +52,25 @@ function registerServiceWorker() {
             }, (error) => {
                 console.info('ServiceWorker registration failed: ' + error);
             });
+        // CONTEXT.navigator.serviceWorker.ready
+        //     .then(() => {
+        //         console.log("Controller initialized successfully");
+        //         CONTEXT.navigator.serviceWorker.controller.postMessage({'cache-version': CACHE_VERSION});
+        //     })
+        //     .catch((error) => {
+        //         console.error(error);
+        //     });
     }
 }
 
 function registerListeners() {
     CONTEXT.addEventListener('install', (event) => {
+        event.waitUntil(CONTEXT.skipWaiting());
         const now = Date.now();
 
         for (const propertyName in CACHE_LISTS) {
             const CACHE_LIST = CACHE_LISTS[propertyName];
-            const CACHE_NAME = CACHE_LIST["name"] + "_v" + CACHE_VERSION;
+            const CACHE_NAME = CACHE_LIST["name"] + "_v" + CURRENT_CACHE_VERSION;
             const urlsToPrefetch = CACHE_LIST["files"];
             event.waitUntil(deleteOldCaches());
             event.waitUntil(
@@ -62,10 +98,12 @@ function registerListeners() {
         }
     });
     CONTEXT.addEventListener('activate', (event) => {
+        event.waitUntil(CONTEXT.skipWaiting());
         event.waitUntil(deleteOldCaches());
     });
 
     CONTEXT.addEventListener('fetch', (event) => {
+        event.waitUntil(CONTEXT.skipWaiting());
         // console.log('Handling fetch event for', event.request.url);
         event.respondWith(
             // caches.match() will look for a cache entry in all of the caches available to the service worker.
@@ -91,12 +129,18 @@ function registerListeners() {
             })
         );
     });
+    CONTEXT.addEventListener('message', (event) => {
+        console.log("Got reply from service worker: " + JSON.stringify(event.data));
+        if (event.data && event.data["cache-version"]) {
+            changeCacheVersion(event.data["cache-version"].toString());
+        }
+    });
 
     function deleteOldCaches() {
         const expectedCacheNames = [];
         for (const propertyName in CACHE_LISTS) {
             const CACHE_LIST = CACHE_LISTS[propertyName];
-            const CACHE_NAME = CACHE_LIST["name"] + "_v" + CACHE_VERSION;
+            const CACHE_NAME = CACHE_LIST["name"] + "_v" + CURRENT_CACHE_VERSION;
             expectedCacheNames.push(CACHE_NAME);
         }
         return CONTEXT.caches.keys().then((cacheNames) => {
@@ -110,90 +154,5 @@ function registerListeners() {
                 })
             );
         })
-    }
-}
-
-function extendCacheAddMissingChrome40Functionality() {
-    // source - https://github.com/GoogleChrome/samples/blob/gh-pages/service-worker/serviceworker-cache-polyfill.js
-
-    // Via https://github.com/coonsta/cache-polyfill/blob/master/dist/serviceworker-cache-polyfill.js
-    // Adds in some functionality missing in Chrome 40.
-
-    // Since DOMExceptions are not constructable:
-    function NetworkError(message) {
-        this.name = 'NetworkError';
-        this.code = 19;
-        this.message = message;
-    }
-
-    NetworkError.prototype = Object.create(Error.prototype);
-
-    if (!CONTEXT.Cache.prototype.add) {
-        CONTEXT.Cache.prototype.add = function add(request) {
-            return this.addAll([request]);
-        };
-    }
-    if (!CONTEXT.Cache.prototype.addAll) {
-        CONTEXT.Cache.prototype.addAll = (requests) => {
-            const cache = this;
-            return Promise.resolve().then(() => {
-                if (arguments.length < 1) {
-                    throw new TypeError();
-                }
-                // Simulate sequence<(Request or USVString)> binding:
-                // var sequence = [];
-                requests = requests.map((request) => {
-                    if (request instanceof Request) {
-                        return request;
-                    } else {
-                        return String(request); // may throw TypeError
-                    }
-                });
-                return Promise.all(
-                    requests.map((request) => {
-                        if (typeof request === 'string') {
-                            request = new Request(request);
-                        }
-                        const scheme = new URL(request.url).protocol;
-                        if (scheme !== 'http:' && scheme !== 'https:') {
-                            throw new NetworkError("Invalid scheme");
-                        }
-                        return fetch(request.clone());
-                    })
-                );
-            }).then((responses) => {
-                // TODO: check that requests don't overwrite one another
-                // (don't think this is possible to polyfill due to opaque responses)
-                return Promise.all(
-                    responses.map((response, i) => {
-                        return cache.put(requests[i], response);
-                    })
-                );
-            }).then(() => {
-                return undefined;
-            });
-        };
-    }
-    if (!CONTEXT.CacheStorage.prototype.match) {
-        // This is probably vulnerable to race conditions (removing caches etc)
-        CONTEXT.CacheStorage.prototype.match = (request, opts) => {
-            const caches = this;
-            return this.keys().then((cacheNames) => {
-                let match;
-                return cacheNames.reduce((chain, cacheName) => {
-                        return chain.then(() => {
-                            return match || caches
-                                .open(cacheName)
-                                .then((cache) => {
-                                    return cache.match(request, opts);
-                                }).then((response) => {
-                                    match = response;
-                                    return match;
-                                });
-                        });
-                    },
-                    Promise.resolve());
-            });
-        };
     }
 }
