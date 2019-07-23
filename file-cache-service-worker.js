@@ -3,36 +3,10 @@
 "use strict";
 
 const CONTEXT = self;
-const CONTEXT_NAME = Object.prototype.toString.call(CONTEXT).slice(8, -1);
-const CACHE_ROOT = "./cache";
 let CURRENT_CACHE_VERSION = null;
 
-if (CONTEXT_NAME.toLowerCase() === "Window".toLowerCase()) {
-    registerServiceWorker();
-
-    let checkContextCount = 0;
-    const checkContextTimer = setInterval(() => {
-        if (checkContextCount >= 100) {
-            clearInterval(checkContextTimer);
-            console.log("------ 3");
-            throw new Error("Controller waiting timeout");
-        } else {
-            console.log("------ 1");
-            checkContextCount++;
-        }
-        if (CONTEXT.navigator.serviceWorker.controller) {
-            console.log("------ 2");
-            clearInterval(checkContextTimer);
-            console.log("Controller initialized successfully");
-            CONTEXT.navigator.serviceWorker.controller.postMessage({'cache-version': CACHE_VERSION});
-        }
-    }, 500);
-}
-
-if (CONTEXT_NAME.toLowerCase() === "ServiceWorkerGlobalScope".toLowerCase()) {
-    importScripts(CACHE_ROOT + '/cache-list.js');
-    registerListeners();
-}
+importScripts('./cache/cache-list.js');
+registerListeners();
 
 function changeCacheVersion(newCacheVersion) {
     if (newCacheVersion) {
@@ -40,24 +14,6 @@ function changeCacheVersion(newCacheVersion) {
         CURRENT_CACHE_VERSION = newCacheVersion;
     } else {
         console.warn("(newCacheVersion) variable is undefined");
-    }
-}
-
-function registerServiceWorker() {
-    if ('serviceWorker' in CONTEXT.navigator) {
-        CONTEXT.navigator.serviceWorker
-            .register('./file-cache-service-worker.js', {scope: '.'})
-            .then((registration) => {
-                console.info('ServiceWorker registration successful with scope: ' + registration.scope);
-            })
-            .then(() => {
-                CONTEXT.navigator.serviceWorker.ready.then((worker) => {
-                    return worker.sync.register('syncdata');
-                });
-            })
-            .catch((error) => {
-                console.info('ServiceWorker registration failed: ' + error);
-            });
     }
 }
 

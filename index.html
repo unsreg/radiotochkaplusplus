@@ -15,14 +15,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-title" content="RadioTochka++">
 
-    <!-- START init file cache service worker -->
-    <!--    <script src="./cache/cache-version.js"></script>-->
-    <!--    <script src="./file-cache-service-worker.js"></script>-->
-    <!-- END init file cache service worker -->
-    <script type="module" src="index.js"></script>
-
     <link rel="apple-touch-icon" href="./img/ico/apple-icon-152x152.png">
-
     <link rel="apple-touch-icon" sizes="57x57" href="./img/ico/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="./img/ico/apple-icon-60x60.png">
     <link rel="apple-touch-icon" sizes="72x72" href="./img/ico/apple-icon-72x72.png">
@@ -43,11 +36,9 @@
     <link rel="stylesheet" href="./css/main.css">
 
     <script src="./js/jquery-3.4.1.min.js"></script>
-
-    <script type="module">import "./js/app.js";</script>
 </head>
 
-<body onload="">
+<body>
 <div id="container">
     <div id="audio_player_container">
         <div id="audio_player_status">
@@ -67,9 +58,7 @@
     <div class="container_separator"></div>
     <div id="station_container"></div>
 </div>
-<script>
-
-</script>
+<script type="module" src="index.js"></script>
 </body>
 
 </html>

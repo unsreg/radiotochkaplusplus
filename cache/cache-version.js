@@ -1,3 +1,4 @@
 "use strict";
 
-export const CACHE_VERSION = "11";
+const CACHE_VERSION = "12";
+export default CACHE_VERSION;
