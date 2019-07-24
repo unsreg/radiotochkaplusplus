@@ -2,10 +2,11 @@
 
 import APPLICATION from "./js/Application.js";
 import LOGGER_FACTORY from "./js/logger/LoggerFactory.js";
+import {Level} from "./js/logger/Logger.js";
 import CACHE_VERSION from "./cache/cache-version.js";
 
 const CONTEXT = self;
-const LOGGER = LOGGER_FACTORY.getLogger();
+const LOGGER = LOGGER_FACTORY.getLogger(Level.ERROR);
 
 document.addEventListener("DOMContentLoaded", () => {
     LOGGER.info("Event: DOMContentLoaded");
@@ -43,6 +44,9 @@ const checkContextTimer = setInterval(() => {
         throw new Error("Controller waiting timeout");
     } else {
         LOGGER.info("------ 1");
+        LOGGER.warn("------ 1");
+        LOGGER.error("------ 1");
+        LOGGER.setLevel(1);
         checkContextCount++;
     }
     if (CONTEXT.navigator.serviceWorker.controller) {

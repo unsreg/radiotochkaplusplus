@@ -1,14 +1,14 @@
 "use strict";
 
-export default class Logger {
-    static INFO = 1;
-    static WARN = 2;
-    static ERROR = 3;
-
+class Logger {
     #level;
 
-    constructor() {
-        this.setLevel(Logger.INFO);
+    constructor(level) {
+        if (level) {
+            this.setLevel(level);
+        } else {
+            this.setLevel(Level.ALL);
+        }
     }
 
     getLevel() {
@@ -16,10 +16,15 @@ export default class Logger {
     }
 
     setLevel(level) {
-        if (level < Logger.INFO || level > Logger.ERROR) {
+        if (level < Level.NONE || level > Level.ALL) {
             throw new Error("Logger doesn't support this level (" + level + ")");
         }
         this.#level = level;
+        this.reset();
+    }
+
+    reset() {
+        throw new Error("Method is not implemented");
     }
 
     info(message) {
@@ -34,3 +39,14 @@ export default class Logger {
         throw new Error("Method is not implemented");
     }
 }
+
+class Level {
+    static NONE = 0;
+    static ERROR = 1;
+    static WARN = 2;
+    static INFO = 3;
+    static ALL = 4;
+}
+
+export {Logger, Level};
+
