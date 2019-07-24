@@ -13,13 +13,13 @@ function changeCacheVersion(newCacheVersion) {
         console.info("Cache version changed, from (" + CURRENT_CACHE_VERSION + ") to (" + newCacheVersion + ")");
         CURRENT_CACHE_VERSION = newCacheVersion;
     } else {
-        console.warn("(newCacheVersion) variable is undefined");
+        console.warn("(newCacheVersion) is undefined");
     }
 }
 
 function registerListeners() {
     CONTEXT.addEventListener('install', (event) => {
-        console.info("Service worker: installing");
+        console.info("Service worker event: install");
         const now = Date.now();
 
         for (const propertyName in CACHE_LISTS) {
@@ -53,18 +53,35 @@ function registerListeners() {
         event.waitUntil(CONTEXT.skipWaiting());
     });
     CONTEXT.addEventListener('activate', (event) => {
-        console.info("Service worker: activating");
+        console.info("Service worker event: activate");
 
-        event.waitUntil(deleteOldCaches());
+        //event.waitUntil(deleteOldCaches());
         event.waitUntil(CONTEXT.skipWaiting());
         event.waitUntil(CONTEXT.clients.claim());
     });
 
     CONTEXT.addEventListener('fetch', (event) => {
-        console.info("Service worker: request to server");
+        console.info("Service worker event: fetch");
 
         event.waitUntil(CONTEXT.skipWaiting());
         // console.log('Handling fetch event for', event.request.url);
+
+        // if (CURRENT_CACHE_VERSION) {
+        //     event.respondWith(fromCache(event.request));
+        //     event.waitUntil(update(event.request));
+        // } else {
+        //     event.respondWith(fromNetwork(event.request))
+        //         .catch((error) => {
+        //             console.error(error);
+        //         });
+        // }
+        //
+        // event.waitUntil(
+        //     update(event.request)
+        //     // В конце, после получения "свежих" данных от сервера уведомляем всех клиентов.
+        //         .then(refresh)
+        // );
+
         event.respondWith(
             // caches.match() will look for a cache entry in all of the caches available to the service worker.
             // It's an alternative to first opening a specific named cache and then matching on that.
@@ -89,17 +106,62 @@ function registerListeners() {
             })
         );
     });
-    CONTEXT.addEventListener('message', (event) => {
-        console.info("Service worker: processing message");
 
-        console.log("Got reply from service worker: " + JSON.stringify(event.data));
+    CONTEXT.addEventListener('message', (event) => {
+        console.info("Service worker event: message (" + JSON.stringify(event.data) + ")");
 
         if (event.data && event.data["cache-version"]) {
             changeCacheVersion(event.data["cache-version"].toString());
         }
     });
 
+    function fromCache(request) {
+        return caches.open(CACHE).then((cache) =>
+            cache.match(request).then((matching) =>
+                matching || Promise.reject('no-match')
+            ));
+    }
+
+    function update(request) {
+        return caches.open(CACHE).then((cache) =>
+            fetch(request).then((response) =>
+                cache.put(request, response.clone()).then(() => response)
+            )
+        );
+    }
+
+    // refresh all clients
+    function refresh(response) {
+        return CONTEXT.clients.matchAll().then((clients) => {
+            clients.forEach((client) => {
+                // Подробнее про ETag можно прочитать тут
+                // https://en.wikipedia.org/wiki/HTTP_ETag
+                const message = {
+                    type: 'refresh',
+                    url: response.url,
+                    eTag: response.headers.get('ETag')
+                };
+                // Уведомляем клиент об обновлении данных.
+                client.postMessage(JSON.stringify(message));
+            });
+        });
+    }
+
+    // Временно-ограниченный запрос.
+    function fromNetwork(request, timeout) {
+        return new Promise((fulfill, reject) => {
+            const timeoutId = setTimeout(reject, timeout);
+            fetch(request).then((response) => {
+                clearTimeout(timeoutId);
+                fulfill(response);
+            }, reject);
+        });
+    }
+
     function deleteOldCaches() {
+        if (!CURRENT_CACHE_VERSION) {
+            return;
+        }
         const expectedCacheNames = [];
         for (const propertyName in CACHE_LISTS) {
             const CACHE_LIST = CACHE_LISTS[propertyName];

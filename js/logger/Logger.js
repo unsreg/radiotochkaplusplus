@@ -1,9 +1,9 @@
 "use strict";
 
 export default class Logger {
-    static INFO = "INFO";
-    static WARN = "WARN";
-    static ERROR = "ERROR";
+    static INFO = 1;
+    static WARN = 2;
+    static ERROR = 3;
 
     #level;
 
@@ -16,7 +16,7 @@ export default class Logger {
     }
 
     setLevel(level) {
-        if (level !== Logger.INFO && level !== Logger.WARN && level !== Logger.ERROR) {
+        if (level < Logger.INFO || level > Logger.ERROR) {
             throw new Error("Logger doesn't support this level (" + level + ")");
         }
         this.#level = level;

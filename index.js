@@ -25,11 +25,12 @@ function registerServiceWorker() {
             })
             .then(() => {
                 CONTEXT.navigator.serviceWorker.ready.then((worker) => {
+                    LOGGER.info("ServiceWorker event: ready");
                     return worker.sync.register('syncdata');
                 });
             })
             .catch((error) => {
-                LOGGER.info('ServiceWorker registration failed: ' + error);
+                LOGGER.info('ServiceWorker event: registration failed: ' + error);
             });
     }
 }
