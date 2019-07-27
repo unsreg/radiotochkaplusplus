@@ -2,7 +2,7 @@
 
 import APPLICATION from "./js/Application.js";
 import LOGGER_FACTORY from "./js/logger/LoggerFactory.js";
-import {Level} from "./js/logger/Logger.js";
+import Level from "./js/logger/Level.js";
 import CACHE_VERSION from "./cache/cache-version.js";
 
 const CONTEXT = self;

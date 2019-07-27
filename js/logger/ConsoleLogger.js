@@ -2,24 +2,36 @@
 
 "use strict";
 
-import {Level, Logger} from "./Logger.js"
+import Logger from "./Logger.js"
+import Level from "./Level.js"
 
 const GLOBAL_CONTEXT = self;
 
 export default class ConsoleLogger extends Logger {
-    #initialized = false;
+    #level;
 
     constructor(level) {
-        super(level);
-        this.#initialized = true;
-        this.reset();
+        super();
+        if (level) {
+            this.setLevel(level);
+        } else {
+            this.setLevel(Level.ALL);
+        }
     }
 
-    reset() {
-        // base class calls this method first time
-        if (!this.#initialized) {
-            return;
+    getLevel() {
+        return this.#level;
+    }
+
+    setLevel(level) {
+        if (level < Level.NONE || level > Level.ALL) {
+            throw new Error("Logger doesn't support this level (" + level + ")");
         }
+        this.#level = level;
+        this.#init();
+    }
+
+    #init = () => {
         const methods = [
             'assert', 'clear', 'count', 'debug', 'dir', 'dirxml', 'error',
             'exception', 'group', 'groupCollapsed', 'groupEnd', 'info', 'log',
@@ -59,5 +71,5 @@ export default class ConsoleLogger extends Logger {
         if (this.getLevel() < Level.ERROR) {
             this.error = noop;
         }
-    }
+    };
 };
