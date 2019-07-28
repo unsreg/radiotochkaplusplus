@@ -1,10 +1,12 @@
 "use strict";
 
 import ConsoleLogger from "./ConsoleLogger.js";
+import Level from "./Level.js";
 
 const SINGLETON = class LoggerFactory {
     static #INSTANCE;
     static #LOGGER;
+    static #level = Level.ALL;
 
     constructor() {
         if (!SINGLETON.#INSTANCE) {
@@ -13,9 +15,9 @@ const SINGLETON = class LoggerFactory {
         return SINGLETON.#INSTANCE;
     }
 
-    getLogger(level) {
+    getLogger() {
         if (!LoggerFactory.#LOGGER) {
-            LoggerFactory.#LOGGER = new ConsoleLogger(level);
+            LoggerFactory.#LOGGER = new ConsoleLogger(LoggerFactory.#level);
         }
         return LoggerFactory.#LOGGER;
     }

@@ -1,8 +1,5 @@
 "use strict";
 
-var cacheList = {
-    name: "other",
-    files: [
-        "./manifest.json"
-    ]
-};
+CACHES["other"] = [
+    "./manifest.json"
+];

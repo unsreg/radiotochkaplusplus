@@ -1,9 +1,6 @@
 "use strict";
 
-var cacheList = {
-    name: "styles",
-    files: [
-        "./css/reset.css",
-        "./css/main.css"
-    ]
-};
+CACHES["styles"] = [
+    "./css/reset.css",
+    "./css/main.css"
+];
