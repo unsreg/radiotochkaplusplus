@@ -1202,5 +1202,12 @@ const stations = [
         "name": "Power FM Ukraine",
         "url": "http://media2.brg.ua:8000/power_h",
         "logo": "0702.webp"
+    },
+    {
+        "id": "703",
+        "tags": ["solo", "piano", "classic", "relax"],
+        "name": "Solo piano radio",
+        "url": "http://pianosolo.streamguys1.com/live",
+        "logo": "0703.webp"
     }
 ];
