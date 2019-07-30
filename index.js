@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
     LOGGER.info("Application started with cache-version: " + CACHE_VERSION);
 
     GLOBAL_CONTEXT.navigator.serviceWorker.ready.then(() => {
-        LOGGER.info("------ 2");
+        LOGGER.info("------ 2" + navigator.serviceWorker.controller);
         LOGGER.info("Controller initialized successfully");
         //GLOBAL_CONTEXT.navigator.serviceWorker.controller.postMessage({'cache-version': CACHE_VERSION});
     });
@@ -30,6 +30,7 @@ function registerServiceWorker() {
         })
         .then(() => {
             GLOBAL_CONTEXT.navigator.serviceWorker.ready.then((worker) => {
+                LOGGER.info("------ 5" + navigator.serviceWorker.controller);
                 LOGGER.info("ServiceWorker event: ready");
                 return worker.sync.register('syncdata');
             });
@@ -40,15 +41,15 @@ function registerServiceWorker() {
     GLOBAL_CONTEXT.navigator.serviceWorker.ready
         .then(() => {
             // I thought the page would be controlled at this point, thanks to clients.claim()
-            LOGGER.info('.ready resolved, and navigator.serviceWorker.controller is', navigator.serviceWorker.controller);
+            LOGGER.info('.ready resolved, and navigator.serviceWorker.controller is' + navigator.serviceWorker.controller);
 
-            LOGGER.info("------ 3");
+            LOGGER.info("------ 3" + navigator.serviceWorker.controller);
             LOGGER.info("Controller initialized successfully");
             //GLOBAL_CONTEXT.navigator.serviceWorker.controller.postMessage({'cache-version': CACHE_VERSION});
 
             GLOBAL_CONTEXT.navigator.serviceWorker.addEventListener('controllerchange', () => {
                 //LOGGER.info('Okay, now things are under control. navigator.serviceWorker.controller is', navigator.serviceWorker.controller);\LOGGER.info("------ 3");
-                LOGGER.info("------ 4");
+                LOGGER.info("------ 4" + navigator.serviceWorker.controller);
                 GLOBAL_CONTEXT.navigator.serviceWorker.controller.postMessage({'cache-version': CACHE_VERSION});
             });
         });

@@ -80,7 +80,6 @@ function registerListeners() {
             LOGGER.warn("Current cache version is undefined");
         }
 
-
         event.waitUntil(GLOBAL_CONTEXT.skipWaiting());
     });
     GLOBAL_CONTEXT.addEventListener('activate', (event) => {
@@ -93,6 +92,16 @@ function registerListeners() {
 
     GLOBAL_CONTEXT.addEventListener('fetch', (event) => {
         LOGGER.info("Service worker event: fetch");
+
+        event.waitUntil(new Promise(() => {
+            debugger;
+            fetch("./cache/cache-version.json").then(function (response) {
+                return response.json();
+            }).then(function (data) {
+                debugger;
+
+            });
+        }));
 
         //TODO: load ..."/cache/cache-version.js" only through network
 
