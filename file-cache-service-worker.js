@@ -26,29 +26,27 @@ function updateCache() {
     for (const cacheName in CACHES) {
         const CACHE_LIST = CACHES[cacheName];
         const CACHE_NAME = cacheName + "_v" + CURRENT_CACHE_VERSION;
-        event.waitUntil(deleteOldCaches());
-        event.waitUntil(
-            GLOBAL_CONTEXT.caches.open(CACHE_NAME).then((cache) => {
-                const cachePromises = CACHE_LIST.map((urlToPrefetch) => {
-                    const url = new URL(urlToPrefetch, location.href);
-                    url.search += (url.search ? '&' : '?') + 'cache-bust=' + DATE_TIME;
-                    const request = new Request(url.toString(), {mode: 'no-cors'});
-                    return fetch(request).then((response) => {
-                        if (response.status >= 400) {
-                            throw new Error('request for ' + urlToPrefetch + ' failed with status ' + response.statusText);
-                        }
-                        return cache.put(urlToPrefetch, response);
-                    }).catch((error) => {
-                        LOGGER.error('Not caching ' + urlToPrefetch + ' due to ' + error);
-                    });
+        deleteOldCaches();
+        GLOBAL_CONTEXT.caches.open(CACHE_NAME).then((cache) => {
+            const cachePromises = CACHE_LIST.map((urlToPrefetch) => {
+                const url = new URL(urlToPrefetch, location.href);
+                url.search += (url.search ? '&' : '?') + 'cache-bust=' + DATE_TIME;
+                const request = new Request(url.toString(), {mode: 'no-cors'});
+                return fetch(request).then((response) => {
+                    if (response.status >= 400) {
+                        throw new Error('request for ' + urlToPrefetch + ' failed with status ' + response.statusText);
+                    }
+                    return cache.put(urlToPrefetch, response);
+                }).catch((error) => {
+                    LOGGER.error('Not caching ' + urlToPrefetch + ' due to ' + error);
                 });
-                return Promise.all(cachePromises).then(() => {
-                    LOGGER.info('Pre-fetching complete.');
-                });
-            }).catch((error) => {
-                LOGGER.error('Pre-fetching failed:', error);
-            })
-        );
+            });
+            return Promise.all(cachePromises).then(() => {
+                LOGGER.info('Pre-fetching complete.');
+            });
+        }).catch((error) => {
+            LOGGER.error('Pre-fetching failed:', error);
+        })
     }
 }
 

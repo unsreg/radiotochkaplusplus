@@ -16,10 +16,9 @@ document.addEventListener("DOMContentLoaded", () => {
     LOGGER.info("Application started with cache-version: " + CACHE_VERSION);
 
     GLOBAL_CONTEXT.navigator.serviceWorker.ready.then(() => {
-        debugger;
         LOGGER.info("------ 2");
         LOGGER.info("Controller initialized successfully");
-        GLOBAL_CONTEXT.navigator.serviceWorker.controller.postMessage({'cache-version': CACHE_VERSION});
+        //GLOBAL_CONTEXT.navigator.serviceWorker.controller.postMessage({'cache-version': CACHE_VERSION});
     });
 });
 
@@ -42,8 +41,14 @@ function registerServiceWorker() {
         .then(() => {
             // I thought the page would be controlled at this point, thanks to clients.claim()
             LOGGER.info('.ready resolved, and navigator.serviceWorker.controller is', navigator.serviceWorker.controller);
+
+            LOGGER.info("------ 3");
+            LOGGER.info("Controller initialized successfully");
+            //GLOBAL_CONTEXT.navigator.serviceWorker.controller.postMessage({'cache-version': CACHE_VERSION});
+
             GLOBAL_CONTEXT.navigator.serviceWorker.addEventListener('controllerchange', () => {
-                LOGGER.info('Okay, now things are under control. navigator.serviceWorker.controller is', navigator.serviceWorker.controller);
+                //LOGGER.info('Okay, now things are under control. navigator.serviceWorker.controller is', navigator.serviceWorker.controller);\LOGGER.info("------ 3");
+                LOGGER.info("------ 4");
                 GLOBAL_CONTEXT.navigator.serviceWorker.controller.postMessage({'cache-version': CACHE_VERSION});
             });
         });
