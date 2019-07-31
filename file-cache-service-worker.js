@@ -96,7 +96,7 @@ function registerListeners() {
         event.waitUntil(new Promise(() => {
             debugger;
             fetch("./cache/cache-version.json").then(function (response) {
-                return response.json();
+                return response.json().then(value => JSON.parse(value));
             }).then(function (data) {
                 debugger;
 
