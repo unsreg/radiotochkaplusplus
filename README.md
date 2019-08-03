@@ -1,5 +1,5 @@
-# RadoiTochkaPlusPlus
+# RadioTochkaPlusPlus
 
 This project is based on [this application](http://www.radiotochki.net)
 
-## [Online radio home page](https://unsreg.github.io/radiotochkaplusplus)
+## [Radio home page](https://unsreg.github.io/radiotochkaplusplus)
