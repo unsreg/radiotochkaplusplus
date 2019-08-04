@@ -5,6 +5,7 @@
 const GLOBAL_CONTEXT = self;
 const LOGGER = console;
 
+const CACHE_VERSION_FILE = "./cache/cache-version.json";
 let CURRENT_CACHE_VERSION = null;
 
 importScripts('./cache/cache-list.js');
@@ -94,14 +95,24 @@ function registerListeners() {
         LOGGER.info("Service worker event: fetch");
 
         event.waitUntil(new Promise(() => {
-            debugger;
-            fetch("./cache/cache-version.json").then(function (response) {
-                return response.json().then(value => JSON.parse(value));
-            }).then(function (data) {
-                debugger;
-
+            fetch(CACHE_VERSION_FILE).then(function (response) {
+                return response.json().then(value => {
+                    return value["cache-version"];
+                });
+            }).then(cacheVersion => {
+                if (cacheVersion) {
+                    if (cacheVersion === CURRENT_CACHE_VERSION) {
+                        LOGGER.info("Cache version is the same as current (without changes)");
+                    } else {
+                        LOGGER.info("Cache version is changed, from: " + CURRENT_CACHE_VERSION + "; to: " + cacheVersion);
+                        CURRENT_CACHE_VERSION = cacheVersion;
+                    }
+                } else {
+                    LOGGER.warn("Cache version is undefined");
+                }
             });
         }));
+
 
         //TODO: load ..."/cache/cache-version.js" only through network
 
