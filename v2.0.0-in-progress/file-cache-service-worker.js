@@ -25,7 +25,17 @@ function changeCacheVersion(newCacheVersion) {
 function getCacheVersion() {
     return new Promise((resolve, reject) => {
         if (currentCacheVersion) {
-            resolve(currentCacheVersion);
+            if (!cacheUpdateDateTime) {
+                cacheUpdateDateTime = new Date().getTime();
+            }
+            // every 5 seconds
+            if ((new Date().getTime() - cacheUpdateDateTime) < 5000) {
+                resolve(currentCacheVersion);
+            } else {
+                fetch(CACHE_VERSION_FILE).then(response => {
+                    response.json().then(value => resolve(value));
+                }).catch(reason => reject(reason));
+            }
         } else {
             fetch(CACHE_VERSION_FILE).then(response => {
                 response.json().then(value => resolve(value));
@@ -132,18 +142,17 @@ function update(request) {
     );
 }
 
-// refresh all clients
-function refresh(response) {
+function notifyAllClients(response) {
     return GLOBAL_CONTEXT.clients.matchAll().then((clients) => {
         clients.forEach((client) => {
-            // Подробнее про ETag можно прочитать тут
+            // ETag additional info
             // https://en.wikipedia.org/wiki/HTTP_ETag
             const message = {
-                type: 'refresh',
+                type: 'notifyAllClients',
                 url: response.url,
                 eTag: response.headers.get('ETag')
             };
-            // Уведомляем клиент об обновлении данных.
+            // Notify client
             client.postMessage(JSON.stringify(message));
         });
     });
@@ -219,7 +228,7 @@ function registerListeners() {
         // event.waitUntil(
         //     update(event.request)
         //     // В конце, после получения "свежих" данных от сервера уведомляем всех клиентов.
-        //         .then(refresh)
+        //         .then(notifyAllClients)
         // );
 
         event.respondWith(
