@@ -3,22 +3,65 @@
 "use strict";
 
 const GLOBAL_CONTEXT = self;
-const LOGGER = console;
+const LOGGER = GLOBAL_CONTEXT.console;
 
 const CACHE_VERSION_FILE = "./cache/cache-version.json";
-let CURRENT_CACHE_VERSION = null;
+let currentCacheVersion = null;
+let cacheUpdateDateTime = null;
 
 importScripts('./cache/cache-list.js');
 registerListeners();
 
 function changeCacheVersion(newCacheVersion) {
     if (newCacheVersion) {
-        LOGGER.info("Cache version changed, from (" + CURRENT_CACHE_VERSION + ") to (" + newCacheVersion + ")");
-        CURRENT_CACHE_VERSION = newCacheVersion;
+        LOGGER.info("Cache version changed, from (" + currentCacheVersion + ") to (" + newCacheVersion + ")");
+        currentCacheVersion = newCacheVersion;
         updateCache();
     } else {
         LOGGER.warn("(newCacheVersion) is undefined");
     }
+}
+
+function getCacheVersion() {
+    return new Promise((resolve, reject) => {
+        if (currentCacheVersion) {
+            resolve(currentCacheVersion);
+        } else {
+            fetch(CACHE_VERSION_FILE).then(response => {
+                response.json().then(value => resolve(value));
+            }).catch(reason => reject(reason));
+        }
+    });
+}
+
+function validateCaches() {
+    getCacheVersion().then(cacheVersion => {
+        GLOBAL_CONTEXT.caches.keys().then((cacheNames) => {
+            return Promise.all(
+                cacheNames.map((cacheName) => {
+                    const nameVersion = cacheName.split("_v");
+                    const name = nameVersion[0];
+                    const version = nameVersion[1];
+
+                    let newVersion;
+                    if (!cacheVersion[name]) {
+                        newVersion = cacheVersion[name];
+                    } else {
+                        newVersion = cacheVersion["common"];
+                    }
+
+                    if (version !== newVersion) {
+                        GLOBAL_CONTEXT.caches.delete(cacheName).then(() => updateCache());
+                    }
+                    if (!expectedCacheNames.includes(cacheName)) {
+                        // If this cache name isn't present in the array of "expected" cache names, then delete it.
+                        LOGGER.info('Deleting out of date cache:', cacheName);
+                        return GLOBAL_CONTEXT.caches.delete(cacheName);
+                    }
+                })
+            );
+        })
+    });
 }
 
 function updateCache() {
@@ -26,7 +69,7 @@ function updateCache() {
 
     for (const cacheName in CACHES) {
         const CACHE_LIST = CACHES[cacheName];
-        const CACHE_NAME = cacheName + "_v" + CURRENT_CACHE_VERSION;
+        const CACHE_NAME = cacheName + "_v" + currentCacheVersion;
         deleteOldCaches();
         GLOBAL_CONTEXT.caches.open(CACHE_NAME).then((cache) => {
             const cachePromises = CACHE_LIST.map((urlToPrefetch) => {
@@ -52,13 +95,13 @@ function updateCache() {
 }
 
 function deleteOldCaches() {
-    if (!CURRENT_CACHE_VERSION) {
+    if (!currentCacheVersion) {
         return;
     }
     const expectedCacheNames = [];
     for (const propertyName in CACHES) {
         const CACHE_LIST = CACHES[propertyName];
-        const CACHE_NAME = CACHE_LIST["name"] + "_v" + CURRENT_CACHE_VERSION;
+        const CACHE_NAME = CACHE_LIST["name"] + "_v" + currentCacheVersion;
         expectedCacheNames.push(CACHE_NAME);
     }
     return GLOBAL_CONTEXT.caches.keys().then((cacheNames) => {
@@ -74,10 +117,53 @@ function deleteOldCaches() {
     })
 }
 
+function fromCache(request) {
+    return caches.open(CACHE).then((cache) =>
+        cache.match(request).then((matching) =>
+            matching || Promise.reject('no-match')
+        ));
+}
+
+function update(request) {
+    return caches.open(CACHE).then((cache) =>
+        fetch(request).then((response) =>
+            cache.put(request, response.clone()).then(() => response)
+        )
+    );
+}
+
+// refresh all clients
+function refresh(response) {
+    return GLOBAL_CONTEXT.clients.matchAll().then((clients) => {
+        clients.forEach((client) => {
+            // Подробнее про ETag можно прочитать тут
+            // https://en.wikipedia.org/wiki/HTTP_ETag
+            const message = {
+                type: 'refresh',
+                url: response.url,
+                eTag: response.headers.get('ETag')
+            };
+            // Уведомляем клиент об обновлении данных.
+            client.postMessage(JSON.stringify(message));
+        });
+    });
+}
+
+// Временно-ограниченный запрос.
+function fromNetwork(request, timeout) {
+    return new Promise((fulfill, reject) => {
+        const timeoutId = setTimeout(reject, timeout);
+        fetch(request).then((response) => {
+            clearTimeout(timeoutId);
+            fulfill(response);
+        }, reject);
+    });
+}
+
 function registerListeners() {
     GLOBAL_CONTEXT.addEventListener('install', (event) => {
         LOGGER.info("Service worker event: install");
-        if (!CURRENT_CACHE_VERSION) {
+        if (!currentCacheVersion) {
             LOGGER.warn("Current cache version is undefined");
         }
 
@@ -90,36 +176,37 @@ function registerListeners() {
         event.waitUntil(GLOBAL_CONTEXT.skipWaiting());
         event.waitUntil(GLOBAL_CONTEXT.clients.claim());
     });
-
     GLOBAL_CONTEXT.addEventListener('fetch', (event) => {
         LOGGER.info("Service worker event: fetch");
 
-        event.waitUntil(new Promise(() => {
-            fetch(CACHE_VERSION_FILE).then(function (response) {
-                return response.json().then(value => {
-                    return value["cache-version"];
-                });
-            }).then(cacheVersion => {
-                if (cacheVersion) {
-                    if (cacheVersion === CURRENT_CACHE_VERSION) {
-                        LOGGER.info("Cache version is the same as current (without changes)");
-                    } else {
-                        LOGGER.info("Cache version is changed, from: " + CURRENT_CACHE_VERSION + "; to: " + cacheVersion);
-                        CURRENT_CACHE_VERSION = cacheVersion;
-                    }
-                } else {
-                    LOGGER.warn("Cache version is undefined");
-                }
-            });
+        event.waitUntil(getCacheVersion().then(cacheVersion => {
+            LOGGER.info("-------------" + JSON.stringify(cacheVersion));
         }));
-
+//new Promise(() => {
+//             fetch(CACHE_VERSION_FILE).then(function (response) {
+//                 return response.json().then(value => {
+//                     return value["cache-version"];
+//                 });
+//             }).then(cacheVersion => {
+//                 if (cacheVersion) {
+//                     if (cacheVersion === currentCacheVersion) {
+//                         LOGGER.info("Cache version is the same as current (without changes)");
+//                     } else {
+//                         LOGGER.info("Cache version is changed, from: " + currentCacheVersion + "; to: " + cacheVersion);
+//                         currentCacheVersion = cacheVersion;
+//                     }
+//                 } else {
+//                     LOGGER.warn("Cache version is undefined");
+//                 }
+//             });
+//         })
 
         //TODO: load ..."/cache/cache-version.js" only through network
 
         event.waitUntil(GLOBAL_CONTEXT.skipWaiting());
         // LOGGER.log('Handling fetch event for', event.request.url);
 
-        // if (CURRENT_CACHE_VERSION) {
+        // if (currentCacheVersion) {
         //     event.respondWith(fromCache(event.request));
         //     event.waitUntil(update(event.request));
         // } else {
@@ -159,7 +246,6 @@ function registerListeners() {
             })
         );
     });
-
     GLOBAL_CONTEXT.addEventListener('message', (event) => {
         LOGGER.info("Service worker event: message (" + JSON.stringify(event.data) + ")");
 
@@ -167,47 +253,4 @@ function registerListeners() {
             changeCacheVersion(event.data["cache-version"].toString());
         }
     });
-
-    function fromCache(request) {
-        return caches.open(CACHE).then((cache) =>
-            cache.match(request).then((matching) =>
-                matching || Promise.reject('no-match')
-            ));
-    }
-
-    function update(request) {
-        return caches.open(CACHE).then((cache) =>
-            fetch(request).then((response) =>
-                cache.put(request, response.clone()).then(() => response)
-            )
-        );
-    }
-
-    // refresh all clients
-    function refresh(response) {
-        return GLOBAL_CONTEXT.clients.matchAll().then((clients) => {
-            clients.forEach((client) => {
-                // Подробнее про ETag можно прочитать тут
-                // https://en.wikipedia.org/wiki/HTTP_ETag
-                const message = {
-                    type: 'refresh',
-                    url: response.url,
-                    eTag: response.headers.get('ETag')
-                };
-                // Уведомляем клиент об обновлении данных.
-                client.postMessage(JSON.stringify(message));
-            });
-        });
-    }
-
-    // Временно-ограниченный запрос.
-    function fromNetwork(request, timeout) {
-        return new Promise((fulfill, reject) => {
-            const timeoutId = setTimeout(reject, timeout);
-            fetch(request).then((response) => {
-                clearTimeout(timeoutId);
-                fulfill(response);
-            }, reject);
-        });
-    }
 }
