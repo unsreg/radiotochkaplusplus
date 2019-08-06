@@ -1,4 +1,6 @@
-// source - https://github.com/GoogleChrome/samples/blob/gh-pages/service-worker/prefetch/service-worker.js
+// https://github.com/GoogleChrome/samples/blob/gh-pages/service-worker/prefetch/service-worker.js
+// https://developers.google.com/web/fundamentals/instant-and-offline/web-storage/cache-api
+// https://habr.com/ru/company/2gis/blog/345552/
 
 "use strict";
 
