@@ -24,22 +24,22 @@ function changeCacheVersion(newCacheVersion) {
 
 function getCacheVersion() {
     return new Promise((resolve, reject) => {
-        if (currentCacheVersion) {
-            if (!cacheUpdateDateTime) {
-                cacheUpdateDateTime = new Date().getTime();
-            }
+        let shouldUpdate = true;
+        if (currentCacheVersion && cacheUpdateDateTime) {
             // every 5 seconds
             if ((new Date().getTime() - cacheUpdateDateTime) < 5000) {
-                resolve(currentCacheVersion);
-            } else {
-                fetch(CACHE_VERSION_FILE).then(response => {
-                    response.json().then(value => resolve(value));
-                }).catch(reason => reject(reason));
+                shouldUpdate = false;
             }
-        } else {
+        }
+        if (shouldUpdate) {
             fetch(CACHE_VERSION_FILE).then(response => {
-                response.json().then(value => resolve(value));
+                response.json().then(value => {
+                    cacheUpdateDateTime = new Date().getTime();
+                    resolve(value);
+                });
             }).catch(reason => reject(reason));
+        } else {
+            resolve(currentCacheVersion);
         }
     });
 }
@@ -54,7 +54,7 @@ function validateCaches() {
                     const version = nameVersion[1];
 
                     let newVersion;
-                    if (!cacheVersion[name]) {
+                    if (cacheVersion[name]) {
                         newVersion = cacheVersion[name];
                     } else {
                         newVersion = cacheVersion["common"];
