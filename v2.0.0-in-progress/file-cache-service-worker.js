@@ -9,41 +9,42 @@ const LOGGER = GLOBAL_CONTEXT.console;
 
 const CACHE_VERSION_FILE = "./cache/cache-version.json";
 let currentCacheVersion = null;
-let cacheUpdateDateTime = null;
+let cacheUpdateTime = null;
 
 importScripts('./cache/cache-list.js');
 registerListeners();
 
-function changeCacheVersion(newCacheVersion) {
-    if (newCacheVersion) {
-        LOGGER.info("Cache version changed, from (" + currentCacheVersion + ") to (" + newCacheVersion + ")");
-        currentCacheVersion = newCacheVersion;
-        updateCache();
-    } else {
-        LOGGER.warn("(newCacheVersion) is undefined");
-    }
-}
-
 function getCacheVersion() {
     return new Promise((resolve, reject) => {
         let shouldUpdate = true;
-        if (currentCacheVersion && cacheUpdateDateTime) {
-            // every 5 seconds
-            if ((new Date().getTime() - cacheUpdateDateTime) < 5000) {
+        if (currentCacheVersion && cacheUpdateTime) {
+            // every 10 seconds
+            if ((new Date().getTime() - cacheUpdateTime) < 10000) {
                 shouldUpdate = false;
             }
         }
         if (shouldUpdate) {
             fetch(CACHE_VERSION_FILE).then(response => {
                 response.json().then(value => {
-                    cacheUpdateDateTime = new Date().getTime();
-                    resolve(value);
+                    cacheUpdateTime = new Date().getTime();
+                    currentCacheVersion = value;
+                    resolve(currentCacheVersion);
                 });
             }).catch(reason => reject(reason));
         } else {
             resolve(currentCacheVersion);
         }
     });
+}
+
+function changeCacheVersion(newCacheVersion) {
+    // if (newCacheVersion) {
+    //     LOGGER.info("Cache version changed, from (" + currentCacheVersion + ") to (" + newCacheVersion + ")");
+    //     currentCacheVersion = newCacheVersion;
+    //     updateCache();
+    // } else {
+    //     LOGGER.warn("(newCacheVersion) is undefined");
+    // }
 }
 
 function validateCaches() {
@@ -78,32 +79,64 @@ function validateCaches() {
 
 function updateCache() {
     const DATE_TIME = Date.now();
+    getCacheVersion().then(cacheVersion => {
+        GLOBAL_CONTEXT.caches.keys().then(cacheNames => {
+            cacheNames.map((cacheName) => {
+                const nameVersion = cacheName.split("_v");
+                const name = nameVersion[0];
+                const version = nameVersion[1];
+                if (CACHES[name]) {
+                    GLOBAL_CONTEXT.caches.delete(cacheName).then(() => {
+                        LOGGER.info("Cache is deleted (" + name + ")");
+                    });
+                } else {
 
-    for (const cacheName in CACHES) {
-        const CACHE_LIST = CACHES[cacheName];
-        const CACHE_NAME = cacheName + "_v" + currentCacheVersion;
-        deleteOldCaches();
-        GLOBAL_CONTEXT.caches.open(CACHE_NAME).then((cache) => {
-            const cachePromises = CACHE_LIST.map((urlToPrefetch) => {
-                const url = new URL(urlToPrefetch, location.href);
-                url.search += (url.search ? '&' : '?') + 'cache-bust=' + DATE_TIME;
-                const request = new Request(url.toString(), {mode: 'no-cors'});
-                return fetch(request).then((response) => {
-                    if (response.status >= 400) {
-                        throw new Error('request for ' + urlToPrefetch + ' failed with status ' + response.statusText);
-                    }
-                    return cache.put(urlToPrefetch, response);
-                }).catch((error) => {
-                    LOGGER.error('Not caching ' + urlToPrefetch + ' due to ' + error);
+                }
+
+                let newVersion;
+                if (cacheVersion[name]) {
+                    newVersion = cacheVersion[name];
+                } else {
+                    newVersion = cacheVersion["common"];
+                }
+
+                if (version !== newVersion) {
+                    GLOBAL_CONTEXT.caches.delete(cacheName).then(() => updateCache());
+                }
+                if (!expectedCacheNames.includes(cacheName)) {
+                    // If this cache name isn't present in the array of "expected" cache names, then delete it.
+                    LOGGER.info('Deleting out of date cache:', cacheName);
+                    return GLOBAL_CONTEXT.caches.delete(cacheName);
+                }
+            });
+        });
+        for (const cacheName in CACHES) {
+            const CACHE_LIST = CACHES[cacheName];
+            const CACHE_NAME = cacheName + "_v" + currentCacheVersion;
+            // deleteOldCaches();
+            GLOBAL_CONTEXT.caches.delete(cacheName);
+            GLOBAL_CONTEXT.caches.open(CACHE_NAME).then((cache) => {
+                const cachePromises = CACHE_LIST.map((urlToPrefetch) => {
+                    const url = new URL(urlToPrefetch, location.href);
+                    url.search += (url.search ? '&' : '?') + 'cache-bust=' + DATE_TIME;
+                    const request = new Request(url.toString(), {mode: 'no-cors'});
+                    return fetch(request).then((response) => {
+                        if (response.status >= 400) {
+                            throw new Error('request for ' + urlToPrefetch + ' failed with status ' + response.statusText);
+                        }
+                        return cache.put(urlToPrefetch, response);
+                    }).catch((error) => {
+                        LOGGER.error('Not caching ' + urlToPrefetch + ' due to ' + error);
+                    });
                 });
-            });
-            return Promise.all(cachePromises).then(() => {
-                LOGGER.info('Pre-fetching complete.');
-            });
-        }).catch((error) => {
-            LOGGER.error('Pre-fetching failed:', error);
-        })
-    }
+                return Promise.all(cachePromises).then(() => {
+                    LOGGER.info('Pre-fetching complete.');
+                });
+            }).catch((error) => {
+                LOGGER.error('Pre-fetching failed:', error);
+            })
+        }
+    });
 }
 
 function deleteOldCaches() {
@@ -198,13 +231,13 @@ function registerListeners() {
 //                 return response.json().then(value => {
 //                     return value["cache-version"];
 //                 });
-//             }).then(cacheVersion => {
-//                 if (cacheVersion) {
-//                     if (cacheVersion === currentCacheVersion) {
+//             }).then(currentCacheVersion => {
+//                 if (currentCacheVersion) {
+//                     if (currentCacheVersion === currentCacheVersion) {
 //                         LOGGER.info("Cache version is the same as current (without changes)");
 //                     } else {
-//                         LOGGER.info("Cache version is changed, from: " + currentCacheVersion + "; to: " + cacheVersion);
-//                         currentCacheVersion = cacheVersion;
+//                         LOGGER.info("Cache version is changed, from: " + currentCacheVersion + "; to: " + currentCacheVersion);
+//                         currentCacheVersion = currentCacheVersion;
 //                     }
 //                 } else {
 //                     LOGGER.warn("Cache version is undefined");
