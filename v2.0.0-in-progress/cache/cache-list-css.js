@@ -1,6 +1,6 @@
 "use strict";
 
-CACHES["styles"] = [
+CACHE_FILES["styles"] = [
     "./css/reset.css",
     "./css/main.css"
 ];

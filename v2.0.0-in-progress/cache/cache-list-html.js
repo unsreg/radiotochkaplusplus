@@ -1,5 +1,5 @@
 "use strict";
 
-CACHES["pages"] = [
+CACHE_FILES["pages"] = [
     "./offline.html"
 ];

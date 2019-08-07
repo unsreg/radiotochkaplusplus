@@ -1,6 +1,6 @@
 "use strict";
 
-const CACHES = {};
+const CACHE_FILES = {};
 
 importScripts(
     './cache/cache-list-img.js',

@@ -1,5 +1,5 @@
 "use strict";
 
-CACHES["other"] = [
+CACHE_FILES["other"] = [
     "./manifest.json"
 ];

@@ -2,7 +2,6 @@
 
 import APPLICATION from "./js/Application.js";
 import LOGGER_FACTORY from "./js/logger/LoggerFactory.js";
-import CACHE_VERSION from "./cache/cache-version.js";
 
 const GLOBAL_CONTEXT = self;
 const LOGGER = LOGGER_FACTORY.getLogger();
@@ -13,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     APPLICATION.start();
 
-    LOGGER.info("Application started with cache-version: " + CACHE_VERSION);
+    //LOGGER.info("Application started with cache-version: " + CACHE_VERSION);
 
     GLOBAL_CONTEXT.navigator.serviceWorker.ready.then(() => {
         LOGGER.info("------ 2" + navigator.serviceWorker.controller);
@@ -50,7 +49,7 @@ function registerServiceWorker() {
             GLOBAL_CONTEXT.navigator.serviceWorker.addEventListener('controllerchange', () => {
                 //LOGGER.info('Okay, now things are under control. navigator.serviceWorker.controller is', navigator.serviceWorker.controller);\LOGGER.info("------ 3");
                 LOGGER.info("------ 4" + navigator.serviceWorker.controller);
-                GLOBAL_CONTEXT.navigator.serviceWorker.controller.postMessage({'cache-version': CACHE_VERSION});
+                //GLOBAL_CONTEXT.navigator.serviceWorker.controller.postMessage({'cache-version': CACHE_VERSION});
             });
         });
 }

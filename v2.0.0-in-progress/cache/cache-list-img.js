@@ -1,6 +1,6 @@
 "use strict";
 
-CACHES["images"] = [
+CACHE_FILES["images"] = [
     "./img/star_empty.svg",
     "./img/star_fill.svg",
     // ICON

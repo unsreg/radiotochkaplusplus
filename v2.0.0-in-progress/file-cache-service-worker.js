@@ -8,6 +8,9 @@ const GLOBAL_CONTEXT = self;
 const LOGGER = GLOBAL_CONTEXT.console;
 
 const CACHE_VERSION_FILE = "./cache/cache-version.json";
+const CACHE_VERSION_TTL = 10000;// 10 seconds
+const CACHE_NAME_VERSION_SPLITTER = "_version";
+
 let currentCacheVersion = null;
 let cacheUpdateTime = null;
 
@@ -18,8 +21,7 @@ function getCacheVersion() {
     return new Promise((resolve, reject) => {
         let shouldUpdate = true;
         if (currentCacheVersion && cacheUpdateTime) {
-            // every 10 seconds
-            if ((new Date().getTime() - cacheUpdateTime) < 10000) {
+            if ((new Date().getTime() - cacheUpdateTime) < CACHE_VERSION_TTL) {
                 shouldUpdate = false;
             }
         }
@@ -37,76 +39,55 @@ function getCacheVersion() {
     });
 }
 
-function validateCaches() {
-    getCacheVersion().then(cacheVersion => {
-        GLOBAL_CONTEXT.caches.keys().then((cacheNames) => {
-            return Promise.all(
-                cacheNames.map((cacheName) => {
-                    const nameVersion = cacheName.split("_v");
-                    const name = nameVersion[0];
-                    const version = nameVersion[1];
-
-                    let newVersion;
-                    if (cacheVersion[name]) {
-                        newVersion = cacheVersion[name];
-                    } else {
-                        newVersion = cacheVersion["common"];
-                    }
-
-                    if (version !== newVersion) {
-                        GLOBAL_CONTEXT.caches.delete(cacheName).then(() => updateCache());
-                    }
-                    if (!expectedCacheNames.includes(cacheName)) {
-                        // If this cache name isn't present in the array of "expected" cache names, then delete it.
-                        LOGGER.info('Deleting out of date cache:', cacheName);
-                        return GLOBAL_CONTEXT.caches.delete(cacheName);
-                    }
-                })
-            );
-        })
-    });
-}
-
 function updateCache() {
     const DATE_TIME = Date.now();
+    const CACHE_NAME_TO_ADD = [];
+    const CACHE_NAME_WO_CHANGES = [];
+    const EXISTING_CACHES = {};
+    let actualCacheVersion;
     getCacheVersion().then(cacheVersion => {
+        actualCacheVersion = cacheVersion;
+    }).then(() => {
+        // Collect existing cache names and versions
         GLOBAL_CONTEXT.caches.keys().then(cacheNames => {
             cacheNames.map((cacheName) => {
-                const nameVersion = cacheName.split("_v");
-                const name = nameVersion[0];
-                const version = nameVersion[1];
-                if (CACHES[name]) {
-                    GLOBAL_CONTEXT.caches.delete(cacheName).then(() => {
-                        LOGGER.info("Cache is deleted (" + name + ")");
-                    });
-                } else {
-
-                }
-
-                let newVersion;
-                if (cacheVersion[name]) {
-                    newVersion = cacheVersion[name];
-                } else {
-                    newVersion = cacheVersion["common"];
-                }
-
-                if (version !== newVersion) {
-                    GLOBAL_CONTEXT.caches.delete(cacheName).then(() => updateCache());
-                }
-                if (!expectedCacheNames.includes(cacheName)) {
-                    // If this cache name isn't present in the array of "expected" cache names, then delete it.
-                    LOGGER.info('Deleting out of date cache:', cacheName);
-                    return GLOBAL_CONTEXT.caches.delete(cacheName);
-                }
+                const nameVersion = cacheName.split(CACHE_NAME_VERSION_SPLITTER);
+                EXISTING_CACHES[nameVersion[0]] = nameVersion[1];
             });
         });
-        for (const cacheName in CACHES) {
-            const CACHE_LIST = CACHES[cacheName];
-            const CACHE_NAME = cacheName + "_v" + currentCacheVersion;
-            // deleteOldCaches();
-            GLOBAL_CONTEXT.caches.delete(cacheName);
-            GLOBAL_CONTEXT.caches.open(CACHE_NAME).then((cache) => {
-                const cachePromises = CACHE_LIST.map((urlToPrefetch) => {
+    }).then(() => {
+        // Remove unnecessary and outdated caches
+        for (const existingCacheName in Object.keys(EXISTING_CACHES)) {
+            if (CACHE_FILES[existingCacheName]) {
+                let newVersion;
+                if (actualCacheVersion[existingCacheName]) {
+                    newVersion = actualCacheVersion[existingCacheName];
+                } else {
+                    newVersion = actualCacheVersion["common"];
+                }
+                if (newVersion === EXISTING_CACHES[existingCacheName]) {
+                    CACHE_NAME_WO_CHANGES.push(existingCacheName);
+                } else {
+                    CACHE_NAME_TO_ADD.push(existingCacheName);
+                    deleteCacheByName(existingCacheName);
+                }
+            } else {
+                deleteCacheByName(existingCacheName);
+            }
+        }
+    }).then(() => {
+    }).then(() => {
+        // Update caches
+        CACHE_NAME_TO_ADD.forEach(cacheNameToAdd => {
+            let newVersion;
+            if (actualCacheVersion[cacheNameToAdd]) {
+                newVersion = actualCacheVersion[cacheNameToAdd];
+            } else {
+                newVersion = actualCacheVersion["common"];
+            }
+            const newCacheName = cacheNameToAdd + CACHE_NAME_VERSION_SPLITTER + newVersion;
+            GLOBAL_CONTEXT.caches.open(newCacheName).then((cache) => {
+                const cachePromises = CACHE_FILES[cacheNameToAdd].map((urlToPrefetch) => {
                     const url = new URL(urlToPrefetch, location.href);
                     url.search += (url.search ? '&' : '?') + 'cache-bust=' + DATE_TIME;
                     const request = new Request(url.toString(), {mode: 'no-cors'});
@@ -125,7 +106,7 @@ function updateCache() {
             }).catch((error) => {
                 LOGGER.error('Pre-fetching failed:', error);
             })
-        }
+        });
     });
 }
 
@@ -208,65 +189,19 @@ function fromNetwork(request, timeout) {
 function registerListeners() {
     GLOBAL_CONTEXT.addEventListener('install', (event) => {
         LOGGER.info("Service worker event: install");
-        if (!currentCacheVersion) {
-            LOGGER.warn("Current cache version is undefined");
-        }
-
+        updateCache();
         event.waitUntil(GLOBAL_CONTEXT.skipWaiting());
     });
     GLOBAL_CONTEXT.addEventListener('activate', (event) => {
         LOGGER.info("Service worker event: activate");
-
         //event.waitUntil(deleteOldCaches());
         event.waitUntil(GLOBAL_CONTEXT.skipWaiting());
         event.waitUntil(GLOBAL_CONTEXT.clients.claim());
     });
     GLOBAL_CONTEXT.addEventListener('fetch', (event) => {
         LOGGER.info("Service worker event: fetch");
-
-        event.waitUntil(getCacheVersion().then(cacheVersion => {
-            LOGGER.info("-------------" + JSON.stringify(cacheVersion));
-        }));
-//new Promise(() => {
-//             fetch(CACHE_VERSION_FILE).then(function (response) {
-//                 return response.json().then(value => {
-//                     return value["cache-version"];
-//                 });
-//             }).then(currentCacheVersion => {
-//                 if (currentCacheVersion) {
-//                     if (currentCacheVersion === currentCacheVersion) {
-//                         LOGGER.info("Cache version is the same as current (without changes)");
-//                     } else {
-//                         LOGGER.info("Cache version is changed, from: " + currentCacheVersion + "; to: " + currentCacheVersion);
-//                         currentCacheVersion = currentCacheVersion;
-//                     }
-//                 } else {
-//                     LOGGER.warn("Cache version is undefined");
-//                 }
-//             });
-//         })
-
-        //TODO: load ..."/cache/cache-version.js" only through network
-
-        event.waitUntil(GLOBAL_CONTEXT.skipWaiting());
-        // LOGGER.log('Handling fetch event for', event.request.url);
-
-        // if (currentCacheVersion) {
-        //     event.respondWith(fromCache(event.request));
-        //     event.waitUntil(update(event.request));
-        // } else {
-        //     event.respondWith(fromNetwork(event.request))
-        //         .catch((error) => {
-        //             LOGGER.error(error);
-        //         });
-        // }
-        //
-        // event.waitUntil(
-        //     update(event.request)
-        //     // В конце, после получения "свежих" данных от сервера уведомляем всех клиентов.
-        //         .then(notifyAllClients)
-        // );
-
+        //event.waitUntil(GLOBAL_CONTEXT.skipWaiting());
+        updateCache();
         event.respondWith(
             // caches.match() will look for a cache entry in all of the caches available to the service worker.
             // It's an alternative to first opening a specific named cache and then matching on that.
@@ -275,7 +210,7 @@ function registerListeners() {
                     LOGGER.info('Found response in cache:', response);
                     return response;
                 }
-                // LOGGER.info('No response found in cache. About to fetch from network...');
+                LOGGER.info('No response found in cache. About to fetch from network...');
                 // event.request will always have the proper mode set ('cors, 'no-cors', etc.) so we don't
                 // have to hardcode 'no-cors' like we do when fetch()ing in the install handler.
                 return fetch(event.request).then((response) => {
