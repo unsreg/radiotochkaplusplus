@@ -37,16 +37,6 @@ function getCacheVersion() {
     });
 }
 
-function changeCacheVersion(newCacheVersion) {
-    // if (newCacheVersion) {
-    //     LOGGER.info("Cache version changed, from (" + currentCacheVersion + ") to (" + newCacheVersion + ")");
-    //     currentCacheVersion = newCacheVersion;
-    //     updateCache();
-    // } else {
-    //     LOGGER.warn("(newCacheVersion) is undefined");
-    // }
-}
-
 function validateCaches() {
     getCacheVersion().then(cacheVersion => {
         GLOBAL_CONTEXT.caches.keys().then((cacheNames) => {
@@ -139,27 +129,38 @@ function updateCache() {
     });
 }
 
-function deleteOldCaches() {
-    if (!currentCacheVersion) {
-        return;
-    }
-    const expectedCacheNames = [];
-    for (const propertyName in CACHES) {
-        const CACHE_LIST = CACHES[propertyName];
-        const CACHE_NAME = CACHE_LIST["name"] + "_v" + currentCacheVersion;
-        expectedCacheNames.push(CACHE_NAME);
-    }
-    return GLOBAL_CONTEXT.caches.keys().then((cacheNames) => {
+function deleteCacheByNameVersion(nameVersion) {
+    GLOBAL_CONTEXT.caches.delete(nameVersion).then(() => {
+        LOGGER.info("Cache is deleted by nameVersion(" + nameVersion + ")");
+    });
+}
+
+function deleteCacheByName(name) {
+    GLOBAL_CONTEXT.caches.keys().then((cacheNames) => {
         return Promise.all(
             cacheNames.map((cacheName) => {
-                if (!expectedCacheNames.includes(cacheName)) {
-                    // If this cache name isn't present in the array of "expected" cache names, then delete it.
-                    LOGGER.info('Deleting out of date cache:', cacheName);
+                const nameVersion = cacheName.split("_v");
+                if (name === nameVersion[0]) {
+                    LOGGER.info('Cache is deleted by name (' + cacheName + ")");
                     return GLOBAL_CONTEXT.caches.delete(cacheName);
                 }
             })
         );
-    })
+    });
+}
+
+function deleteCacheByVersion(version) {
+    GLOBAL_CONTEXT.caches.keys().then((cacheNames) => {
+        return Promise.all(
+            cacheNames.map((cacheName) => {
+                const nameVersion = cacheName.split("_v");
+                if (version === nameVersion[1]) {
+                    LOGGER.info('Cache is deleted by version (' + cacheName + ")");
+                    return GLOBAL_CONTEXT.caches.delete(cacheName);
+                }
+            })
+        );
+    });
 }
 
 function fromCache(request) {
@@ -292,9 +293,5 @@ function registerListeners() {
     });
     GLOBAL_CONTEXT.addEventListener('message', (event) => {
         LOGGER.info("Service worker event: message (" + JSON.stringify(event.data) + ")");
-
-        if (event.data && event.data["cache-version"]) {
-            changeCacheVersion(event.data["cache-version"].toString());
-        }
     });
 }
