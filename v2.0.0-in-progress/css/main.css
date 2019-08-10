@@ -78,6 +78,22 @@
     float: left;
 }
 
+.filter_container,
+.filter_container_show,
+.filter_container_hide:target {
+    display: none !important;;
+}
+
+.filter_container_hide:target + .filter_container_show,
+.filter_container_hide:target ~ .filter_container {
+    display: inline-block !important;
+}
+
+.not-active_link {
+    text-decoration: none;
+    color: black;
+}
+
 .tag {
 }
 
