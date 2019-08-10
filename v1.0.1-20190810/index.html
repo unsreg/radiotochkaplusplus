@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en" manifest="./cache.manifest">
+<head>
+    <title>RadioTochka++</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Radio tochka plus plus">
+
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="./ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="RadioTochka++">
+    <link rel="apple-touch-icon" href="apple-icon-152x152.png">
+
+    <link rel="apple-touch-icon" sizes="57x57" href="apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="./favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+    <link rel="manifest" href="manifest.json">
+
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/main.css">
+
+    <script src="js/stations.js"></script>
+</head>
+
+<body onload="onLoadBody();">
+<div id="container">
+    <div id="audio_player_container">
+        <div id="audio_player_status">
+            <div id="audio_player_button_stop" class="common_control" tabindex="0" onclick="radio.stop();">Stop ⏹</div>
+            <div id="audio_player_button_random" class="common_control" tabindex="0"
+                 onclick="radio.playRandomStation();">Random
+            </div>
+            <div id="current_station_count" class="common_control">Count:</div>
+            <div id="current_station_name" class="common_control">Current:</div>
+        </div>
+        <audio controls id="audio_player"></audio>
+    </div>
+    <a id="filter_container_hide" href="#filter_container_hide" class="not-active_link filter_container_hide common_control">
+        Filters +
+    </a>
+    <a id="filter_container_show" href="#filter_container_show" class="not-active_link filter_container_show common_control">
+        Filters -
+    </a>
+    <div id="filter_container" class="filter_container">
+        <div class="container_separator"></div>
+        <div id="tag_container" class="tag_container"></div>
+    </div>
+    <div class="container_separator"></div>
+    <div id="station_container"></div>
+</div>
+
+<script src="js/main.js"></script>
+</body>
+
+</html>
