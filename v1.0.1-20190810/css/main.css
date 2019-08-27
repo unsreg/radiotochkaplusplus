@@ -29,6 +29,7 @@
 .station_image_container {
     display: inline-block;
     width: 100%;
+    height: 85px;
 }
 
 .station_status_name {
