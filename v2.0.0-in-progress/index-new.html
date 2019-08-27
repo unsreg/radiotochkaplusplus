@@ -40,74 +40,51 @@
 </head>
 
 <body>
-<!--http://rightblog.ru/2757-->
+<!-- http://rightblog.ru/2757 -->
 <header>
+    <h1>RadioTochka++</h1>
     <nav>
         <ul>
-            <li>Your menu</li>
+            <li><a href="index.html">Main</a></li>
         </ul>
     </nav>
 </header>
 <main>
-    <section>
-        <article>
-            <header>
-                <h2>Article title</h2>
-                <p>Posted on
-                    <time datetime="2009-09-04T16:31:24+02:00">September 4th 2009</time>
-                    by <a href="#">Writer</a> - <a href="#comments">6 comments</a></p>
-            </header>
-            <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
-        </article>
-        <article>
-            <header>
-                <h2>Article title</h2>
-                <p>Posted on
-                    <time datetime="2009-09-04T16:31:24+02:00">September 4th 2009</time>
-                    by <a href="#">Writer</a> - <a href="#comments">6 comments</a></p>
-            </header>
-            <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
-        </article>
-    </section>
-
-    <aside>
-        <h2>About section</h2>
-        <p>Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend
-            leo.</p>
-    </aside>
+    <div id="container">
+        <section>
+            <div id="audio_player_container">
+                <div id="audio_player_status">
+                    <div id="audio_player_button_stop" class="common_control" tabindex="0" onclick="radio.stop();">Stop
+                        ⏹
+                    </div>
+                    <div id="audio_player_button_random" class="common_control" tabindex="0"
+                         onclick="radio.playRandomStation();">Random
+                    </div>
+                    <div id="current_station_count" class="common_control">Count:</div>
+                    <div id="current_station_name" class="common_control">Current:</div>
+                </div>
+                <audio id="audio_player"></audio>
+            </div>
+        </section>
+        <a id="filter_container_hide" href="#filter_container_hide"
+           class="not-active_link filter_container_hide common_control">
+            Filters +
+        </a>
+        <a id="filter_container_show" href="#filter_container_show"
+           class="not-active_link filter_container_show common_control">
+            Filters -
+        </a>
+        <div id="filter_container" class="filter_container">
+            <div class="container_separator"></div>
+            <div id="tag_container" class="tag_container"></div>
+        </div>
+        <div class="container_separator"></div>
+        <div id="station_container"></div>
+    </div>
 </main>
 <footer>
-    <p>Copyright 2009 Your name</p>
+    <a href="https://github.com/unsreg/radiotochkaplusplus">Source code</a>
 </footer>
-
-
-<div id="container">
-    <div id="audio_player_container">
-        <div id="audio_player_status">
-            <div id="audio_player_button_stop" class="common_control" tabindex="0" onclick="radio.stop();">Stop ⏹</div>
-            <div id="audio_player_button_random" class="common_control" tabindex="0"
-                 onclick="radio.playRandomStation();">Random
-            </div>
-            <div id="current_station_count" class="common_control">Count:</div>
-            <div id="current_station_name" class="common_control">Current:</div>
-        </div>
-        <audio id="audio_player"></audio>
-    </div>
-    <a id="filter_container_hide" href="#filter_container_hide"
-       class="not-active_link filter_container_hide common_control">
-        Filters +
-    </a>
-    <a id="filter_container_show" href="#filter_container_show"
-       class="not-active_link filter_container_show common_control">
-        Filters -
-    </a>
-    <div id="filter_container" class="filter_container">
-        <div class="container_separator"></div>
-        <div id="tag_container" class="tag_container"></div>
-    </div>
-    <div class="container_separator"></div>
-    <div id="station_container"></div>
-</div>
 </body>
 
 </html>
