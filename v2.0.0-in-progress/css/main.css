@@ -111,3 +111,15 @@
 #current_station_name {
     cursor: default;
 }
+
+header {
+    display: none;
+}
+
+footer {
+    text-align: center;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 50px;
+}

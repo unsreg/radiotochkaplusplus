@@ -6,11 +6,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="Radio tochka plus plus">
-
-    <meta name="theme-color" content="#ffffff">
+    <meta name="keywords" content="Radio, Online radio">
 
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="./img/ico/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
 
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -26,13 +26,11 @@
     <link rel="apple-touch-icon" sizes="144x144" href="./img/ico/apple-icon-144x144.png">
     <link rel="apple-touch-icon" sizes="152x152" href="./img/ico/apple-icon-152x152.png">
     <link rel="apple-touch-icon" sizes="180x180" href="./img/ico/apple-icon-180x180.png">
-
     <link rel="icon" href="./img/ico/favicon.ico">
     <link rel="icon" type="image/png" sizes="192x192" href="./img/ico/android-icon-192x192.png">
     <link rel="icon" type="image/png" sizes="32x32" href="./img/ico/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="96x96" href="./img/ico/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="16x16" href="./img/ico/favicon-16x16.png">
-
     <link rel="manifest" href="./manifest.json">
 
     <link rel="stylesheet" href="./css/reset.css">
@@ -42,33 +40,51 @@
 </head>
 
 <body>
-<div id="container">
-    <div id="audio_player_container">
-        <div id="audio_player_status">
-            <div id="audio_player_button_stop" class="common_control" tabindex="0" onclick="radio.stop();">Stop ⏹</div>
-            <div id="audio_player_button_random" class="common_control" tabindex="0"
-                 onclick="radio.playRandomStation();">Random
+<!-- http://rightblog.ru/2757 -->
+<header>
+    <h1>RadioTochka++</h1>
+    <nav>
+        <ul>
+            <li><a href="index.html">Main</a></li>
+        </ul>
+    </nav>
+</header>
+<main>
+    <div id="container">
+        <section>
+            <div id="audio_player_container">
+                <div id="audio_player_status">
+                    <div id="audio_player_button_stop" class="common_control" tabindex="0" onclick="radio.stop();">Stop
+                        ⏹
+                    </div>
+                    <div id="audio_player_button_random" class="common_control" tabindex="0"
+                         onclick="radio.playRandomStation();">Random
+                    </div>
+                    <div id="current_station_count" class="common_control">Count:</div>
+                    <div id="current_station_name" class="common_control">Current:</div>
+                </div>
+                <audio id="audio_player"></audio>
             </div>
-            <div id="current_station_count" class="common_control">Count:</div>
-            <div id="current_station_name" class="common_control">Current:</div>
+        </section>
+        <a id="filter_container_hide" href="#filter_container_hide"
+           class="not-active_link filter_container_hide common_control">
+            Filters +
+        </a>
+        <a id="filter_container_show" href="#filter_container_show"
+           class="not-active_link filter_container_show common_control">
+            Filters -
+        </a>
+        <div id="filter_container" class="filter_container">
+            <div class="container_separator"></div>
+            <div id="tag_container" class="tag_container"></div>
         </div>
-        <audio id="audio_player"></audio>
-    </div>
-    <a id="filter_container_hide" href="#filter_container_hide"
-       class="not-active_link filter_container_hide common_control">
-        Filters +
-    </a>
-    <a id="filter_container_show" href="#filter_container_show"
-       class="not-active_link filter_container_show common_control">
-        Filters -
-    </a>
-    <div id="filter_container" class="filter_container">
         <div class="container_separator"></div>
-        <div id="tag_container" class="tag_container"></div>
+        <div id="station_container"></div>
     </div>
-    <div class="container_separator"></div>
-    <div id="station_container"></div>
-</div>
+</main>
+<footer>
+    <a href="https://github.com/unsreg/radiotochkaplusplus">Source code</a>
+</footer>
 </body>
 
 </html>
