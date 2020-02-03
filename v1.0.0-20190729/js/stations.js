@@ -1209,5 +1209,12 @@ const stations = [
         "name": "Solo piano radio",
         "url": "http://pianosolo.streamguys1.com/live",
         "logo": "0703.webp"
+    },
+    {
+        "id": "704",
+        "tags": ["house", "deephouse", "dance"],
+        "name": "Deepinradio",
+        "url": "http://s3.viastreaming.net:8525/stream",
+        "logo": "0704.webp"
     }
 ];
