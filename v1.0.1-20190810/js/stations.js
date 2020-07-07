@@ -1214,7 +1214,7 @@ const stations = [
         "id": "704",
         "tags": ["house", "deephouse", "dance"],
         "name": "Deepinradio",
-        "url": "http://s3.viastreaming.net:8525/stream",
+        "url": "https://s3.viastreaming.net/a/8525",
         "logo": "0704.webp"
     }
 ];
